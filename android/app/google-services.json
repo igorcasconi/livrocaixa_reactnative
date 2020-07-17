@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "34876279191",
+    "firebase_url": "https://livro-caixa-81c23.firebaseio.com",
+    "project_id": "livro-caixa-81c23",
+    "storage_bucket": "livro-caixa-81c23.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:34876279191:android:6164ad62fef56065311cd2",
+        "android_client_info": {
+          "package_name": "com.reacttsproject"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "34876279191-r80nsfn604qmkuo02ulonjiaen99po2p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCnrNX1cAuWAd6ef01k1hbt_GIbt6JGjEc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "34876279191-r80nsfn604qmkuo02ulonjiaen99po2p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

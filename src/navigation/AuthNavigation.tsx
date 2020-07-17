@@ -1,0 +1,120 @@
+import React from 'react';
+import { createStackNavigator } from '@react-navigation/stack';
+import Home from '../pages/Home';
+import { TouchableOpacity } from 'react-native';
+import Movimentacao from '../pages/Movimentacao';
+import AddMovimentacao from '../pages/AddMovimentacao';
+import OthersMov from '../pages/OthersMov';
+import Tutorial from '../pages/Tutorial';
+import DetailMov from '../pages/DetailMov';
+import About from '../pages/About';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import auth, { firebase } from '@react-native-firebase/auth';
+import * as RootNavigation from '../config/RootNavigation';
+
+const Stack = createStackNavigator();
+
+const AuthNavigation = () => {
+
+    return(
+    <Stack.Navigator initialRouteName="Home" >
+          <Stack.Screen name="Home" component={Home} 
+          options = {{
+            headerTitle: 'Livro Caixa', 
+            headerTintColor: "#000",
+            headerLeft: null,
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center",
+            headerRight: () => (
+              <TouchableOpacity onPress={() => auth().signOut().then(() => { RootNavigation.navigate("Home") })} 
+              style={{marginRight: 10}}>
+                <Ionicons name="log-out-outline" color="white" size={30} />
+              </TouchableOpacity>        
+            ),}}/>
+          <Stack.Screen name="Movimentacao" component={Movimentacao} 
+          options = {{
+            headerTitle: 'Movimentação do Caixa', 
+            headerTintColor: "#000", 
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center"
+          }}/>
+          <Stack.Screen name="AddMovSaida" component={AddMovimentacao} 
+          options = {{
+            headerTitle: 'Adicionar Saída', 
+            headerTintColor: "#000", 
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center"
+          }}/>
+          <Stack.Screen name="AddMovEntrada" component={AddMovimentacao} 
+          options = {{
+            headerTitle: 'Adicionar Entrada', 
+            headerTintColor: "#000", 
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center"
+          }}/>
+          <Stack.Screen name="MovAno" component={OthersMov} 
+          options = {{
+            headerTitle: 'Movimentações/Ano', 
+            headerTintColor: "#000", 
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center"
+          }}/>
+          <Stack.Screen name="MovMes" component={OthersMov} 
+          options = {{
+            headerTitle: 'Movimentações/Mês', 
+            headerTintColor: "#000", 
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center"
+          }}/>
+           <Stack.Screen name="Tutorial" component={Tutorial} 
+          options = {{
+            headerTitle: 'Ajuda', 
+            headerTintColor: "#000", 
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center"
+          }}/>
+          <Stack.Screen name="DetailMovAno" component={DetailMov} 
+          options = {{
+            headerTitle: 'Detalhes', 
+            headerTintColor: "#000", 
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center"
+          }}/>
+          <Stack.Screen name="DetailMovMes" component={DetailMov} 
+          options = {{
+            headerTitle: 'Detalhes', 
+            headerTintColor: "#000", 
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center"
+          }}/>
+          <Stack.Screen name="About" component={About} 
+          options = {{
+            headerTitle: 'Sobre', 
+            headerTintColor: "#000", 
+            headerStyle: {
+              backgroundColor: "#4db476",
+            }, 
+            headerTitleAlign: "center"
+          }}/>
+        </Stack.Navigator>);
+}
+
+export default AuthNavigation;
