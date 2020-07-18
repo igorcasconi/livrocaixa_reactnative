@@ -77,8 +77,7 @@ const AddMovimentacao: React.FC = ({ route }) => {
                 .then(function (response) {
                     RootNavigation.navigate("Movimentacao");
                     showToast("Movimentação cadastrada com sucesso!");
-                    console.log(values.date);
-                    console.log(values.time);
+                   
                 }).catch(function (err) {
                     console.log(err);
                     showToast("Ocorreu um erro ao cadastrar Movimentação!");

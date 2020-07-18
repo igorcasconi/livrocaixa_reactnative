@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, View, FlatList, StyleSheet, TouchableOpacity, Alert } from 'react-native';
+import { Image, View, FlatList, StyleSheet, TouchableOpacity, Alert, ToastAndroid } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import { FAB } from 'react-native-paper';
 import SaldoCaixa from './SaldoCaixa';
@@ -15,9 +15,26 @@ const Entrada: React.FC = () => {
     const [entrada, setEntrada] = useState([]);
     const [visibleShimmer, setVisibleShimmer] = useState(false);
 
+    const showToast = (message: string) => {
+        ToastAndroid.show(message, ToastAndroid.LONG);
+    };
+
+    var config = {
+        headers: {'X-My-Custom-Header': 'Header-Value'}
+    };
+
     const deleteMov = (idMov: number, valueMov: number) => {
-        const response =  DatabaseService.get('/delete-mov/'+ auth().currentUser?.uid + '/' + idMov + '/' + 1 + '/' + valueMov ).then(() => console.log('teste')
-        ).catch((err) => console.log(err))
+        const response =  DatabaseService.post('/movimentacao_caixa/movs-delete', {id: idMov}, config)
+        .then(() => showToast("Movimentação removida com sucessos!"))
+        .catch((err) => console.log(err + 'aqui1'))
+
+        const updateSaldo = DatabaseService.post('/caixa_saldo/updatesaldo/' + auth().currentUser?.uid + '/' + 2, {
+            valor: valueMov
+        }, config).then(function (response) {
+            setTimeout(() => {showToast("Saldo atualizado com sucesso!") }, 2000);
+        }).catch(function (err) {
+            console.log(err + 'aqui2');
+        });
     }
 
     const loadEntrada = async () => {

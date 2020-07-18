@@ -2,15 +2,8 @@ import React, { useState, useEffect, useContext } from 'react';
 import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
 import { Input } from 'react-native-elements';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import auth, { firebase } from '@react-native-firebase/auth';
-import * as RootNavigation from '../config/RootNavigation';
 import { ActivityIndicator } from 'react-native-paper';
-import DatabaseService from '../services/DatabaseService';
 import { AuthContext } from '../navigation/AuthProvider';
-
-function insertNovaCaixa () {
-    const response = DatabaseService.get('/insert-caixa/' + auth().currentUser?.uid);
-}
 
 const Login: React.FC = ({navigation}) => {
 
@@ -67,7 +60,7 @@ const Login: React.FC = ({navigation}) => {
 
                     <View style={styles.socialIcons}>
                         <View style={styles.viewButton}>
-                            <TouchableOpacity style={styles.buttonSignUp}>
+                            <TouchableOpacity style={styles.buttonSignUp} onPress={() => navigation.navigate('SignUp')}>
                                 <Text style={styles.textButton}>Novo no Aplicativo? Cadastre-se!</Text>
                             </TouchableOpacity>
                         </View>
