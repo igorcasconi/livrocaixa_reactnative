@@ -9,16 +9,22 @@ const numberToReal = require('../config/numberToReal');
 
 const SaldoCaixa: React.FC = () => {
 
-    const [saldo, setSaldo] = useState([]);
+    const [saldo, setSaldo] = useState({
+        saldo: ''
+    });
     const [visibleShimmer, setVisibleShimmer] = useState(false);
 
     const loadSaldo = async () => {
-        const response = await DatabaseService.get('/caixa_saldo/saldo/' + auth().currentUser?.uid).then(function (response) {
-            setSaldo(response.data);
+        try{
+            const response = await DatabaseService.get('/caixa_saldo/saldo/' + auth().currentUser?.uid);
+            const { Caixa_Saldo_value } = response.data;
+            setSaldo({
+                saldo: Caixa_Saldo_value
+            });
             setVisibleShimmer(true);
-        }).catch(function (err) {
+        }catch(err) {
             console.log(err);
-        });
+        }
     }
 
     useEffect(() =>{
@@ -29,9 +35,7 @@ const SaldoCaixa: React.FC = () => {
     <View style={styles.viewConfig}>
         <Card containerStyle={styles.cardConfig}>
         <ShimmerPlaceHolder autoRun={true} style={{height: 22, width: 150, borderRadius: 10}}  visible={visibleShimmer} >
-            {saldo.map(item => (
-                <Text key={item.Caixa_Saldo_id} style={styles.textCard}>{numberToReal(item.Caixa_Saldo_value) }</Text>
-            ))}
+                <Text style={styles.textCard}>{numberToReal(saldo.saldo) }</Text>
         </ShimmerPlaceHolder>
         </Card>
     </View>);

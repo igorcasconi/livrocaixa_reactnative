@@ -42,18 +42,9 @@ const AuthNavigation = () => {
             }, 
             headerTitleAlign: "center"
           }}/>
-          <Stack.Screen name="AddMovSaida" component={AddMovimentacao} 
+          <Stack.Screen name="AddMov" component={AddMovimentacao} 
           options = {{
-            headerTitle: 'Adicionar Saída', 
-            headerTintColor: "#000", 
-            headerStyle: {
-              backgroundColor: "#4db476",
-            }, 
-            headerTitleAlign: "center"
-          }}/>
-          <Stack.Screen name="AddMovEntrada" component={AddMovimentacao} 
-          options = {{
-            headerTitle: 'Adicionar Entrada', 
+            headerTitle: 'Adicionar Movimentação', 
             headerTintColor: "#000", 
             headerStyle: {
               backgroundColor: "#4db476",

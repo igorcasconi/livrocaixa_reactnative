@@ -23,7 +23,7 @@ const Tutorial: React.FC = () => (
                 <Text> - Ao clicar em um item da lista vai ser aberta uma nova tela mostrando os detalhes do saldo daquele ano com a quantidade de Entradas e Saídas.</Text>
             </View>
             <View style={styles.cardMovimentacaoRoxo}>
-                <Text style={styles.textInfo}><Ionicons name="arrow-forward-circle-outline" size={16}/> Botão: Movimentação/Ano</Text>
+                <Text style={styles.textInfo}><Ionicons name="arrow-forward-circle-outline" size={16}/> Botão: Movimentação/Mês/Ano</Text>
                 <Text> - Exibe uma lista de cada mês/ano que teve movimentações ao caixa com seu saldo a frente.</Text>
                 <Text> - Ao clicar em um item da lista vai ser aberta uma nova tela mostrando os detalhes do saldo daquele mês/ano com a quantidade de Entradas e Saídas.</Text>
             </View>

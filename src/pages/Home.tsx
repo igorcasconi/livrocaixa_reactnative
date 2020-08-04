@@ -42,19 +42,24 @@ const cards = [{
 
 const Home: React.FC = () => {
 
-    const [caixaSaldo, setCaixaSaldo] = useState([]);
+    const [caixaSaldo, setCaixaSaldo] = useState({
+        saldo: ''
+    });
     const [visibleShimmer, setVisibleShimmer] = useState(false);
     let date = new Date();
 
     // CARREGA O DADOS DO SALDO DO USUARIO
     const loadSaldo = async () => {
-        const response = await DatabaseService.get('/caixa_saldo/saldo/' + auth().currentUser?.uid).then((response) => {
-            //handle success
-            setCaixaSaldo(response.data);
+        try{
+            const response = await DatabaseService.get('/caixa_saldo/saldo/' + auth().currentUser?.uid);
+            const { Caixa_Saldo_value } = response.data; 
+            setCaixaSaldo({
+                saldo: Caixa_Saldo_value
+            });
             setVisibleShimmer(true);
-        }).catch((err) => {
+        } catch(err) {
             console.log(err);
-        });
+        }
     }
 
     // ATUALIZAÇÃO
@@ -79,7 +84,7 @@ const Home: React.FC = () => {
     
     return(
     <ScrollView>
-    <View style={{padding: 5}}>
+    <View style={styles.container}>
         <Card  containerStyle={styles.cardInfoCaixa} title="Meu Caixa" titleStyle={{fontSize: 20, color: "#ffffff"}} dividerStyle={{backgroundColor: "#ffffff",}}>
             <View>
                 <View style={styles.viewInfo}>
@@ -90,8 +95,7 @@ const Home: React.FC = () => {
                     style={{height: 25, marginTop: -20, borderRadius: 10 }}
                     autoRun={true}
                     visible={visibleShimmer}>
-                    { caixaSaldo.map(item => ( 
-                    <Text key={item.Caixa_Saldo_id} style={styles.textCardInfo}><Ionicons name="wallet-outline" size={25}/> Saldo: { numberToReal(item.Caixa_Saldo_value) } </Text> ))}
+                    <Text style={styles.textCardInfo}><Ionicons name="wallet-outline" size={25}/> Saldo: { numberToReal(caixaSaldo.saldo) } </Text>
                 </ShimmerPlaceHolder>
             </View>
         </Card>
@@ -107,6 +111,12 @@ const Home: React.FC = () => {
 
 
 const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 20, 
+        justifyContent: 'center',
+        marginTop: 20
+    },
     imageCard: {
         width: 193,
         height: 80,
@@ -116,12 +126,10 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     cardConfig: {
-        flex: 0,
         padding: 20,
         borderRadius: 10,
-        width: "93%",
+        width: "100%",
         height: 60,
-        marginLeft: 15,
         marginBottom: 10,
         backgroundColor: "#2970d1"
     },

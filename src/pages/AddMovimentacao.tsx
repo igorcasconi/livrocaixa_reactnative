@@ -1,15 +1,15 @@
-import React from 'react';
-import { View, Text, Image, StyleSheet, TouchableOpacity, ToastAndroid, ScrollView } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ToastAndroid, ScrollView, Platform } from 'react-native';
 import { Input, Card } from 'react-native-elements';
 import { format, parseISO } from 'date-fns';
-import DatabaseService from '../services/DatabaseService';
+import DatabaseService, { config } from '../services/DatabaseService';
 import { Formik } from 'formik';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import TextInputMask from 'react-native-text-input-mask';
 import auth from '@react-native-firebase/auth';
 import * as yup from 'yup';
-import NumericInput from '@wwdrew/react-native-numeric-textinput';
 import * as RootNavigation from '../config/RootNavigation';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import pt from 'date-fns/locale/pt';
 
 
 const AddMovimentacao: React.FC = ({ route }) => {
@@ -20,25 +20,44 @@ const AddMovimentacao: React.FC = ({ route }) => {
 
     const TypeMov = () => {
 
-        var config = {
-            headers: {'X-My-Custom-Header': 'Header-Value'}
+        const [date, setDate] = useState(new Date());
+        const [mode, setMode] = useState('date');
+        const [show, setShow] = useState(false);
+
+        const onChange = (event, selectedDate) => {
+            const currentDate = selectedDate || date;
+            setShow(Platform.OS === 'ios');
+            setDate(currentDate);
+        };
+        
+        const showMode = currentMode => {
+            setShow(true);
+            setMode(currentMode);
+        };
+        
+        const showDatepicker = () => {
+            showMode('date');
+        };
+        
+        const showTimepicker = () => {
+            showMode('time');
         };
         
         let text: any;
         let imageMov: any;
-        let type: Number;
 
-        if(route.name === 'AddMovEntrada'){
+        const { type } = route.params;
+
+        if(type == 1){
 
             text = "Adicionar uma nova Entrada ao Caixa";
             imageMov = require('../assets/recibo.png');
-            type = 1;
     
-        } else if(route.name === 'AddMovSaida') {
+        } else if(type == 2) {
     
             text = "Adicionar uma nova Saída ao Caixa";
             imageMov = require('../assets/recibo_saida.png');
-            type = 2;
+
         }
 
         return(
@@ -56,8 +75,8 @@ const AddMovimentacao: React.FC = ({ route }) => {
                 product: '',
                 value: 0,
                 paymode: '',
-                date: format(new Date(), 'dd/MM/yyyy').toString(),
-                time: format(new Date(), 'HH:mm').toString()
+                date: format(date, 'dd/MM/yyyy').toString(),
+                time: format(date, 'HH:mm').toString()
             }}
             validationSchema={
                 yup.object().shape({
@@ -67,59 +86,92 @@ const AddMovimentacao: React.FC = ({ route }) => {
                 time: yup.string().required()
             })}
             onSubmit={values => {
-                const response = DatabaseService.post('/movimentacao_caixa/create-mov/' + auth().currentUser?.uid + '/' + type, {
-                    product: values.product,
-                    value: values.value,
-                    paymode: values.paymode,
-                    date: values.date,
-                    time: values.time
-                }, config)
-                .then(function (response) {
+                try {
+                    const response = DatabaseService.post('/movimentacao_caixa/create-mov/' + auth().currentUser?.uid + '/' + type, {
+                        product: values.product,
+                        value: values.value,
+                        paymode: values.paymode,
+                        date: format(date, 'dd/MM/yyyy').toString(),
+                        time: format(date, 'HH:mm').toString()
+                    }, config);
+                
                     RootNavigation.navigate("Movimentacao");
                     showToast("Movimentação cadastrada com sucesso!");
+
+                    const updateSaldo = DatabaseService.post('/caixa_saldo/updatesaldo/' + auth().currentUser?.uid + '/' + type, {
+                        valor: values.value
+                    },config).then(function (response) {
+                        setTimeout(() => {showToast("Saldo atualizado com sucesso!") }, 2000);
+                    }).catch(function (err) {
+                        console.log(err);
+                    });
                    
-                }).catch(function (err) {
+                } catch(err) {
                     console.log(err);
                     showToast("Ocorreu um erro ao cadastrar Movimentação!");
-                });
-
-
-                const updateSaldo = DatabaseService.post('/caixa_saldo/updatesaldo/' + auth().currentUser?.uid + '/' + type, {
-                    valor: values.value
-                },config).then(function (response) {
-                    setTimeout(() => {showToast("Saldo atualizado com sucesso!") }, 2000);
-                }).catch(function (err) {
-                    console.log(err);
-                });
-                
+                }
                 
             }}>
-            {({values, handleChange, handleSubmit, setFieldValue, errors}) => (
+            {({values, handleChange, handleSubmit, setFieldValue, errors, touched}) => (
 
             <View style={styles.inputs}>
-                <Text>Descrição</Text>
+                <Text>Data e Hora</Text>
+                <View style={styles.inputsDateTime}>
+                    
+                    <View >
+                    {show && (
+                    <DateTimePicker
+                        testID="dateTimePicker"
+                        value={date}
+                        mode={mode}
+                        is24Hour={true}
+                        display="default"
+                        onChange={onChange}
+                        />
+                    )}
+                    <TouchableOpacity onPress={showDatepicker}>
+                        <View style={styles.dateTime}>
+                            <Ionicons style={styles.iconDateTime} name="today-outline" size={20}/>
+                            <Text style={styles.textDate}>{format(date, "dd/MM/yyyy", { locale: pt })}</Text>
+                        </View>
+                    </TouchableOpacity>
+                    </View>
+                    
+                    <TouchableOpacity onPress={showTimepicker}>
+                        <View style={styles.Time}>
+                            <Ionicons style={styles.iconDateTime} name="alarm-outline" size={20}/>
+                            <Text style={styles.textDate}>{format(date, "HH:mm", { locale: pt })}</Text>
+                        </View>
+                    </TouchableOpacity>
+                </View>
+                
+                {errors.date &&
+                    <Text style={styles.textError}>Insira a informação de data!</Text>
+                }
+
+                <Text>Informação do Produto</Text>
                 <Input 
                 value={values.product}
                 onChangeText={handleChange('product')}
-                placeholder="Informação da Movimentação">
+                placeholder="ex: 2x Camisetas Azuis">
                 </Input>
-                {errors.product &&
-                    <Text style={styles.textError}>Insira a informação na Descrição!</Text>
+                
+                {errors.product && touched.product ?
+                    <Text style={styles.textError}>Insira a informação neste campo!</Text> : null
                 } 
+
                 <Text>Valor</Text>
                 <View style={styles.dateTime}>
-                    <NumericInput
-                        type='currency'
-                        locale='pt-BR'
-                        currency='BRL'
-                        placeholder="R$ XX.XX"
-                        value={values.value}
-                        onUpdate={(value) => setFieldValue('value', value)}
-                        style={styles.textDate}
-                    />
+                <TextInputMask style={styles.textDate}
+                    value={values.value}
+                    keyboardType='numeric'
+                    onChangeText={handleChange('value')}
+                    mask={"R$ [9999990],[00]"}
+                />
                 </View>
-                {errors.value &&
-                    <Text style={styles.textError}>Insira a informação de valor!</Text>
+
+                {errors.value && touched.value ?
+                    <Text style={styles.textError}>Insira a informação de valor!</Text> : null
                 } 
 
                 <Text>Forma de pagamento</Text>
@@ -129,29 +181,7 @@ const AddMovimentacao: React.FC = ({ route }) => {
                     placeholder="ex: Cartão de Débito, Dinheiro, etc."
                 ></Input>
                 
-                <Text>Data</Text>
-                <View style={styles.dateTime}>
-                    <Ionicons style={styles.iconDateTime} name="today-outline" size={20}/>
-                    <TextInputMask style={styles.textDate}
-                        value={values.date}
-                        keyboardType='numeric'
-                        onChangeText={handleChange('date')}
-                        mask={"[00]/[00]/[0000]"}
-                    />
-                </View>
-                {errors.date &&
-                    <Text style={styles.textError}>Insira a informação de data!</Text>
-                } 
-                <Text>Hora</Text>
-                <View style={styles.dateTime}>
-                    <Ionicons style={styles.iconDateTime} name="alarm-outline" size={20}/>
-                    <TextInputMask style={styles.textDate}
-                        value={values.time}
-                        keyboardType='numeric'
-                        onChangeText={handleChange('time')}
-                        mask={"[00]:[00]"}
-                    />
-                </View>
+                
 
                 <TouchableOpacity style={styles.buttonInfo} onPress={handleSubmit}><Text style={styles.textButton}>Gravar</Text></TouchableOpacity>
                 
@@ -179,7 +209,8 @@ const styles = StyleSheet.create({
     card: {
         borderRadius: 15,
         padding: 20,
-        marginBottom: 20
+        marginBottom: 20,
+        backgroundColor: "#ffebb4"
     },
     textCard: {
         fontSize: 20,
@@ -216,22 +247,35 @@ const styles = StyleSheet.create({
     iconCalendar: {
         fontSize: 20
     },
+    inputsDateTime:{
+        flexDirection: 'row',
+        marginBottom: 10,
+        marginTop: 10
+    },
     dateTime: {
         borderBottomWidth: 1,
         width: 140,
         marginLeft: 12,
-        flex: 1,
         flexDirection: "row",
-        padding: 1,
+        padding: 5,
+        borderColor: "#747575",
+        marginBottom: 20
+    },
+    Time: {
+        borderBottomWidth: 1,
+        width: 110,
+        marginLeft: 12,
+        flexDirection: "row",
+        padding: 5,
         borderColor: "#747575",
         marginBottom: 20
     },
     textDate: {
-        fontSize: 16,
-        marginRight: 10
+        fontSize: 17,
+
     },
     iconDateTime: {
-        marginTop: 13
+        marginRight: 10
     },
     textError: { fontSize: 14, color: 'red', marginBottom: 20 }
 })

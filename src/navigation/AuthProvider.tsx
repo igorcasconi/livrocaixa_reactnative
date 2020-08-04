@@ -6,6 +6,7 @@ export const AuthContext = createContext({});
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [erro, setErro] = useState(false);
+    const [loading, setLoading] = useState(false);
 
     return (
       <AuthContext.Provider
@@ -13,7 +14,9 @@ export const AuthProvider = ({ children }) => {
           user,
           setUser,
           erro,
-          login: async (user, password) => {    
+          loading,
+          login: async (user, password) => {   
+            setLoading(true); 
             try {
               setErro(false);
               await auth().signInWithEmailAndPassword(user, password);
@@ -21,16 +24,22 @@ export const AuthProvider = ({ children }) => {
             } catch (e) {
               console.log(e);
               setErro(true);
-              // console.log(erro);
+              setLoading(false);
             }
 
-            return(erro);
           },
           register: async (email, password) => {
             try {
               await auth().createUserWithEmailAndPassword(email, password);
             } catch (e) {
               console.log(e);
+            }
+          },
+          verifyPassword: async (email) => {
+            try{
+              await auth().sendPasswordResetEmail(email);
+            }catch (err) {
+              console.log(err);
             }
           },
           logout: async () => {
