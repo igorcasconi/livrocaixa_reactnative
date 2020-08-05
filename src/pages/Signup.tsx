@@ -9,11 +9,9 @@ import { Formik } from 'formik';
 import * as yup from 'yup';
 
 const Signup = () => {
-    const { erro, register } = useContext(AuthContext);
+    const { erroRegister, register, loading } = useContext(AuthContext);
     const [user, setUser] = useState();
     const [password, setPassword]= useState();
-    const [loading, setLoading] = useState(0);
-    const [erroLogin, setErroLogin] = useState(false);
 
     return (
         <View style={styles.container}>
@@ -38,7 +36,7 @@ const Signup = () => {
                 onSubmit={values => console.log(values)
 
                 }>
-                {({values, handleChange, handleSubmit, setFieldValue, errors}) => (
+                {({values, handleChange, handleSubmit, setFieldValue, errors, touched}) => (
                     <View>
                         <Input label="e-mail"
                         placeholder="email@exemplo.com"
@@ -75,12 +73,17 @@ const Signup = () => {
                                 <Ionicon name="chevron-forward" size={20} color="white" />
                             </TouchableOpacity>
 
-                        { erroLogin ? <View style={styles.erroLogin}>
-                        <Ionicon name="alert-circle-outline" color="white" size={20}/>
-                        <Text style={styles.textErroLogin} > e-mail ou senha estão incorretos!</Text>
+                        { loading ? <ActivityIndicator animating={true} style={{marginTop: 30}} color="blue" size={30} /> : null }
+
+                        { errors && touched ? <View style={styles.WarnLogin}>
+                        <Ionicon name="warn-outline" color="black" size={20}/>
+                        <Text style={styles.textWarnLogin} > Necessário inserir informação em todos os campos!</Text>
                         </View> : null}
 
-                        { loading == 1 ? <ActivityIndicator animating={true} style={{marginTop: 30}} color="blue" size={30} /> : null }
+                        { erroRegister ? <View style={styles.erroLogin}>
+                        <Ionicon name="alert-circle-outline" color="white" size={20}/>
+                        <Text style={styles.textErroLogin} > Ocorreu um problema ao se cadastrar! Possivelmente seu e-mail já está cadastrado</Text>
+                        </View> : null}
 
                         </View>  
                     </View>
@@ -146,6 +149,22 @@ const styles = StyleSheet.create({
     },
     textErroLogin: {
         color: "white",
+        fontWeight: "bold",
+        fontSize: 16
+    },
+    WarnLogin: {
+        width: "92%",
+        padding: 20,
+        backgroundColor: "yellow",
+        marginTop: 20,
+        justifyContent: "center",
+        alignItems: "center",
+        borderRadius: 10,
+        flex: 1, 
+        flexDirection: 'row',
+    },
+    textWarnLogin: {
+        color: "black",
         fontWeight: "bold",
         fontSize: 16
     },

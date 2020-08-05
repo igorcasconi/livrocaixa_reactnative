@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, FlatList, StyleSheet, TouchableOpacity, Alert, ToastAndroid } from 'react-native';
 import { ListItem } from 'react-native-elements';
-import { FAB } from 'react-native-paper';
+import { FAB, ActivityIndicator } from 'react-native-paper';
 import SaldoCaixa from './SaldoCaixa';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import * as RootNavigation from '../config/RootNavigation';
@@ -14,6 +14,7 @@ const Entrada: React.FC = ({route}) => {
 
     const [entrada, setEntrada] = useState([]);
     const [visibleShimmer, setVisibleShimmer] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const showToast = (message: string) => {
         ToastAndroid.show(message, ToastAndroid.LONG);
@@ -59,6 +60,7 @@ const Entrada: React.FC = ({route}) => {
         try{
             const response = await DatabaseService.get('/movimentacao_caixa/movs/' + auth().currentUser?.uid + '/' + typeMov);
             setEntrada(response.data);
+            setLoading(false);
         }catch(err) { 
             console.log(err); 
         }
@@ -84,12 +86,18 @@ const Entrada: React.FC = ({route}) => {
     return(
         <View style={styles.list}>
             <SaldoCaixa />
-
-            <FlatList  data={entrada} keyExtractor={item => item.Movimentacao_Caixa_id} renderItem={renderItem} />
-            <FAB  style={[styles.fab, { backgroundColor: colorMov}]}
-            medium
-            icon={iconMov}
-            onPress={() => RootNavigation.navigate('AddMov', {type: typeMov})} />
+            
+            { loading ? <View style={styles.loading}>
+                <Image style={styles.imageCaixaLoading} source={imageMov} />
+                <ActivityIndicator size="large" color="#4db476" />
+            </View> :
+            <View style={{flex: 1}}>
+                <FlatList  data={entrada} keyExtractor={item => item.Movimentacao_Caixa_id} renderItem={renderItem} />
+                <FAB  style={[styles.fab, { backgroundColor: colorMov}]}
+                medium
+                icon={iconMov}
+                onPress={() => RootNavigation.navigate('AddMov', {type: typeMov})} /> 
+            </View>}
         </View>
     );
 
@@ -160,6 +168,17 @@ const styles = StyleSheet.create({
     textModalDelete: {
         fontWeight: "bold",
         color: "white"
+    },
+    imageCaixaLoading: {
+        width: 200,
+        height: 200,
+        marginBottom: 20
+    },
+    loading: {
+        padding: 10,
+        marginTop: "40%",
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 });
 

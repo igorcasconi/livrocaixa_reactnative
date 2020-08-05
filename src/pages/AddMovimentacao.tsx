@@ -10,6 +10,7 @@ import * as yup from 'yup';
 import * as RootNavigation from '../config/RootNavigation';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import pt from 'date-fns/locale/pt';
+import { TextInputMask } from 'react-native-masked-text';
 
 
 const AddMovimentacao: React.FC = ({ route }) => {
@@ -73,7 +74,7 @@ const AddMovimentacao: React.FC = ({ route }) => {
 
             <Formik initialValues= {{
                 product: '',
-                value: 0,
+                value: '',
                 paymode: '',
                 date: format(date, 'dd/MM/yyyy').toString(),
                 time: format(date, 'HH:mm').toString()
@@ -81,15 +82,18 @@ const AddMovimentacao: React.FC = ({ route }) => {
             validationSchema={
                 yup.object().shape({
                 product: yup.string().required(),
-                value: yup.number().required(),
+                value: yup.string().required(),
                 date: yup.string().required(),
                 time: yup.string().required()
             })}
             onSubmit={values => {
+                
+                let val = parseFloat(values.value.replace('R$ ', '').replace(',', '.'));
+
                 try {
                     const response = DatabaseService.post('/movimentacao_caixa/create-mov/' + auth().currentUser?.uid + '/' + type, {
                         product: values.product,
-                        value: values.value,
+                        value: val,
                         paymode: values.paymode,
                         date: format(date, 'dd/MM/yyyy').toString(),
                         time: format(date, 'HH:mm').toString()
@@ -99,7 +103,7 @@ const AddMovimentacao: React.FC = ({ route }) => {
                     showToast("Movimentação cadastrada com sucesso!");
 
                     const updateSaldo = DatabaseService.post('/caixa_saldo/updatesaldo/' + auth().currentUser?.uid + '/' + type, {
-                        valor: values.value
+                        valor: val
                     },config).then(function (response) {
                         setTimeout(() => {showToast("Saldo atualizado com sucesso!") }, 2000);
                     }).catch(function (err) {
@@ -162,16 +166,23 @@ const AddMovimentacao: React.FC = ({ route }) => {
 
                 <Text>Valor</Text>
                 <View style={styles.dateTime}>
-                <TextInputMask style={styles.textDate}
+                <TextInputMask
+                    type={'money'}
                     value={values.value}
-                    keyboardType='numeric'
-                    onChangeText={handleChange('value')}
-                    mask={"R$ [9999990],[00]"}
+                    options={{
+                        precision: 2,
+                        separator: ',',
+                        delimiter: '.',
+                        unit: 'R$ ',
+                        suffixUnit: ''
+                    }}
+                    onChangeText={handleChange('value')} 
+                    placeholder="R$ XX,XX"
                 />
                 </View>
 
                 {errors.value && touched.value ?
-                    <Text style={styles.textError}>Insira a informação de valor!</Text> : null
+                    <Text style={styles.textError}>Insira o valor!</Text> : null
                 } 
 
                 <Text>Forma de pagamento</Text>

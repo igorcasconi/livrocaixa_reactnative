@@ -13,7 +13,12 @@ const DetailMov: React.FC = ({ route }) => {
     
     let titulo: any;
     let link: string;
-    const [detailmov, setDetailmov] = useState([]);
+    const [detailmov, setDetailmov] = useState({
+        soma: 0,
+        gastos: 0,
+        entrada: 0,
+        saida: 0
+    });
     const { data } = route.params;
 
     if(route.name === 'DetailMovAno') {
@@ -26,10 +31,17 @@ const DetailMov: React.FC = ({ route }) => {
     }
     
     const loadInfoMov = async () => {
-        const response = await DatabaseService.get('/movimentacao_caixa/'+ link)
-        .then((response) => {
-            setDetailmov(response.data);
-        }).catch((err) => { console.log(err); });
+        try{
+            const response = await DatabaseService.get('/movimentacao_caixa/'+ link);
+            const { soma, gastos, entrada, saida } = response.data;
+            setDetailmov({
+                soma,
+                gastos,
+                entrada,
+                saida
+            });
+       
+        } catch(err) { console.log(err); };
     };
 
     useEffect(() => {
@@ -40,19 +52,17 @@ const DetailMov: React.FC = ({ route }) => {
     return(
         <ScrollView>
         <View>
-            { detailmov.map(item => (
-            <Card key={item.data} containerStyle={styles.cardConfig} title={titulo}>
+            <Card containerStyle={styles.cardConfig} title={titulo}>
                 <View style={styles.viewImageCard}>   
                     <Image style={styles.imageCard} source={require('../assets/caixa-reg.png')} />
                 </View> 
                 
-                <Text style={styles.textSaldo}><Ionicons name="wallet-outline" size={20}/> Saldo: {numberToReal(item.soma)}</Text>
-                <Text style={styles.textSaldo}><Ionicons name="wallet-outline" size={20}/> Gastos: {numberToReal(item.gastos)}</Text>
+                <Text style={styles.textSaldo}><Ionicons name="wallet-outline" size={20}/> Saldo: {numberToReal(detailmov.soma)}</Text>
+                <Text style={styles.textSaldo}><Ionicons name="wallet-outline" size={20}/> Gastos: {numberToReal(detailmov.gastos)}</Text>
                 <Text style={styles.textTitle}>Quantidades de Movimentações</Text>
-                <Text style={styles.textMov}><Ionicons name="arrow-up-circle-outline" size={15} color="green" /> Entradas: {item.entrada}</Text>
-                <Text style={styles.textMov}><Ionicons name="arrow-down-circle-outline" size={15} color="red"/> Saídas:  {item.saida}</Text> 
+                <Text style={styles.textMov}><Ionicons name="arrow-up-circle-outline" size={15} color="green" /> Entradas: {detailmov.entrada}</Text>
+                <Text style={styles.textMov}><Ionicons name="arrow-down-circle-outline" size={15} color="red"/> Saídas:  {detailmov.saida}</Text> 
             </Card>
-            ))}
         </View>
         </ScrollView>
     )

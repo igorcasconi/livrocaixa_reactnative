@@ -6,21 +6,27 @@ import DatabaseService from '../services/DatabaseService';
 import auth from '@react-native-firebase/auth';
 import pt from 'date-fns/locale/pt';
 import { format, parseISO } from 'date-fns';
+import { ActivityIndicator } from 'react-native-paper';
 const numberToReal = require('../config/numberToReal');
 
 const MovMes: React.FC = () => {
-    const [movMes, setMovMes] = useState([]);
+    const [movDetail, setMovDetail] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     const loadMovAno = async () => {
-        const response = await DatabaseService.get('/movimentacao_caixa/movs-month/' + auth().currentUser?.uid)
-        .then((response) => {
-            setMovMes(response.data);
-        }).catch((err) => { console.log(err); });
+        try{
+            const response = await DatabaseService.get('/movimentacao_caixa/movs-month/' + auth().currentUser?.uid);
+            setMovDetail(response.data);
+            setLoading(false);
+        } catch(err) { 
+            console.log(err); 
+
+        }
     }
 
     useEffect(() =>{
         loadMovAno();
-    }, [movMes]);
+    }, [movDetail]);
 
     const renderItem = ({item}) => (
         <TouchableOpacity onPress={() => RootNavigation.navigate('DetailMovMes', {data: parseISO(item.Movimentacao_Caixa_date)})}>
@@ -35,7 +41,14 @@ const MovMes: React.FC = () => {
 
     return(
     <View>
-        <FlatList  data={movMes} keyExtractor={item => item.Movimentacao_Caixa_id} renderItem={renderItem} />
+
+        { loading ? <View style={styles.loading}>
+            <Image style={styles.imageCaixaLoading} source={require('../assets/caixa-reg.png')} />
+            <ActivityIndicator size="large" color="#4db476" />
+        </View> :
+        <FlatList  data={movDetail} keyExtractor={item => item.Movimentacao_Caixa_id} renderItem={renderItem} /> }
+    
+    
     </View>
     );
 }
@@ -43,6 +56,17 @@ const styles = StyleSheet.create({
     imageCaixa: {
         width: 60,
         height: 60
+    },
+    imageCaixaLoading: {
+        width: 200,
+        height: 200,
+        marginBottom: 20
+    },
+    loading: {
+        padding: 10,
+        marginTop: "50%",
+        justifyContent: 'center',
+        alignItems: 'center'
     }
 
 });
