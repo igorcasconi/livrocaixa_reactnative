@@ -1,7 +1,7 @@
 <div style="text-align: justify;">
-  <img src="./src/assets/logo.png" alt="Logo" width="250"/>
-
-  # Livro Caixa
+  <img src="./src/assets/logo.png" alt="Logo" width="250"/> 
+  
+ # Livro Caixa
 </div>
 
 #### Aplicativo pensado para aqueles que ainda utilizam um livro ou caderno para escrever as movimentações de caixa, informando a data, produto e valor. 
@@ -32,3 +32,16 @@ Linguagem e Tecnologias
       - Express (rotas e construção da api)
       - Cors (permissão de acesso a api)
     - Firebase Authentication (Criação e conexão do usuário para controle dos dados no banco de dados)
+
+BIbliotecas
+=============================
+- @react-native-community/datetimepicker
+- @react-native-firebase
+- @react-navigation
+- date-fns
+- axios
+- react-native-elements
+- react-native-paper
+- react-nativer-masked-text
+- formik
+- yup
