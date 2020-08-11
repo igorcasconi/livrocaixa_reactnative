@@ -2,6 +2,9 @@
   <img src="./src/assets/logo.png" alt="Logo" width="250"/> 
   
  # Livro Caixa
+ 
+ App in PlayStore: [LivroCaixa - Aplicativo](https://play.google.com/store/apps/details?id=com.reacttsproject)
+ 
 </div>
 
 #### Aplicativo pensado para aqueles que ainda utilizam um livro ou caderno para escrever as movimentações de caixa, informando a data, produto e valor. 
