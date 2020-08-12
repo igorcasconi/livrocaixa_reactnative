@@ -1,7 +1,9 @@
 
 // FUNÇÃO PARA CONVERTER PARA REAL
-module.exports = (numero: any) => {
-    var numero = parseFloat(numero).toFixed(2).split('.');
+const numberToReal = (money: string) => {
+    const numero = parseFloat(money).toFixed(2).split('.');
     numero[0] = "R$ " + numero[0].split(/(?=(?:...)*$)/).join('.');
     return numero.join(',');
 }
+
+export default numberToReal;

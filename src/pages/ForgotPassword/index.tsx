@@ -1,14 +1,15 @@
 import React, { useContext, useState } from 'react';
-import { View, StyleSheet, TouchableOpacity, Text, Image } from 'react-native';
+import { View, TouchableOpacity, Text, ActivityIndicator } from 'react-native';
 import { Input } from 'react-native-elements';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import { ActivityIndicator } from 'react-native-paper';
-import { AuthContext } from '../navigation/AuthProvider';
-import DatabaseService from '../services/DatabaseService';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-const Signup = () => {
+import { AuthContext } from '../../navigation/AuthProvider';
+
+import styles from './style';
+
+const ForgotPassword = () => {
     const { erroRegister, register, loading } = useContext(AuthContext);
     const [user, setUser] = useState();
     const [password, setPassword]= useState();
@@ -48,25 +49,6 @@ const Signup = () => {
                         value={values.email}
                         onChangeText={handleChange('email')}/>
 
-                        <Input label="Senha" 
-                        placeholder="*******"
-                        secureTextEntry={true}
-                        labelStyle={{color: "white", marginBottom: 10}} 
-                        leftIcon={{ type: 'ionicon', name: 'lock-closed' }} 
-                        inputContainerStyle={{backgroundColor: "white", paddingLeft: 10, borderRadius: 30}} 
-                        value={values.password}
-                        onChangeText={handleChange('password')}
-                        />
-
-                        <Input label="Repita a senha" 
-                        placeholder="*******"
-                        secureTextEntry={true}
-                        labelStyle={{color: "white", marginBottom: 10}} 
-                        leftIcon={{ type: 'ionicon', name: 'lock-closed' }} 
-                        inputContainerStyle={{backgroundColor: "white", paddingLeft: 10, borderRadius: 30}} 
-                        value={values.password}
-                        onChangeText={handleChange('password')}/>
-
                         <View style={styles.viewButton}>
                             <TouchableOpacity style={styles.buttonAccess}>
                                 <Text style={styles.textButton}>Acessar</Text>
@@ -93,92 +75,5 @@ const Signup = () => {
     );
 };
 
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: "#4db476",
-        padding: 30
-    },
-    imageLogo: {
-        width: 190,
-        height: 190
-    },
-    viewImageLogo: {
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    textInit: {
-        fontSize: 25,
-        marginBottom: 30,
-        fontWeight: "bold"
-    },
-    viewButton: {
-        justifyContent: "center",
-        alignItems: "center",
-        
-    },
-    buttonAccess: {
-        justifyContent: "center",
-        alignItems: "center",
-        backgroundColor: "#3b61e6",
-        borderRadius: 30,
-        width: "95%",
-        padding: 25,
-        flex: 1, 
-        flexDirection: 'row',
-    },
-    textButton: {
-        color: "white",
-        fontWeight: "bold",
-        fontSize: 17
-    },
-    socialIcons: {
-        marginTop: 15,
-        marginBottom: 20
-    },
-    erroLogin: {
-        width: "92%",
-        padding: 20,
-        backgroundColor: "red",
-        marginTop: 20,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        flex: 1, 
-        flexDirection: 'row',
-    },
-    textErroLogin: {
-        color: "white",
-        fontWeight: "bold",
-        fontSize: 16
-    },
-    WarnLogin: {
-        width: "92%",
-        padding: 20,
-        backgroundColor: "yellow",
-        marginTop: 20,
-        justifyContent: "center",
-        alignItems: "center",
-        borderRadius: 10,
-        flex: 1, 
-        flexDirection: 'row',
-    },
-    textWarnLogin: {
-        color: "black",
-        fontWeight: "bold",
-        fontSize: 16
-    },
-    buttonSignUp: {
-        borderBottomWidth: 4,
-        borderColor:"#3b61e6",
-        padding: 5,
-        borderRadius: 20
-    },
-    textInfoSignUp: {
-        textAlign: "center",
-        fontSize: 16,
-        marginBottom: 20
-    }
-})
 
-export default Signup;
+export default ForgotPassword;

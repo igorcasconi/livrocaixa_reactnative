@@ -5,9 +5,9 @@ export const AuthContext = createContext({});
 
 export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
-    const [erro, setErro] = useState(false);
-    const [erroRegister, setErroRegister] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [erro, setErro] = useState<boolean>(false);
+    const [erroRegister, setErroRegister] = useState<boolean>(false);
+    const [loading, setLoading] = useState<boolean>(false);
 
     return (
       <AuthContext.Provider
@@ -17,7 +17,8 @@ export const AuthProvider = ({ children }) => {
           erro,
           erroRegister,
           loading,
-          login: async (user, password) => {   
+          
+          login: async (user: string, password: string) => {   
             setLoading(true); 
             try {
               setErro(false);
@@ -30,7 +31,8 @@ export const AuthProvider = ({ children }) => {
             }
 
           },
-          register: async (email, password) => {
+          
+          register: async (email: string, password: string) => {
             setLoading(true);
             try {
               setErroRegister(false);
@@ -41,13 +43,15 @@ export const AuthProvider = ({ children }) => {
               setLoading(false)
             }
           },
-          verifyPassword: async (email) => {
+          
+          verifyPassword: async (email: string) => {
             try{
               await auth().sendPasswordResetEmail(email);
             }catch (err) {
               console.log(err);
             }
           },
+
           logout: async () => {
             try {
               await auth().signOut();

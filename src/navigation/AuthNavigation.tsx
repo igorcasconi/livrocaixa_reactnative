@@ -1,15 +1,16 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import Home from '../pages/Home';
 import { TouchableOpacity } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import auth, { firebase } from '@react-native-firebase/auth';
+
+import Home from '../pages/Home';
 import Movimentacao from '../pages/Movimentacao';
 import AddMovimentacao from '../pages/AddMovimentacao';
 import OthersMov from '../pages/OthersMov';
 import Tutorial from '../pages/Tutorial';
 import DetailMov from '../pages/DetailMov';
 import About from '../pages/About';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import auth, { firebase } from '@react-native-firebase/auth';
 import * as RootNavigation from '../config/RootNavigation';
 
 const Stack = createStackNavigator();

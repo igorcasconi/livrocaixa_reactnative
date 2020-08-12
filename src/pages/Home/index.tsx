@@ -1,15 +1,17 @@
-import React, { useState, useEffect, useLayoutEffect } from 'react';
-import { View, Text, StyleSheet, FlatList, TouchableOpacity, ScrollView } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, TouchableOpacity, ScrollView } from 'react-native';
 import { Card, ListItem } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
-import * as RootNavigation from '../config/RootNavigation';
 import auth  from '@react-native-firebase/auth';
-import DatabaseService from '../services/DatabaseService';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 
-const numberToReal = require('../config/numberToReal');
+import * as RootNavigation from '../../config/RootNavigation';
+import DatabaseService from '../../services/DatabaseService';
+import numberToReal from '../../config/numberToReal';
+
+import styles from './style';
 
 // BOTÕES DA PÁGINA INICIAL
 const cards = [{
@@ -100,77 +102,11 @@ const Home: React.FC = () => {
             </View>
         </Card>
         
-        
-        
             <FlatList data={cards} numColumns={1} keyExtractor={item => item.id} renderItem={renderItem}/>   
                    
     </View>
     </ScrollView> 
     );
 }
-
-
-const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        padding: 20, 
-        justifyContent: 'center',
-        marginTop: 20
-    },
-    imageCard: {
-        width: 193,
-        height: 80,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
-        justifyContent: "center",
-        alignItems: "center"
-    },
-    cardConfig: {
-        padding: 20,
-        borderRadius: 10,
-        width: "100%",
-        height: 60,
-        marginBottom: 10,
-        backgroundColor: "#2970d1"
-    },
-    textCard: {
-        marginLeft: 10,
-        marginTop: 2,
-        marginBottom: 5,
-        fontSize: 20,
-        color: "#fff",
-        fontWeight: "bold",
-        marginRight: 10
-    },
-    cardInfoCaixa: {
-        borderRadius: 10,
-        backgroundColor: "#4db476",
-        marginBottom: 15
-    },
-    textCardInfo: {
-        position: "absolute",
-        left: 2,
-        bottom: 0,
-        fontWeight: "bold",
-        fontSize: 17,
-        color: "#fff",
-    },
-    dateCardInfo: {
-        textAlign: "center",
-        fontWeight: "bold",
-        fontSize: 16,
-        color: "#fff"
-    },
-    viewInfo: {
-        marginBottom: 40
-    },
-    iconConfig: {
-        fontWeight: "bold",
-        position: "absolute",
-        bottom: 0,
-        right: 0,
-
-    }
-});
 
 export default Home;

@@ -1,23 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { View, StyleSheet, Text, Image, ScrollView } from 'react-native';
+import { View, Text, Image, ScrollView } from 'react-native';
 import { Card } from 'react-native-elements';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import DatabaseService from '../services/DatabaseService';
 import auth from '@react-native-firebase/auth';
 import { format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 
-const numberToReal = require('../config/numberToReal');
+import DatabaseService from '../../services/DatabaseService';
+import numberToReal from '../../config/numberToReal'
+
+import caixaImg from '../../assets/caixa-reg.png';
+
+import styles from './style';
 
 const DetailMov: React.FC = ({ route }) => {
     
     let titulo: any;
     let link: string;
     const [detailmov, setDetailmov] = useState({
-        soma: 0,
-        gastos: 0,
-        entrada: 0,
-        saida: 0
+        soma: '',
+        gastos: '',
+        entrada: '',
+        saida: ''
     });
     const { data } = route.params;
 
@@ -54,7 +58,7 @@ const DetailMov: React.FC = ({ route }) => {
         <View>
             <Card containerStyle={styles.cardConfig} title={titulo}>
                 <View style={styles.viewImageCard}>   
-                    <Image style={styles.imageCard} source={require('../assets/caixa-reg.png')} />
+                    <Image style={styles.imageCard} source={caixaImg} />
                 </View> 
                 
                 <Text style={styles.textSaldo}><Ionicons name="wallet-outline" size={20}/> Saldo: {numberToReal(detailmov.soma)}</Text>
@@ -67,33 +71,5 @@ const DetailMov: React.FC = ({ route }) => {
         </ScrollView>
     )
 };
-
-const styles = StyleSheet.create({
-    cardConfig: {
-        borderRadius: 20
-    },
-    imageCard: {
-        width: 120,
-        height: 120,
-        
-    },
-    viewImageCard: {
-        justifyContent: "center",
-        alignItems: "center",
-        marginBottom: 20
-    },
-    textSaldo: {
-        fontSize: 20,
-        fontWeight: "bold",
-        marginBottom: 10
-    },
-    textMov: {
-        fontSize: 15
-    },
-    textTitle: {
-        fontSize: 20,
-        marginBottom: 5
-    }
-});
 
 export default DetailMov;

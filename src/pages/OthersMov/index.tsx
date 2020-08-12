@@ -1,7 +1,8 @@
 import React from 'react';
 import { View } from 'react-native';
-import MovAno from '../components/MovAno';
-import MovMes from '../components/MovMes';
+
+import MovAno from '../../components/MovAno';
+import MovMes from '../../components/MovMes';
 
 const OthersMov: React.FC = ({ route }) => {
 

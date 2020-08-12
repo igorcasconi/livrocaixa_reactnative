@@ -1,7 +1,8 @@
 import React from 'react';
-import MovComponent from '../components/MovComponent';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import MovComponent from '../../components/MovComponent';
 
 const Tab = createBottomTabNavigator();
 

@@ -8,9 +8,9 @@
  * @format
  */
 
-import React, { useContext, useState, useEffect } from 'react';
+import React from 'react';
 import './src/config/StatusBarConfig';
-import { SafeAreaView, StatusBar, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StatusBar } from 'react-native';
 import { AuthProvider } from './src/navigation/AuthProvider';
 import Routes from './src/navigation/Routes';
 
