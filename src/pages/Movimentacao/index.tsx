@@ -11,7 +11,7 @@ const Movimentacao: React.FC = () => (
     <Tab.Navigator initialRouteName="Entradas" 
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
+        let iconName: any;
 
         if (route.name === 'Entradas') {
           iconName = focused
@@ -22,13 +22,34 @@ const Movimentacao: React.FC = () => (
         }
 
         // You can return any component that you like here!
-        return <Ionicons name={iconName} size={40} color={color} />;
+        return <Ionicons name={iconName} size={size} color={color} />;
       },
     })}
     tabBarOptions={{
         activeTintColor: 'white',
         inactiveTintColor: 'black',
-        style: {backgroundColor: "#4db476", height: 60}
+        inactiveBackgroundColor: '#4db476',
+        activeBackgroundColor: '#89ac97',
+        style: {
+          elevation: 0,
+          shadowOpacity: 0,
+          height: 64,
+          
+        },
+        tabStyle: {
+            flexDirection: 'row',
+            alignItems: 'center',
+            justifyContent: 'center',
+        },
+        iconStyle: {
+            flex: 0,
+            width: 20,
+            height: 20
+        },
+        labelStyle: {
+            fontSize: 14,
+            marginLeft: 16,
+        },
       }}>
         <Tab.Screen name="Entradas" component={MovComponent} options={{
           tabBarLabel: 'Entradas',

@@ -1,17 +1,15 @@
 import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, ToastAndroid, ScrollView, Platform } from 'react-native';
+import { View, Text, Image, TouchableOpacity, ToastAndroid, ScrollView } from 'react-native';
 import { Input, Card } from 'react-native-elements';
 import { format } from 'date-fns';
 import { Formik } from 'formik';
-import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
 import * as yup from 'yup';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import pt from 'date-fns/locale/pt';
 import { TextInputMask } from 'react-native-masked-text';
 
 import DatabaseService, { config } from '../../services/DatabaseService';
 import * as RootNavigation from '../../config/RootNavigation';
+import DatePicker from '../../components/DatePicker';
 
 import reciboEntradaImg from '../../assets/recibo.png';
 import reciboSaidaImg from '../../assets/recibo_saida.png';
@@ -19,7 +17,10 @@ import reciboSaidaImg from '../../assets/recibo_saida.png';
 import styles from './style';
 
 
+
 const AddMovimentacao: React.FC = ({ route }) => {
+
+    const [date, setDate] = useState(new Date());
 
     const showToast = (message: string) => {
         ToastAndroid.show(message, ToastAndroid.LONG);
@@ -27,29 +28,6 @@ const AddMovimentacao: React.FC = ({ route }) => {
 
     const TypeMov = () => {
 
-        const [date, setDate] = useState(new Date());
-        const [mode, setMode] = useState('date');
-        const [show, setShow] = useState(false);
-
-        const onChange = (event, selectedDate) => {
-            const currentDate = selectedDate || date;
-            setShow(Platform.OS === 'ios');
-            setDate(currentDate);
-        };
-        
-        const showMode = currentMode => {
-            setShow(true);
-            setMode(currentMode);
-        };
-        
-        const showDatepicker = () => {
-            showMode('date');
-        };
-        
-        const showTimepicker = () => {
-            showMode('time');
-        };
-        
         let text: any;
         let imageMov: any;
 
@@ -126,35 +104,9 @@ const AddMovimentacao: React.FC = ({ route }) => {
 
             <View style={styles.inputs}>
                 <Text>Data e Hora</Text>
-                <View style={styles.inputsDateTime}>
-                    
-                    <View >
-                    {show && (
-                    <DateTimePicker
-                        testID="dateTimePicker"
-                        value={date}
-                        mode={mode}
-                        is24Hour={true}
-                        display="default"
-                        onChange={onChange}
-                        />
-                    )}
-                    <TouchableOpacity onPress={showDatepicker}>
-                        <View style={styles.dateTime}>
-                            <Ionicons style={styles.iconDateTime} name="today-outline" size={20}/>
-                            <Text style={styles.textDate}>{format(date, "dd/MM/yyyy", { locale: pt })}</Text>
-                        </View>
-                    </TouchableOpacity>
-                    </View>
-                    
-                    <TouchableOpacity onPress={showTimepicker}>
-                        <View style={styles.Time}>
-                            <Ionicons style={styles.iconDateTime} name="alarm-outline" size={20}/>
-                            <Text style={styles.textDate}>{format(date, "HH:mm", { locale: pt })}</Text>
-                        </View>
-                    </TouchableOpacity>
-                </View>
                 
+                <DatePicker />
+
                 {errors.date &&
                     <Text style={styles.textError}>Insira a informação de data!</Text>
                 }
@@ -198,12 +150,8 @@ const AddMovimentacao: React.FC = ({ route }) => {
                     placeholder="ex: Cartão de Débito, Dinheiro, etc."
                 ></Input>
                 
-                
-
                 <TouchableOpacity style={styles.buttonInfo} onPress={handleSubmit}><Text style={styles.textButton}>Gravar</Text></TouchableOpacity>
-                
-
-                
+                 
             </View>
 
             )}</Formik>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Image, View, FlatList, TouchableOpacity, Alert, ToastAndroid, ActivityIndicator } from 'react-native';
+import { Image, View, TouchableOpacity, Alert, ToastAndroid, ActivityIndicator } from 'react-native';
 import { ListItem } from 'react-native-elements';
 import FAB from 'react-native-fab';
 import Ionicons from 'react-native-vector-icons/Ionicons';
@@ -14,6 +14,7 @@ import SaldoCaixa from '../SaldoCaixa';
 import numberToReal from '../../config/numberToReal'
 
 import styles from './style';
+import { ScrollView } from 'react-native-gesture-handler';
 
 interface MovProps {
     Movimentacao_Caixa_id: number;
@@ -83,19 +84,6 @@ const Entrada: React.FC<MovProps> = ({ route }) => {
         loadEntrada();
     }, [entrada]);
 
-    const renderItem = ({ item }: { item: MovProps }) => (
-            <ListItem key={item.Movimentacao_Caixa_id}
-            leftAvatar={<Image style={styles.imageRecibo} source={imageMov} />}
-            title={item.Movimentacao_Caixa_product}
-            subtitle={item.Movimentacao_Caixa_Paymode + " - " + item.data_formatada + ' ' + item.hora_formatada}
-            rightTitle={numberToReal(item.Movimentacao_Caixa_value.toString())}
-            bottomDivider 
-            rightAvatar={<TouchableOpacity onPress={() => Alert.alert("Movimentações do Caixa", "Deseja realmente excluir a movimentação?", [
-                { text: "Cancelar", onPress: () => null, style: "cancel" },
-                { text: "EXCLUIR", onPress: () => deleteMov(item.Movimentacao_Caixa_id, item.Movimentacao_Caixa_value)} ])}>
-            <Ionicons name="trash-bin" color="red" size={25} /></TouchableOpacity> }/>
-    );
-
     return(
         <View style={styles.list}>
             <SaldoCaixa />
@@ -105,7 +93,23 @@ const Entrada: React.FC<MovProps> = ({ route }) => {
                 <ActivityIndicator size="large" color="#4db476" />
             </View> :
             <View style={{flex: 1}}>
-                <FlatList<MovProps> data={entrada} keyExtractor={(item) => item.Movimentacao_Caixa_id.toString()} renderItem={renderItem} />
+               
+                <ScrollView>
+                    {entrada.map((item: MovProps) => {
+                        return(
+                        <ListItem key={item.Movimentacao_Caixa_id}
+                        leftAvatar={<Image style={styles.imageRecibo} source={imageMov} />}
+                        title={item.Movimentacao_Caixa_product}
+                        subtitle={item.Movimentacao_Caixa_Paymode + " - " + item.data_formatada + ' ' + item.hora_formatada}
+                        rightTitle={numberToReal(item.Movimentacao_Caixa_value.toString())}
+                        bottomDivider 
+                        rightAvatar={<TouchableOpacity onPress={() => Alert.alert("Movimentações do Caixa", "Deseja realmente excluir a movimentação?", [
+                            { text: "Cancelar", onPress: () => null, style: "cancel" },
+                            { text: "EXCLUIR", onPress: () => deleteMov(item.Movimentacao_Caixa_id, item.Movimentacao_Caixa_value)} ])}>
+                        <Ionicons name="trash-bin" color="red" size={25} /></TouchableOpacity> }/>)
+
+                    })}
+                </ScrollView>
 
                 <FAB buttonColor={colorMov}
                 iconTextColor="#FFFFFF"
