@@ -5,7 +5,7 @@ import Ionicon from 'react-native-vector-icons/Ionicons';
 import { Formik } from 'formik';
 import * as yup from 'yup';
 
-import { AuthContext } from '../../navigation/AuthProvider';
+import AuthContext from '../../navigation/AuthProvider';
 
 import styles from './style';
 

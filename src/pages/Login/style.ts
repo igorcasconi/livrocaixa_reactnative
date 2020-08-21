@@ -7,8 +7,6 @@ const styles = StyleSheet.create({
         padding: 10,
     },
     ViewInputs: {
-        justifyContent: 'center',
-        alignItems: 'center',
         padding: 30,
         marginTop: 90
     },
@@ -25,19 +23,17 @@ const styles = StyleSheet.create({
         marginBottom: 30,
         fontWeight: "bold"
     },
+
     viewButton: {
         justifyContent: "center",
         alignItems: "center",
         
     },
-    viewButtonPass: {
-        position: 'relative',
-    },
     buttonAccess: {
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#3b61e6",
-        borderRadius: 30,
+        borderRadius: 10,
         width: "100%",
         paddingLeft: 130,
         paddingTop: 10,
@@ -47,16 +43,39 @@ const styles = StyleSheet.create({
     textButton: {
         color: "white",
         fontWeight: "bold",
-        fontSize: 17
+        fontSize: 16,
+        textAlign: 'center',
     },
-    socialIcons: {
-        marginTop: 15,
-        marginBottom: 20
+
+    textButtonForgot: {
+        color: "white",
+        fontWeight: "bold",
+        fontSize: 16,
+        textAlign: 'center',
+        lineHeight: 50,
     },
-    forgotPassword:{
-        marginTop: -30,
+
+    buttonsLogin: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        marginTop: 40,
         marginBottom: 20,
-        
+    },
+
+    buttonSignUp: {
+        backgroundColor: "#212121",
+        padding: 10,
+        width: 190,
+        height: 70,
+        borderRadius: 10,
+    },
+
+    buttonForgot:{
+        backgroundColor: "#3b61e6",
+        padding: 10,
+        height: 70,
+        borderRadius: 10,
     },
     erroLogin: {
         width: 350,
@@ -73,12 +92,7 @@ const styles = StyleSheet.create({
         fontWeight: "bold",
         fontSize: 16
     },
-    buttonSignUp: {
-        borderBottomWidth: 4,
-        borderColor:"#3b61e6",
-        padding: 5,
-        borderRadius: 20
-    }
+    
 });
 
 export default styles;

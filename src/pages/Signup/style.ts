@@ -28,9 +28,10 @@ const styles = StyleSheet.create({
         justifyContent: "center",
         alignItems: "center",
         backgroundColor: "#3b61e6",
-        borderRadius: 30,
-        width: "95%",
+        borderRadius: 10,
+        width: "98%",
         padding: 25,
+        marginTop: 20,
         flex: 1, 
         flexDirection: 'row',
     },
@@ -44,7 +45,7 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     erroLogin: {
-        width: "92%",
+        width: "100%",
         padding: 20,
         backgroundColor: "red",
         marginTop: 20,
@@ -60,7 +61,7 @@ const styles = StyleSheet.create({
         fontSize: 16
     },
     WarnLogin: {
-        width: "92%",
+        width: "100%",
         padding: 20,
         backgroundColor: "yellow",
         marginTop: 20,

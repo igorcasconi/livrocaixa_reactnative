@@ -3,17 +3,18 @@ import { View, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'reac
 import { ListItem  } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 
-import * as RootNavigation from '../../config/RootNavigation';
 import DatabaseService from '../../services/DatabaseService';
 import numberToReal from '../../config/numberToReal';
 
 import caixaImg from '../../assets/caixa-reg.png';
 import styles from './style';
+import { useNavigation } from '@react-navigation/native';
 
 const MovAno: React.FC = () => {
 
     const [movDetail, setMovDetail] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { navigate } = useNavigation();
 
     const loadMovDetail = async () => {
         try{
@@ -28,7 +29,7 @@ const MovAno: React.FC = () => {
     }, [movDetail]);
 
     const renderItem = ({item}) => (
-        <TouchableOpacity onPress={() => RootNavigation.navigate("DetailMovAno", {data: item.ano})}>
+        <TouchableOpacity onPress={() => navigate("DetailMovAno", {data: item.ano})}>
             <ListItem key={item.ano}
                 leftAvatar={<Image style={styles.imageCaixa} source={caixaImg} />}
                 title={item.ano}

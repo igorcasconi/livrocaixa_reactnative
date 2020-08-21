@@ -7,11 +7,11 @@ import pt from 'date-fns/locale/pt';
 import auth  from '@react-native-firebase/auth';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 
-import * as RootNavigation from '../../config/RootNavigation';
 import DatabaseService from '../../services/DatabaseService';
 import numberToReal from '../../config/numberToReal';
 
 import styles from './style';
+import { useNavigation } from '@react-navigation/native';
 
 // BOTÕES DA PÁGINA INICIAL
 const cards = [{
@@ -44,9 +44,8 @@ const cards = [{
 
 const Home: React.FC = () => {
 
-    const [caixaSaldo, setCaixaSaldo] = useState({
-        saldo: ''
-    });
+    const { navigate } = useNavigation();
+    const [caixaSaldo, setCaixaSaldo] = useState({saldo: ''});
     const [visibleShimmer, setVisibleShimmer] = useState(false);
     let date = new Date();
 
@@ -55,9 +54,7 @@ const Home: React.FC = () => {
         try{
             const response = await DatabaseService.get('/caixa_saldo/saldo/' + auth().currentUser?.uid);
             const { Caixa_Saldo_value } = response.data; 
-            setCaixaSaldo({
-                saldo: Caixa_Saldo_value
-            });
+            setCaixaSaldo({ saldo: Caixa_Saldo_value });
             setVisibleShimmer(true);
         } catch(err) {
             console.log(err);
@@ -72,7 +69,7 @@ const Home: React.FC = () => {
     // RENDER DA LISTAGEM DOS BOTÕES
     const renderItem = ({ item }) => (
          <View>
-            <TouchableOpacity onPress={() => RootNavigation.navigate(item.link)}>
+            <TouchableOpacity onPress={() => navigate(item.link)}>
                 <ListItem containerStyle={styles.cardConfig}
                     title={item.name}
                     titleStyle={{ color: 'white', fontWeight: 'bold' }}
