@@ -8,6 +8,7 @@ import pt from 'date-fns/locale/pt';
 
 import DatabaseService from '../../services/DatabaseService';
 import numberToReal from '../../config/numberToReal'
+import AdsBanner from '../../components/AdsBanner';
 
 import caixaImg from '../../assets/caixa-reg.png';
 
@@ -55,6 +56,7 @@ const DetailMov: React.FC = ({ route }) => {
 
     return(
         <ScrollView>
+        <AdsBanner />
         <View>
             <Card containerStyle={styles.cardConfig} title={titulo}>
                 <View style={styles.viewImageCard}>   

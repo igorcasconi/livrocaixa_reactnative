@@ -9,6 +9,7 @@ import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
 
 import DatabaseService from '../../services/DatabaseService';
 import numberToReal from '../../config/numberToReal';
+import AdsBanner from '../../components/AdsBanner';
 
 import styles from './style';
 import { useNavigation } from '@react-navigation/native';
@@ -40,7 +41,6 @@ const cards = [{
         link: "About",
     }
 ];
-
 
 const Home: React.FC = () => {
 
@@ -83,25 +83,29 @@ const Home: React.FC = () => {
     
     return(
     <ScrollView>
-    <View style={styles.container}>
-        <Card  containerStyle={styles.cardInfoCaixa} title="Meu Caixa" titleStyle={{fontSize: 20, color: "#ffffff"}} dividerStyle={{backgroundColor: "#ffffff",}}>
-            <View>
-                <View style={styles.viewInfo}>
-                    <Text style={styles.dateCardInfo}>{ format(date,"E, d 'de' MMMM 'de' yyyy", { locale: pt }) }</Text>
-                    
-                </View>
-                <ShimmerPlaceHolder
-                    style={{height: 25, marginTop: -20, borderRadius: 10 }}
-                    autoRun={true}
-                    visible={visibleShimmer}>
-                    <Text style={styles.textCardInfo}><Ionicons name="wallet-outline" size={25}/> Saldo: { numberToReal(caixaSaldo.saldo) } </Text>
-                </ShimmerPlaceHolder>
-            </View>
-        </Card>
         
-            <FlatList data={cards} numColumns={1} keyExtractor={item => item.id} renderItem={renderItem}/>   
-                   
-    </View>
+        <View style={styles.container}>
+
+            <Card  containerStyle={styles.cardInfoCaixa} title="Meu Caixa" titleStyle={{fontSize: 20, color: "#ffffff"}} dividerStyle={{backgroundColor: "#ffffff",}}>
+                <View>
+                    <View style={styles.viewInfo}>
+                        <Text style={styles.dateCardInfo}>{ format(date,"E, d 'de' MMMM 'de' yyyy", { locale: pt }) }</Text>
+                    </View>
+                    <ShimmerPlaceHolder
+                        style={{height: 25, marginTop: -20, borderRadius: 10 }}
+                        autoRun={true}
+                        visible={visibleShimmer}>
+                        <Text style={styles.textCardInfo}><Ionicons name="wallet-outline" size={25}/> Saldo: { numberToReal(caixaSaldo.saldo) } </Text>
+                    </ShimmerPlaceHolder>
+                </View>
+            </Card>
+            
+                <FlatList data={cards} numColumns={1} keyExtractor={item => item.id} renderItem={renderItem}/>   
+
+                
+        </View>
+        
+        <AdsBanner />   
     </ScrollView> 
     );
 }

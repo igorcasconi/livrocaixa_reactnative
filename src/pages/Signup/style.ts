@@ -45,20 +45,20 @@ const styles = StyleSheet.create({
         marginBottom: 20
     },
     erroLogin: {
-        width: "100%",
-        padding: 20,
+        width: "98%",
+        padding: 15,
         backgroundColor: "red",
         marginTop: 20,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 10,
-        flex: 1, 
         flexDirection: 'row',
     },
     textErroLogin: {
         color: "white",
         fontWeight: "bold",
-        fontSize: 16
+        fontSize: 16,
+        marginLeft: 10
     },
     WarnLogin: {
         width: "100%",

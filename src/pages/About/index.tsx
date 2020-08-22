@@ -34,7 +34,7 @@ const About = () => {
 
                 <View style={styles.viewInfoVersion}>
                     <Ionicons name="checkmark-circle" size={22} color="green"/>
-                    <Text style={styles.textInfo}> Versão 1.1.7</Text>
+                    <Text style={styles.textInfo}> Versão 1.2.0</Text>
                 </View>
 
                 <View style={styles.viewInfo}>

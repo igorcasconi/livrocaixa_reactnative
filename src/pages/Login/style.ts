@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     },
     textInit: {
         fontSize: 25,
-        marginBottom: 30,
+        marginBottom: 10,
         fontWeight: "bold"
     },
 
@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        marginTop: 40,
+        marginTop: 60,
         marginBottom: 20,
     },
 
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
         width: 350,
         backgroundColor: "red",
         padding: 10,
-        marginTop: 20,
+        marginBottom: 15,
         justifyContent: "center",
         alignItems: "center",
         borderRadius: 10, 

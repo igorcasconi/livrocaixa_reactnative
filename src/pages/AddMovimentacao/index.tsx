@@ -6,10 +6,13 @@ import { Formik } from 'formik';
 import auth from '@react-native-firebase/auth';
 import * as yup from 'yup';
 import { TextInputMask } from 'react-native-masked-text';
+import { useNavigation } from '@react-navigation/native';
 
 import DatabaseService, { config } from '../../services/DatabaseService';
 import * as RootNavigation from '../../config/RootNavigation';
 import DatePicker from '../../components/DatePicker';
+import AdsBanner from '../../components/AdsBanner';
+import AdsInterstitial, { interstitialShow } from '../../components/AdsInterstitial';
 
 import reciboEntradaImg from '../../assets/recibo.png';
 import reciboSaidaImg from '../../assets/recibo_saida.png';
@@ -18,10 +21,12 @@ import styles from './style';
 
 
 
+
+
 const AddMovimentacao: React.FC = ({ route }) => {
 
     const [date, setDate] = useState(new Date());
-
+    const { navigate } = useNavigation();
     const showToast = (message: string) => {
         ToastAndroid.show(message, ToastAndroid.LONG);
     };
@@ -47,6 +52,8 @@ const AddMovimentacao: React.FC = ({ route }) => {
 
         return(
         <ScrollView>
+            <AdsBanner />   
+            <AdsInterstitial />
             <Card containerStyle={styles.card}>
             
             <View style={styles.infoCard}>
@@ -83,7 +90,8 @@ const AddMovimentacao: React.FC = ({ route }) => {
                         time: format(date, 'HH:mm').toString()
                     }, config);
                 
-                    RootNavigation.navigate("Movimentacao");
+                    navigate("Movimentacao");
+                    interstitialShow();
                     showToast("Movimentação cadastrada com sucesso!");
 
                     const updateSaldo = DatabaseService.post('/caixa_saldo/updatesaldo/' + auth().currentUser?.uid + '/' + type, {

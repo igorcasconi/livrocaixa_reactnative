@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import { TouchableOpacity } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import auth, { firebase } from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 import Home from '../pages/Home';
 import Movimentacao from '../pages/Movimentacao';
@@ -11,11 +11,13 @@ import OthersMov from '../pages/OthersMov';
 import Tutorial from '../pages/Tutorial';
 import DetailMov from '../pages/DetailMov';
 import About from '../pages/About';
-import * as RootNavigation from '../config/RootNavigation';
+import AuthContext from './AuthProvider';
 
 const Stack = createStackNavigator();
 
 const AuthNavigation = () => {
+
+    const { logout } = useContext(AuthContext);
 
     return(
     <Stack.Navigator initialRouteName="Home" >
@@ -29,7 +31,7 @@ const AuthNavigation = () => {
             }, 
             headerTitleAlign: "center",
             headerRight: () => (
-              <TouchableOpacity onPress={() => auth().signOut().then(() => { RootNavigation.navigate("Home") })} 
+              <TouchableOpacity onPress={() => { logout(); }} 
               style={{marginRight: 10}}>
                 <Ionicons name="log-out-outline" color="white" size={30} />
               </TouchableOpacity>        

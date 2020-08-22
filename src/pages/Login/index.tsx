@@ -35,6 +35,11 @@ const Login: React.FC = () => {
                         <Text style={styles.textInit}>Bem-vindo ao Livro Caixa</Text>
                     </View>
 
+                    { erro ? <View style={styles.erroLogin}>
+                    <Ionicon name="alert-circle-outline" color="white" size={20}/>
+                    <Text style={styles.textErroLogin} > e-mail ou senha estão incorretos!</Text>
+                    </View> : null}
+
                     <InputLogin label="e-mail"  keyboard="email-address" icon="person-circle-outline" autoCapitalize='none' placeText="email@exemplo.com" value={user}
                     onChangeText={user => setUser(user)} />
 
@@ -48,6 +53,8 @@ const Login: React.FC = () => {
                         <Text style={styles.textButton}>Entrar</Text>
                     </TouchableOpacity>
 
+                    { loading ? <ActivityIndicator animating={true} style={{marginTop: 30}} color="blue" size={30} /> : null }
+
                     <View style={styles.buttonsLogin}>
                         <TouchableOpacity style={styles.buttonSignUp} onPress={() => navigate('SignUp')}>
                             <Text style={styles.textButton}>Novo no Aplicativo? Cadastre-se!</Text>
@@ -57,13 +64,6 @@ const Login: React.FC = () => {
                             <Text style={styles.textButtonForgot}>Esqueceu a senha?</Text>
                         </TouchableOpacity>
                     </View>
-
-                    { loading ? <ActivityIndicator animating={true} style={{marginTop: 30}} color="blue" size={30} /> : null }
-
-                    { erro ? <View style={styles.erroLogin}>
-                    <Ionicon name="alert-circle-outline" color="white" size={20}/>
-                    <Text style={styles.textErroLogin} > e-mail ou senha estão incorretos!</Text>
-                    </View> : null}
 
                 </View>
             </ScrollView>
