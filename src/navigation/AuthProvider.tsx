@@ -27,6 +27,7 @@ export const AuthProvider: React.FC = ({children}) => {
       setLoading(true); 
       try {
         setErro(false);
+        
         await auth().signInWithEmailAndPassword(user, password);
         setLoading(false);
       } catch (e) {
@@ -41,10 +42,11 @@ export const AuthProvider: React.FC = ({children}) => {
       try {
         setErroRegister(false);
         await auth().createUserWithEmailAndPassword(email, password);
+        setLoading(false);
       } catch (e) {
         console.log(e);
         setErroRegister(true);
-        setLoading(false)
+        setLoading(false);
       }
     }
 
@@ -52,11 +54,11 @@ export const AuthProvider: React.FC = ({children}) => {
       setLoading(true);
       setErroVerifyPassword(false);
       try{
+        setLoading(false);
         await auth().sendPasswordResetEmail(email);
-        setLoading(false);
       }catch (err) {
-        console.log(err);
         setLoading(false);
+        console.log(err);
         setErroVerifyPassword(true);
       }
     }

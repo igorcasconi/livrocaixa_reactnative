@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { View, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { ListItem  } from 'react-native-elements';
+import { ListItem, Avatar  } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import pt from 'date-fns/locale/pt';
 import { format, parseISO } from 'date-fns';
@@ -34,11 +34,13 @@ const MovMes: React.FC = () => {
 
     const renderItem = ({item}) => (
         <TouchableOpacity onPress={() => navigate('DetailMovMes', {data: parseISO(item.Movimentacao_Caixa_date)})}>
-            <ListItem key={item.Movimentacao_Caixa_id}
-                leftAvatar={<Image style={styles.imageCaixa} source={caixaImg} />}
-                title={format(parseISO(item.Movimentacao_Caixa_date), "MMMM'/'yyyy ", { locale: pt })}
-                rightTitle={numberToReal(item.soma)}
-                bottomDivider />
+            <ListItem key={item.Movimentacao_Caixa_id} bottomDivider >
+                <Avatar source={caixaImg} containerStyle={styles.imageCaixa}/>
+                <ListItem.Content>
+                    <ListItem.Title>{format(parseISO(item.Movimentacao_Caixa_date), "MMMM'/'yyyy ", { locale: pt })}</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Title>{numberToReal(item.soma)}</ListItem.Title>
+            </ListItem>
         </TouchableOpacity>    
     
     );

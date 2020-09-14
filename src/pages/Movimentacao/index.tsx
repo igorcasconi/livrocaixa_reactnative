@@ -3,11 +3,12 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import MovComponent from '../../components/MovComponent';
+import VerifyInternet from '../../components/VerifyInternet';
 
 const Tab = createBottomTabNavigator();
 
-const Movimentacao: React.FC = () => (
-   
+const Movimentacao: React.FC = () => (<>
+    
     <Tab.Navigator initialRouteName="Entradas" 
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
@@ -58,6 +59,7 @@ const Movimentacao: React.FC = () => (
           tabBarLabel: 'Saídas',
         }}/>
     </Tab.Navigator>
+    </>
 );
 
 export default Movimentacao;

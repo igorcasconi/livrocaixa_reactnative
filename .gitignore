@@ -33,6 +33,9 @@ local.properties
 #
 .vscode/
 
+## android build
+android/app/build/
+
 # node.js
 #
 node_modules/

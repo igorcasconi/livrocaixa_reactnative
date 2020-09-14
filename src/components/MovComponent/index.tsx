@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Image, View, TouchableOpacity, Alert, ToastAndroid, ActivityIndicator,ScrollView } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { ListItem, Avatar } from 'react-native-elements';
 import FAB from 'react-native-fab';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
@@ -98,16 +98,19 @@ const Entrada: React.FC<MovProps> = ({ route }) => {
                 <ScrollView>
                     {entrada.map((item: MovProps) => {
                         return(
-                        <ListItem key={item.Movimentacao_Caixa_id}
-                        leftAvatar={<Image style={styles.imageRecibo} source={imageMov} />}
-                        title={item.Movimentacao_Caixa_product}
-                        subtitle={item.Movimentacao_Caixa_Paymode + " - " + item.data_formatada + ' ' + item.hora_formatada}
-                        rightTitle={numberToReal(item.Movimentacao_Caixa_value.toString())}
-                        bottomDivider 
-                        rightAvatar={<TouchableOpacity onPress={() => Alert.alert("Movimentações do Caixa", "Deseja realmente excluir a movimentação?", [
-                            { text: "Cancelar", onPress: () => null, style: "cancel" },
-                            { text: "EXCLUIR", onPress: () => deleteMov(item.Movimentacao_Caixa_id, item.Movimentacao_Caixa_value)} ])}>
-                        <Ionicons name="trash-bin" color="red" size={25} /></TouchableOpacity> }/>)
+                        <ListItem key={item.Movimentacao_Caixa_id} bottomDivider >
+                            <Avatar source={imageMov} containerStyle={styles.imageRecibo}/>
+                            <ListItem.Content>
+                                <ListItem.Title>{item.Movimentacao_Caixa_product}</ListItem.Title>
+                                <ListItem.Subtitle>{item.Movimentacao_Caixa_Paymode + " - " + item.data_formatada + ' ' + item.hora_formatada}</ListItem.Subtitle>    
+                            </ListItem.Content>
+                            <ListItem.Title>{numberToReal(item.Movimentacao_Caixa_value.toString())}</ListItem.Title>
+                            <TouchableOpacity onPress={() => Alert.alert("Movimentações do Caixa", "Deseja realmente excluir a movimentação?", [
+                                    { text: "Cancelar", onPress: () => null, style: "cancel" },
+                                    { text: "EXCLUIR", onPress: () => deleteMov(item.Movimentacao_Caixa_id, item.Movimentacao_Caixa_value)} ])}>
+                                <Ionicons name="trash-bin" color="red" size={25} /></TouchableOpacity>
+                        </ListItem>
+                    )
 
                     })}
                 </ScrollView>

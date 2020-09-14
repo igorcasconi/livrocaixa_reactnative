@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { ListItem  } from 'react-native-elements';
+import { ListItem, Avatar  } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 
@@ -31,11 +31,13 @@ const MovAno: React.FC = () => {
 
     const renderItem = ({item}) => (
         <TouchableOpacity onPress={() => navigate("DetailMovAno", {data: item.ano})}>
-            <ListItem key={item.ano}
-                leftAvatar={<Image style={styles.imageCaixa} source={caixaImg} />}
-                title={item.ano}
-                rightTitle={numberToReal(item.soma)}
-                bottomDivider />
+            <ListItem key={item.ano} bottomDivider >
+                    <Avatar source={caixaImg} containerStyle={styles.imageCaixa}/>
+                <ListItem.Content>
+                    <ListItem.Title>{item.ano}</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Title>{numberToReal(item.soma)}</ListItem.Title>
+            </ListItem>
         </TouchableOpacity>
     );
 
@@ -45,7 +47,7 @@ const MovAno: React.FC = () => {
             <Image style={styles.imageCaixaLoading} source={caixaImg} />
             <ActivityIndicator size="large" color="#4db476" />
         </View> :
-        <FlatList data={movDetail} keyExtractor={item => item.mes} renderItem={renderItem} /> }
+        <FlatList data={movDetail} keyExtractor={item => item.ano} renderItem={renderItem} /> }
     </View>)
 };
 

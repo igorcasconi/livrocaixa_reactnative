@@ -1,20 +1,24 @@
 import React from 'react';
-import { BannerAd, BannerAdSize } from '@react-native-firebase/admob';
+import { BannerAd, BannerAdSize, TestIds } from '@react-native-firebase/admob';
 import { View } from 'react-native';
 
 const adUnitId = 'ca-app-pub-1207130538939906/1471737538';
 
-const AdsBanner = () => {
+interface AdsProps {
+  margin?: number;
+}
+
+const AdsBanner: React.FC<AdsProps> = ({margin}) => {
   return (
-    <View style={{}}>
+      <View style={{marginLeft: margin}}>
         <BannerAd
         unitId={adUnitId}
-        size={BannerAdSize.FULL_BANNER}
+        size={BannerAdSize.SMART_BANNER}
         requestOptions={{
             requestNonPersonalizedAdsOnly: true,
         }}
         />
-    </View>
+      </View>
   );
 }
 

@@ -1,6 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { View, TouchableOpacity, Text, Image, ScrollView, KeyboardAvoidingView, Keyboard, ActivityIndicator } from 'react-native';
-import { Input } from 'react-native-elements';
+import { View, Text, Image, ScrollView, Keyboard, ActivityIndicator } from 'react-native';
 import Ionicon from 'react-native-vector-icons/Ionicons';
 import { useNavigation } from '@react-navigation/native';
 
@@ -9,7 +8,7 @@ import InputLogin from '../../components/InputLogin';
 
 import logoImg from '../../assets/logo.png';
 
-import styles from './style';
+import styles, { Container, ButtonSignUp, ButtonForgot, TextButton, TextButtonForgot, ButtonAccess, ViewButtonLogin, ImageLogo, ViewInit, TextInit, ErroLogin } from './style';
 
 
 const Login: React.FC = () => {
@@ -20,25 +19,21 @@ const Login: React.FC = () => {
     const { navigate } = useNavigation();
 
     return (
-        <KeyboardAvoidingView
-        behavior="height"
-        style={styles.container}>
+        <Container behavior="height">
             <ScrollView>
-                
-                <View style={styles.ViewInputs}>
 
-                    <View style={styles.viewImageLogo}>
-                        <Image style={styles.imageLogo} source={logoImg} />
-                    </View>
+                    <ViewInit>
+                        <ImageLogo source={logoImg} />
+                    </ViewInit>
 
-                    <View style={styles.viewButton}>
-                        <Text style={styles.textInit}>Bem-vindo ao Livro Caixa</Text>
-                    </View>
+                    <ViewInit>
+                        <TextInit>Bem-vindo ao Livro Caixa</TextInit>
+                    </ViewInit>
 
-                    { erro ? <View style={styles.erroLogin}>
+                    { erro ? <ErroLogin>
                     <Ionicon name="alert-circle-outline" color="white" size={20}/>
                     <Text style={styles.textErroLogin} > e-mail ou senha estão incorretos!</Text>
-                    </View> : null}
+                    </ErroLogin> : null}
 
                     <InputLogin label="e-mail"  keyboard="email-address" icon="person-circle-outline" autoCapitalize='none' placeText="email@exemplo.com" value={user}
                     onChangeText={user => setUser(user)} />
@@ -46,28 +41,24 @@ const Login: React.FC = () => {
                     <InputLogin label="senha" placeText="*******" secureTextEntry={true} icon="lock-closed" value={password}
                     onChangeText={password => setPassword(password)}/>
 
-                    <TouchableOpacity style={styles.buttonAccess} onPress={() => {
-                        login(user, password);
-                        Keyboard.dismiss()
-                    }}>
-                        <Text style={styles.textButton}>Entrar</Text>
-                    </TouchableOpacity>
+                    <ButtonAccess onPress={() => { login(user, password); Keyboard.dismiss() }}>
+                        <TextButton>Entrar</TextButton>
+                    </ButtonAccess>
 
-                    { loading ? <ActivityIndicator animating={true} style={{marginTop: 30}} color="blue" size={30} /> : null }
+                    { loading ? <ActivityIndicator animating={true} style={{marginTop: 20}} color="blue" size={30} /> : null }
 
-                    <View style={styles.buttonsLogin}>
-                        <TouchableOpacity style={styles.buttonSignUp} onPress={() => navigate('SignUp')}>
-                            <Text style={styles.textButton}>Novo no Aplicativo? Cadastre-se!</Text>
-                        </TouchableOpacity>
+                    <ViewButtonLogin >
+                        <ButtonSignUp onPress={() => navigate('SignUp')}>
+                            <TextButton>Novo no Aplicativo? Cadastre-se!</TextButton>
+                        </ButtonSignUp>
 
-                        <TouchableOpacity style={styles.buttonForgot} onPress={() => navigate('ForgotPassword')}>
-                            <Text style={styles.textButtonForgot}>Esqueceu a senha?</Text>
-                        </TouchableOpacity>
-                    </View>
+                        <ButtonForgot onPress={() => navigate('ForgotPassword')}>
+                            <TextButtonForgot>Esqueceu a senha?</TextButtonForgot>
+                        </ButtonForgot>
+                    </ViewButtonLogin>
 
-                </View>
             </ScrollView>
-        </KeyboardAvoidingView>
+        </Container>
     );
 };
 

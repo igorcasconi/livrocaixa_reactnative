@@ -19,8 +19,9 @@ const AuthNavigation = () => {
 
     const { logout } = useContext(AuthContext);
 
-    return(
+    return(<>
     <Stack.Navigator initialRouteName="Home" >
+          
           <Stack.Screen name="Home" component={Home} 
           options = {{
             headerTitle: 'Livro Caixa', 
@@ -108,7 +109,9 @@ const AuthNavigation = () => {
             }, 
             headerTitleAlign: "center"
           }}/>
-        </Stack.Navigator>);
+        </Stack.Navigator>
+        </>
+        );
 }
 
 export default AuthNavigation;

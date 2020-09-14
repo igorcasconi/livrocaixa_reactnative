@@ -16,7 +16,7 @@ import styles from './style';
 
 const DetailMov: React.FC = ({ route }) => {
     
-    let titulo: any;
+    let titulo: string;
     let link: string;
     const [detailmov, setDetailmov] = useState({
         soma: '',
@@ -27,11 +27,11 @@ const DetailMov: React.FC = ({ route }) => {
     const { data } = route.params;
 
     if(route.name === 'DetailMovAno') {
-        titulo = "Ano " + data;
+        titulo = "Ano " + data.toString();
         link = "/movs-detail-year/" + auth().currentUser?.uid + '/' + data;
         
     } else if ( route.name === 'DetailMovMes') {
-        titulo = "Mês " + format(data, "MMMM'/'yyyy", { locale: pt });
+        titulo = "Mês " + format(data, "MMMM'/'yyyy", { locale: pt }).toString();
         link = "/movs-detail-month/" + auth().currentUser?.uid + '/' + format(data, 'MMMM') + '/' + format(data,'yyyy');
     }
     
@@ -56,9 +56,12 @@ const DetailMov: React.FC = ({ route }) => {
 
     return(
         <ScrollView>
-        <AdsBanner />
+        
         <View>
-            <Card containerStyle={styles.cardConfig} title={titulo}>
+            <AdsBanner />
+            <Card containerStyle={styles.cardConfig} >
+                <Card.Title>{ titulo }</Card.Title>
+                <Card.Divider />
                 <View style={styles.viewImageCard}>   
                     <Image style={styles.imageCard} source={caixaImg} />
                 </View> 

@@ -60,6 +60,11 @@ const styles = StyleSheet.create({
         bottom: 0,
         right: 0,
 
+    },
+
+    textAds: {
+        textAlign: 'center',
+        marginBottom: 10
     }
 });
 
