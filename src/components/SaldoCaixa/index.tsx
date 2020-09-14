@@ -11,7 +11,7 @@ import styles from './style';
 
 const SaldoCaixa: React.FC = () => {
 
-    const [saldo, setSaldo] = useState({
+    const [saldo1, setSaldo1] = useState({
         saldo: ''
     });
     
@@ -19,11 +19,12 @@ const SaldoCaixa: React.FC = () => {
 
     const loadSaldo = async () => {
         try{
-            const response = await DatabaseService.get('/caixa_saldo/saldo/' + auth().currentUser?.uid);
-            const { Caixa_Saldo_value } = response.data;
-            setSaldo({
-                saldo: Caixa_Saldo_value
+            const response = await DatabaseService.get('/movimentacao_caixa/saldo/' + auth().currentUser?.uid);
+            const { saldo } = response.data;
+            setSaldo1({
+                saldo,
             });
+            
             setVisibleShimmer(true);
         }catch(err) {
             console.log(err);
@@ -32,13 +33,15 @@ const SaldoCaixa: React.FC = () => {
 
     useEffect(() =>{
         loadSaldo();
-    }, [saldo]);
+    }, [saldo1]);
+
+    
 
     return(
     <View style={styles.viewConfig}>
         <Card containerStyle={styles.cardConfig}>
         <ShimmerPlaceHolder autoRun={true} style={{height: 22, width: 150, borderRadius: 10}}  visible={visibleShimmer} >
-                <Text style={styles.textCard}>{ numberToReal(saldo.saldo) }</Text>
+                <Text style={styles.textCard}>{ numberToReal(saldo1.saldo) }</Text>
         </ShimmerPlaceHolder>
         </Card>
     </View>);

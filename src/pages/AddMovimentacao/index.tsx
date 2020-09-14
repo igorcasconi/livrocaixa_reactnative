@@ -6,22 +6,23 @@ import { Formik } from 'formik';
 import auth from '@react-native-firebase/auth';
 import * as yup from 'yup';
 import { TextInputMask } from 'react-native-masked-text';
+import { useNavigation } from '@react-navigation/native';
 
 import DatabaseService, { config } from '../../services/DatabaseService';
-import * as RootNavigation from '../../config/RootNavigation';
 import DatePicker from '../../components/DatePicker';
+import AdsBanner from '../../components/AdsBanner';
+import AdsInterstitial, { interstitialShow } from '../../components/AdsInterstitial';
+import VerifyInternet from '../../components/VerifyInternet';
 
 import reciboEntradaImg from '../../assets/recibo.png';
 import reciboSaidaImg from '../../assets/recibo_saida.png';
 
 import styles from './style';
 
-
-
 const AddMovimentacao: React.FC = ({ route }) => {
 
     const [date, setDate] = useState(new Date());
-
+    const { navigate } = useNavigation();
     const showToast = (message: string) => {
         ToastAndroid.show(message, ToastAndroid.LONG);
     };
@@ -46,7 +47,11 @@ const AddMovimentacao: React.FC = ({ route }) => {
         }
 
         return(
+        <>
+        <VerifyInternet />
         <ScrollView>
+            <AdsBanner />   
+            <AdsInterstitial />
             <Card containerStyle={styles.card}>
             
             <View style={styles.infoCard}>
@@ -70,12 +75,12 @@ const AddMovimentacao: React.FC = ({ route }) => {
                 date: yup.string().required(),
                 time: yup.string().required()
             })}
-            onSubmit={values => {
+            onSubmit={ async (values) => {
                 
-                let val = parseFloat(values.value.replace('R$ ', '').replace(',', '.'));
+                let val = parseFloat(values.value.replace('R$ ', '').replace('.','').replace(',','.'));
 
                 try {
-                    const response = DatabaseService.post('/movimentacao_caixa/create-mov/' + auth().currentUser?.uid + '/' + type, {
+                    await DatabaseService.post('/movimentacao_caixa/create-mov/' + auth().currentUser?.uid + '/' + type, {
                         product: values.product,
                         value: val,
                         paymode: values.paymode,
@@ -83,16 +88,21 @@ const AddMovimentacao: React.FC = ({ route }) => {
                         time: format(date, 'HH:mm').toString()
                     }, config);
                 
-                    RootNavigation.navigate("Movimentacao");
+                    navigate("Movimentacao");
+                    interstitialShow();
                     showToast("Movimentação cadastrada com sucesso!");
 
-                    const updateSaldo = DatabaseService.post('/caixa_saldo/updatesaldo/' + auth().currentUser?.uid + '/' + type, {
-                        valor: val
-                    },config).then(function (response) {
-                        setTimeout(() => {showToast("Saldo atualizado com sucesso!") }, 2000);
-                    }).catch(function (err) {
-                        console.log(err);
-                    });
+                    // try{
+                    //     DatabaseService.post('/caixa_saldo/updatesaldo/' + auth().currentUser?.uid + '/' + type, {
+                    //         valor: val
+                    //     },config).then(function (response) {
+                    //         setTimeout(() => {showToast("Saldo atualizado com sucesso!") }, 2000);
+                    //     }).catch(function (err) {
+                    //         console.log(err);
+                    //     });
+                    // } catch (err) {
+                    //     showToast("Ocorreu um erro ao atualizar o saldo!");
+                    // }
                    
                 } catch(err) {
                     console.log(err);
@@ -115,8 +125,9 @@ const AddMovimentacao: React.FC = ({ route }) => {
                 <Input 
                 value={values.product}
                 onChangeText={handleChange('product')}
-                placeholder="ex: 2x Camisetas Azuis">
-                </Input>
+                placeholder="ex: 2x Camisetas Azuis"
+                inputContainerStyle={styles.inputText}
+                />
                 
                 {errors.product && touched.product ?
                     <Text style={styles.textError}>Insira a informação neste campo!</Text> : null
@@ -148,6 +159,8 @@ const AddMovimentacao: React.FC = ({ route }) => {
                     value={values.paymode}
                     onChangeText={handleChange('paymode')} 
                     placeholder="ex: Cartão de Débito, Dinheiro, etc."
+                    inputContainerStyle={styles.inputText}
+                    inputStyle={{color: "#000"}}
                 ></Input>
                 
                 <TouchableOpacity style={styles.buttonInfo} onPress={handleSubmit}><Text style={styles.textButton}>Gravar</Text></TouchableOpacity>
@@ -157,6 +170,8 @@ const AddMovimentacao: React.FC = ({ route }) => {
             )}</Formik>
             </Card>
         </ScrollView>
+        
+        </>
         )};
 
     return(

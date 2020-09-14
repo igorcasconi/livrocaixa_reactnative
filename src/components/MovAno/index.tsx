@@ -1,19 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import { View, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { ListItem  } from 'react-native-elements';
+import { ListItem, Avatar  } from 'react-native-elements';
 import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
-import * as RootNavigation from '../../config/RootNavigation';
 import DatabaseService from '../../services/DatabaseService';
 import numberToReal from '../../config/numberToReal';
 
 import caixaImg from '../../assets/caixa-reg.png';
 import styles from './style';
 
+
 const MovAno: React.FC = () => {
 
     const [movDetail, setMovDetail] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { navigate } = useNavigation();
 
     const loadMovDetail = async () => {
         try{
@@ -28,12 +30,14 @@ const MovAno: React.FC = () => {
     }, [movDetail]);
 
     const renderItem = ({item}) => (
-        <TouchableOpacity onPress={() => RootNavigation.navigate("DetailMovAno", {data: item.ano})}>
-            <ListItem key={item.ano}
-                leftAvatar={<Image style={styles.imageCaixa} source={caixaImg} />}
-                title={item.ano}
-                rightTitle={numberToReal(item.soma)}
-                bottomDivider />
+        <TouchableOpacity onPress={() => navigate("DetailMovAno", {data: item.ano})}>
+            <ListItem key={item.ano} bottomDivider >
+                    <Avatar source={caixaImg} containerStyle={styles.imageCaixa}/>
+                <ListItem.Content>
+                    <ListItem.Title>{item.ano}</ListItem.Title>
+                </ListItem.Content>
+                <ListItem.Title>{numberToReal(item.soma)}</ListItem.Title>
+            </ListItem>
         </TouchableOpacity>
     );
 
@@ -43,7 +47,7 @@ const MovAno: React.FC = () => {
             <Image style={styles.imageCaixaLoading} source={caixaImg} />
             <ActivityIndicator size="large" color="#4db476" />
         </View> :
-        <FlatList data={movDetail} keyExtractor={item => item.mes} renderItem={renderItem} /> }
+        <FlatList data={movDetail} keyExtractor={item => item.ano} renderItem={renderItem} /> }
     </View>)
 };
 

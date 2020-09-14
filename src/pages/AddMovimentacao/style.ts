@@ -53,7 +53,8 @@ const styles = StyleSheet.create({
         borderColor: "#747575",
         marginBottom: 20
     },
-    textError: { fontSize: 14, color: 'red', marginBottom: 20 }
+    textError: { fontSize: 14, color: 'red', marginBottom: 20 },
+    inputText: { borderColor: "#212121", color: "#000"}
 });
 
 export default styles;

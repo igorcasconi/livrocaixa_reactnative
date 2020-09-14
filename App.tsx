@@ -10,20 +10,22 @@
 
 import React from 'react';
 import './src/config/StatusBarConfig';
-import { SafeAreaView, StatusBar } from 'react-native';
+import { SafeAreaView } from 'react-native';
 import { AuthProvider } from './src/navigation/AuthProvider';
 import Routes from './src/navigation/Routes';
+import { NavigationContainer } from '@react-navigation/native';
 
 declare const global: {HermesInternal: null | {}};
 
 const App = () => {
   return(
   <>
-  <StatusBar barStyle="dark-content" />
   <SafeAreaView></SafeAreaView>
-  <AuthProvider>
-      <Routes />
-  </AuthProvider>
+  <NavigationContainer>
+    <AuthProvider>
+        <Routes />
+    </AuthProvider>
+  </NavigationContainer>
   </> );
   
 };

@@ -6,12 +6,14 @@ import { format } from 'date-fns';
 import pt from 'date-fns/locale/pt';
 import auth  from '@react-native-firebase/auth';
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder';
+import { useNavigation } from '@react-navigation/native';
 
-import * as RootNavigation from '../../config/RootNavigation';
 import DatabaseService from '../../services/DatabaseService';
 import numberToReal from '../../config/numberToReal';
+import AdsBanner from '../../components/AdsBanner';
 
 import styles from './style';
+import VerifyInternet from '../../components/VerifyInternet';
 
 // BOTÕES DA PÁGINA INICIAL
 const cards = [{
@@ -41,23 +43,19 @@ const cards = [{
     }
 ];
 
-
 const Home: React.FC = () => {
 
-    const [caixaSaldo, setCaixaSaldo] = useState({
-        saldo: ''
-    });
+    const { navigate } = useNavigation();
+    const [caixaSaldo, setCaixaSaldo] = useState({saldo: ''});
     const [visibleShimmer, setVisibleShimmer] = useState(false);
     let date = new Date();
 
     // CARREGA O DADOS DO SALDO DO USUARIO
     const loadSaldo = async () => {
         try{
-            const response = await DatabaseService.get('/caixa_saldo/saldo/' + auth().currentUser?.uid);
-            const { Caixa_Saldo_value } = response.data; 
-            setCaixaSaldo({
-                saldo: Caixa_Saldo_value
-            });
+            const response = await DatabaseService.get('/movimentacao_caixa/saldo/' + auth().currentUser?.uid);
+            const { saldo } = response.data; 
+            setCaixaSaldo({ saldo });
             setVisibleShimmer(true);
         } catch(err) {
             console.log(err);
@@ -72,12 +70,13 @@ const Home: React.FC = () => {
     // RENDER DA LISTAGEM DOS BOTÕES
     const renderItem = ({ item }) => (
          <View>
-            <TouchableOpacity onPress={() => RootNavigation.navigate(item.link)}>
-                <ListItem containerStyle={styles.cardConfig}
-                    title={item.name}
-                    titleStyle={{ color: 'white', fontWeight: 'bold' }}
-                    chevron={{ color: 'white', size: 20 }}
-                />
+            <TouchableOpacity onPress={() => navigate(item.link)}>
+                <ListItem containerStyle={styles.cardConfig}>
+                    <ListItem.Content>
+                        <ListItem.Title style={{ color: 'white', fontWeight: 'bold' }}>{item.name}</ListItem.Title>
+                    </ListItem.Content>
+                    <ListItem.Chevron color="white" size={20} />
+                </ListItem>
             </TouchableOpacity>
         </View>
     );
@@ -85,27 +84,37 @@ const Home: React.FC = () => {
 
     
     return(
-    <ScrollView>
-    <View style={styles.container}>
-        <Card  containerStyle={styles.cardInfoCaixa} title="Meu Caixa" titleStyle={{fontSize: 20, color: "#ffffff"}} dividerStyle={{backgroundColor: "#ffffff",}}>
-            <View>
-                <View style={styles.viewInfo}>
-                    <Text style={styles.dateCardInfo}>{ format(date,"E, d 'de' MMMM 'de' yyyy", { locale: pt }) }</Text>
-                    
-                </View>
-                <ShimmerPlaceHolder
-                    style={{height: 25, marginTop: -20, borderRadius: 10 }}
-                    autoRun={true}
-                    visible={visibleShimmer}>
-                    <Text style={styles.textCardInfo}><Ionicons name="wallet-outline" size={25}/> Saldo: { numberToReal(caixaSaldo.saldo) } </Text>
-                </ShimmerPlaceHolder>
+    <>
+        <VerifyInternet />
+        <ScrollView>
+            
+            <View style={styles.container}>
+
+                <Card  containerStyle={styles.cardInfoCaixa}>
+                    <Card.Title style={{fontSize: 20, color: "#ffffff"}} >Meu Caixa</Card.Title>
+                    <Card.Divider style={{backgroundColor: "#ffffff",}} />
+                    <View>
+                        <View style={styles.viewInfo}>
+                            <Text style={styles.dateCardInfo}>{ format(date,"E, d 'de' MMMM 'de' yyyy", { locale: pt }) }</Text>
+                        </View>
+                        <ShimmerPlaceHolder
+                            style={{height: 25, marginTop: -20, borderRadius: 10 }}
+                            autoRun={true}
+                            visible={visibleShimmer}>
+                            <Text style={styles.textCardInfo}><Ionicons name="wallet-outline" size={25}/> Saldo: { numberToReal(caixaSaldo.saldo) } </Text>
+                        </ShimmerPlaceHolder>
+                    </View>
+                </Card>
+                
+                    <FlatList data={cards} numColumns={1} keyExtractor={item => item.id} renderItem={renderItem}/>   
+                     <Text style={styles.textAds}>- Propaganda -</Text>
+                    <AdsBanner margin={-20} />          
             </View>
-        </Card>
+            
+            
+        </ScrollView> 
         
-            <FlatList data={cards} numColumns={1} keyExtractor={item => item.id} renderItem={renderItem}/>   
-                   
-    </View>
-    </ScrollView> 
+    </>
     );
 }
 

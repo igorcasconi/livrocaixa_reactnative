@@ -1,20 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Image, View, TouchableOpacity, Alert, ToastAndroid, ActivityIndicator } from 'react-native';
-import { ListItem } from 'react-native-elements';
+import { Image, View, TouchableOpacity, Alert, ToastAndroid, ActivityIndicator,ScrollView } from 'react-native';
+import { ListItem, Avatar } from 'react-native-elements';
 import FAB from 'react-native-fab';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import auth from '@react-native-firebase/auth';
+import { useNavigation } from '@react-navigation/native';
 
 import reciboEntradaImg from '../../assets/recibo.png';
 import reciboSaidaImg from '../../assets/recibo_saida.png';
 
-import * as RootNavigation from '../../config/RootNavigation';
 import DatabaseService, {config} from '../../services/DatabaseService';
 import SaldoCaixa from '../SaldoCaixa';
 import numberToReal from '../../config/numberToReal'
 
 import styles from './style';
-import { ScrollView } from 'react-native-gesture-handler';
+
 
 interface MovProps {
     Movimentacao_Caixa_id: number;
@@ -29,6 +29,7 @@ const Entrada: React.FC<MovProps> = ({ route }) => {
 
     const [entrada, setEntrada] = useState([]);
     const [loading, setLoading] = useState(true);
+    const { navigate } = useNavigation();
 
     const showToast = (message: string) => {
         ToastAndroid.show(message, ToastAndroid.LONG);
@@ -97,26 +98,31 @@ const Entrada: React.FC<MovProps> = ({ route }) => {
                 <ScrollView>
                     {entrada.map((item: MovProps) => {
                         return(
-                        <ListItem key={item.Movimentacao_Caixa_id}
-                        leftAvatar={<Image style={styles.imageRecibo} source={imageMov} />}
-                        title={item.Movimentacao_Caixa_product}
-                        subtitle={item.Movimentacao_Caixa_Paymode + " - " + item.data_formatada + ' ' + item.hora_formatada}
-                        rightTitle={numberToReal(item.Movimentacao_Caixa_value.toString())}
-                        bottomDivider 
-                        rightAvatar={<TouchableOpacity onPress={() => Alert.alert("Movimentações do Caixa", "Deseja realmente excluir a movimentação?", [
-                            { text: "Cancelar", onPress: () => null, style: "cancel" },
-                            { text: "EXCLUIR", onPress: () => deleteMov(item.Movimentacao_Caixa_id, item.Movimentacao_Caixa_value)} ])}>
-                        <Ionicons name="trash-bin" color="red" size={25} /></TouchableOpacity> }/>)
+                        <ListItem key={item.Movimentacao_Caixa_id} bottomDivider >
+                            <Avatar source={imageMov} containerStyle={styles.imageRecibo}/>
+                            <ListItem.Content>
+                                <ListItem.Title>{item.Movimentacao_Caixa_product}</ListItem.Title>
+                                <ListItem.Subtitle>{item.Movimentacao_Caixa_Paymode + " - " + item.data_formatada + ' ' + item.hora_formatada}</ListItem.Subtitle>    
+                            </ListItem.Content>
+                            <ListItem.Title>{numberToReal(item.Movimentacao_Caixa_value.toString())}</ListItem.Title>
+                            <TouchableOpacity onPress={() => Alert.alert("Movimentações do Caixa", "Deseja realmente excluir a movimentação?", [
+                                    { text: "Cancelar", onPress: () => null, style: "cancel" },
+                                    { text: "EXCLUIR", onPress: () => deleteMov(item.Movimentacao_Caixa_id, item.Movimentacao_Caixa_value)} ])}>
+                                <Ionicons name="trash-bin" color="red" size={25} /></TouchableOpacity>
+                        </ListItem>
+                    )
 
                     })}
                 </ScrollView>
 
-                <FAB buttonColor={colorMov}
+                
+            </View>}
+
+            <FAB buttonColor={colorMov}
                 iconTextColor="#FFFFFF"
                 visible={true} 
                 iconTextComponent={iconMov}
-                onClickAction={() => RootNavigation.navigate('AddMov', {type: typeMov})} /> 
-            </View>}
+                onClickAction={() => navigate('AddMov', {type: typeMov})} /> 
         </View>
     );
 
