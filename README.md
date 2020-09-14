@@ -17,7 +17,7 @@ Construção da ideia para o App
 
 Versão em produção
 ===============================
-### 1.1.6
+### 1.2.9
 
 Screenshots da aplicação
 ==============================
