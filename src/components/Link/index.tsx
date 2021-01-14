@@ -9,9 +9,17 @@ interface LinkProps {
 
 const Link: React.FC<LinkProps> = ({ url, children }) => {
   const handlePress = useCallback(async () => {
+<<<<<<< HEAD
     try {
       await Linking.openURL(url)
     } catch (err) {
+=======
+    const supported = await Linking.canOpenURL(url)
+
+    if (supported) {
+      await Linking.openURL(url)
+    } else {
+>>>>>>> 000880b (fix(app): fixed app)
       Alert.alert('Não foi possível abrir a URL:' + url)
     }
   }, [url])

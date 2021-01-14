@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
 import { View } from 'react-native'
 import { InterstitialAd, AdEventType } from '@react-native-firebase/admob'
+<<<<<<< HEAD
 import Config from 'react-native-config'
 
 const adUnitId = Config.ADMOB_AD_INTERSTICIAL
+=======
+
+const adUnitId = 'ca-app-pub-1207130538939906/3652919997'
+>>>>>>> 000880b (fix(app): fixed app)
 
 export const interstitial = InterstitialAd.createForAdRequest(adUnitId, {
   requestNonPersonalizedAdsOnly: true

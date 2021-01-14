@@ -6,11 +6,10 @@ import { useNavigation } from '@react-navigation/native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import AdsBanner from '../../components/AdsBanner'
-import { BalanceCash, Row, Column, Text, Button, AlertFullScreen } from '../../components'
+import { BalanceCash, Row, Column, Text, Button } from '../../components'
 
 import { cards } from '../../helpers/home'
-import { getValueStorage, setStorage } from '../../utils/storage'
-import { messageAlertHome } from '../../utils/messageData'
+import { getValueStorage } from '../../utils/storage'
 import { useRealm } from '../../context/RealmContext'
 import { useUser } from '../../context/AuthContext'
 

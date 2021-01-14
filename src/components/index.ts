@@ -1,5 +1,6 @@
 export * from './AdsBanner'
 export * from './AdsInterstitial'
+<<<<<<< HEAD
 export * from './Input'
 export * from './Link'
 export * from './MovementComponent/MovementComponent'
@@ -11,3 +12,14 @@ export * from './Text'
 export * from './MovementComponent'
 export * from './Button'
 export * from './Alert'
+=======
+export * from './InputLogin'
+export * from './Link'
+export * from './MovAno'
+export * from './MovComponent'
+export * from './MovMes'
+export * from './Row'
+export * from './SaldoCaixa'
+export * from './VerifyInternet'
+export * from './Column'
+>>>>>>> 000880b (fix(app): fixed app)

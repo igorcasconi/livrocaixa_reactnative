@@ -138,6 +138,10 @@ android {
     dexOptions {
         javaMaxHeapSize "4g"
     }
+    
+    dexOptions {
+        javaMaxHeapSize "4g"
+    }
 
     defaultConfig {
         applicationId "com.reacttsproject"
@@ -265,5 +269,9 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 googleServices {disableVersionCheck = true}
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
+<<<<<<< HEAD
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
+=======
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
+>>>>>>> 000880b (fix(app): fixed app)
