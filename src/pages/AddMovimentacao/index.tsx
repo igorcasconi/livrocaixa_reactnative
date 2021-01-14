@@ -1,185 +1,171 @@
-import React, { useState } from 'react';
-import { View, Text, Image, TouchableOpacity, ToastAndroid, ScrollView } from 'react-native';
-import { Input, Card } from 'react-native-elements';
-import { format } from 'date-fns';
-import { Formik } from 'formik';
-import auth from '@react-native-firebase/auth';
-import * as yup from 'yup';
-import { TextInputMask } from 'react-native-masked-text';
-import { useNavigation } from '@react-navigation/native';
+import React from 'react'
+import { ToastAndroid, ScrollView, ActivityIndicator } from 'react-native'
+import { format } from 'date-fns'
+import auth from '@react-native-firebase/auth'
+import { yupResolver } from '@hookform/resolvers/yup'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import DatePicker from 'react-native-date-picker'
+import { Controller, useForm } from 'react-hook-form'
 
-import DatabaseService, { config } from '../../services/DatabaseService';
-import DatePicker from '../../components/DatePicker';
-import AdsBanner from '../../components/AdsBanner';
-import AdsInterstitial, { interstitialShow } from '../../components/AdsInterstitial';
-import VerifyInternet from '../../components/VerifyInternet';
+import AdsBanner from '../../components/AdsBanner'
+import AdsInterstitial, { interstitialShow } from '../../components/AdsInterstitial'
+import VerifyInternet from '../../components/VerifyInternet'
+import Row from '../../components/Row'
+import Column from '../../components/Column'
+import { addMov } from '../../services/movimentacao'
 
-import reciboEntradaImg from '../../assets/recibo.png';
-import reciboSaidaImg from '../../assets/recibo_saida.png';
+import reciboEntradaImg from '../../assets/recibo.png'
+import reciboSaidaImg from '../../assets/recibo_saida.png'
 
-import styles from './style';
+import {
+  ButtonSubmit,
+  CardMov,
+  ImageMov,
+  InputFieldText,
+  InputFieldValue,
+  TextButton,
+  TextError,
+  TextInfo
+} from './style'
+import { MovPayloadProps, MovProps } from './types'
+import { MovSchema } from '../../schemas'
+import { AddMovRouteProp } from '../../navigation/type'
 
-const AddMovimentacao: React.FC = ({ route }) => {
+const AddMovimentacao: React.FC = () => {
+  const route = useRoute<AddMovRouteProp>()
+  const { type } = route.params
+  const { navigate } = useNavigation()
+  const showToast = (message: string) => {
+    ToastAndroid.show(message, ToastAndroid.LONG)
+  }
 
-    const [date, setDate] = useState(new Date());
-    const { navigate } = useNavigation();
-    const showToast = (message: string) => {
-        ToastAndroid.show(message, ToastAndroid.LONG);
-    };
+  const {
+    control,
+    handleSubmit,
+    errors,
+    formState: { isSubmitting }
+  } = useForm<MovProps>({
+    defaultValues: { product: '', value: '', paymode: '', datetime: new Date() },
+    resolver: yupResolver(MovSchema),
+    mode: 'onBlur',
+    reValidateMode: 'onChange'
+  })
 
-    const TypeMov = () => {
+  const onSubmit = async (values: MovProps) => {
+    const val = parseFloat(values.value.replace('R$ ', '').replace('.', '').replace(',', '.'))
+    try {
+      const payload: MovPayloadProps = {
+        ...values,
+        value: val,
+        date: format(values.datetime, 'dd/MM/yyyy'),
+        time: format(values.datetime, 'HH:mm')
+      }
+      await addMov(auth().currentUser?.uid, type, payload)
 
-        let text: any;
-        let imageMov: any;
+      navigate('Movimentacao')
+      interstitialShow()
+      showToast('Movimentação cadastrada com sucesso!')
+    } catch (err) {
+      console.log(err)
+      showToast('Ocorreu um erro ao cadastrar Movimentação!')
+    }
+  }
 
-        const { type } = route.params;
+  return (
+    <Column>
+      <VerifyInternet />
+      <ScrollView>
+        <AdsBanner />
+        <AdsInterstitial />
+        <CardMov>
+          <Row justifyContent='space-around' mb={20} height='80px'>
+            <ImageMov source={type === 1 ? reciboEntradaImg : reciboSaidaImg} />
+            <Row width='90%'>
+              <TextInfo>Adicionar uma nova {type === 1 ? 'Entrada' : 'Saída'} ao Caixa</TextInfo>
+            </Row>
+          </Row>
 
-        if(type == 1){
+          <Column>
+            <Column width='100%' mt={10}>
+              <TextInfo>Informação do produto</TextInfo>
+              <Controller
+                name='product'
+                control={control}
+                render={({ value, onChange }) => (
+                  <InputFieldText value={value} onChangeText={onChange} placeholder='ex: 2x Camisetas Azuis' />
+                )}
+              />
+            </Column>
 
-            text = "Adicionar uma nova Entrada ao Caixa";
-            imageMov = reciboEntradaImg;
-    
-        } else if(type == 2) {
-    
-            text = "Adicionar uma nova Saída ao Caixa";
-            imageMov = reciboSaidaImg;
+            {errors.product && <TextError>Insira a informação neste campo!</TextError>}
 
-        }
-
-        return(
-        <>
-        <VerifyInternet />
-        <ScrollView>
-            <AdsBanner />   
-            <AdsInterstitial />
-            <Card containerStyle={styles.card}>
-            
-            <View style={styles.infoCard}>
-                <Image style={styles.imageMov} source={imageMov} />
-                <View style={styles.textCardView}>
-                    <Text style={styles.textCard}>{text}</Text>
-                </View>            
-            </View>
-
-            <Formik initialValues= {{
-                product: '',
-                value: '',
-                paymode: '',
-                date: format(date, 'dd/MM/yyyy').toString(),
-                time: format(date, 'HH:mm').toString()
-            }}
-            validationSchema={
-                yup.object().shape({
-                product: yup.string().required(),
-                value: yup.string().required(),
-                date: yup.string().required(),
-                time: yup.string().required()
-            })}
-            onSubmit={ async (values) => {
-                
-                let val = parseFloat(values.value.replace('R$ ', '').replace('.','').replace(',','.'));
-
-                try {
-                    await DatabaseService.post('/movimentacao_caixa/create-mov/' + auth().currentUser?.uid + '/' + type, {
-                        product: values.product,
-                        value: val,
-                        paymode: values.paymode,
-                        date: format(date, 'dd/MM/yyyy').toString(),
-                        time: format(date, 'HH:mm').toString()
-                    }, config);
-                
-                    navigate("Movimentacao");
-                    interstitialShow();
-                    showToast("Movimentação cadastrada com sucesso!");
-
-                    // try{
-                    //     DatabaseService.post('/caixa_saldo/updatesaldo/' + auth().currentUser?.uid + '/' + type, {
-                    //         valor: val
-                    //     },config).then(function (response) {
-                    //         setTimeout(() => {showToast("Saldo atualizado com sucesso!") }, 2000);
-                    //     }).catch(function (err) {
-                    //         console.log(err);
-                    //     });
-                    // } catch (err) {
-                    //     showToast("Ocorreu um erro ao atualizar o saldo!");
-                    // }
-                   
-                } catch(err) {
-                    console.log(err);
-                    showToast("Ocorreu um erro ao cadastrar Movimentação!");
-                }
-                
-            }}>
-            {({values, handleChange, handleSubmit, setFieldValue, errors, touched}) => (
-
-            <View style={styles.inputs}>
-                <Text>Data e Hora</Text>
-                
-                <DatePicker />
-
-                {errors.date &&
-                    <Text style={styles.textError}>Insira a informação de data!</Text>
-                }
-
-                <Text>Informação do Produto</Text>
-                <Input 
-                value={values.product}
-                onChangeText={handleChange('product')}
-                placeholder="ex: 2x Camisetas Azuis"
-                inputContainerStyle={styles.inputText}
-                />
-                
-                {errors.product && touched.product ?
-                    <Text style={styles.textError}>Insira a informação neste campo!</Text> : null
-                } 
-
-                <Text>Valor</Text>
-                <View style={styles.dateTime}>
-                <TextInputMask
+            <Column mt={10}>
+              <TextInfo>Valor</TextInfo>
+              <Controller
+                control={control}
+                name='value'
+                render={({ value, onChange }) => (
+                  <InputFieldValue
                     type={'money'}
-                    value={values.value}
                     options={{
-                        precision: 2,
-                        separator: ',',
-                        delimiter: '.',
-                        unit: 'R$ ',
-                        suffixUnit: ''
+                      precision: 2,
+                      separator: ',',
+                      delimiter: '.',
+                      unit: 'R$ ',
+                      suffixUnit: ''
                     }}
-                    onChangeText={handleChange('value')} 
-                    placeholder="R$ XX,XX"
-                />
-                </View>
+                    value={value}
+                    onChangeText={onChange}
+                    placeholder='R$ 00,00'
+                  />
+                )}
+              />
+            </Column>
 
-                {errors.value && touched.value ?
-                    <Text style={styles.textError}>Insira o valor!</Text> : null
-                } 
+            {errors.value && <TextError>Insira o valor!</TextError>}
 
-                <Text>Forma de pagamento</Text>
-                <Input 
-                    value={values.paymode}
-                    onChangeText={handleChange('paymode')} 
-                    placeholder="ex: Cartão de Débito, Dinheiro, etc."
-                    inputContainerStyle={styles.inputText}
-                    inputStyle={{color: "#000"}}
-                ></Input>
-                
-                <TouchableOpacity style={styles.buttonInfo} onPress={handleSubmit}><Text style={styles.textButton}>Gravar</Text></TouchableOpacity>
-                 
-            </View>
+            <Column mt={15}>
+              <TextInfo>Forma de pagamento</TextInfo>
+              <Controller
+                name='paymode'
+                control={control}
+                render={({ value, onChange }) => (
+                  <InputFieldText
+                    value={value}
+                    onChangeText={onChange}
+                    placeholder='ex: Cartão de Débito, Dinheiro, etc.'
+                  />
+                )}
+              />
+            </Column>
 
-            )}</Formik>
-            </Card>
-        </ScrollView>
-        
-        </>
-        )};
+            <Column width='100%' mt={10}>
+              <TextInfo>Data e Hora (Arraste para alterar)</TextInfo>
 
-    return(
-    <View style={{flex: 1}}>
-        { <TypeMov /> }
-    </View>);
-};
+              <Controller
+                name='datetime'
+                control={control}
+                render={({ value, onChange }) => (
+                  <DatePicker
+                    androidVariant='nativeAndroid'
+                    textColor='#262626'
+                    dividerHeight={10}
+                    date={value}
+                    onDateChange={onChange}
+                  />
+                )}
+              />
+              {errors.datetime && <TextError>Insira a informação de data!</TextError>}
+            </Column>
 
+            <ButtonSubmit onPress={handleSubmit(onSubmit)} disabled={isSubmitting}>
+              <Row>{isSubmitting ? <ActivityIndicator color='#0fd734' /> : <TextButton>Gravar</TextButton>}</Row>
+            </ButtonSubmit>
+          </Column>
+        </CardMov>
+      </ScrollView>
+    </Column>
+  )
+}
 
-
-export default AddMovimentacao;
+export default AddMovimentacao

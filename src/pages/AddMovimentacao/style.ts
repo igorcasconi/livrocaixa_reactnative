@@ -1,60 +1,55 @@
-import { StyleSheet } from 'react-native'
+import { TouchableOpacity } from 'react-native'
+import { Card, Input, Text } from '@ui-kitten/components'
+import styled from 'styled-components/native'
+import { TextInputMask } from 'react-native-masked-text'
 
-const styles = StyleSheet.create({
-    imageMov: {
-        width: 90,
-        height: 90,
-        marginRight: 10
-    },
-    card: {
-        borderRadius: 15,
-        padding: 20,
-        marginBottom: 20,
-        backgroundColor: "#ffebb4"
-    },
-    textCard: {
-        fontSize: 20,
-    },
-    infoCard: {
-        flex: 1,
-        flexDirection: "row",
-        justifyContent: "space-around"
-    },
-    inputs: {
-        marginTop: 10
-    },
-    textCardView: {
-        width: '80%'
-    },
-    buttonInfo: {
-        backgroundColor: "#187feb",
-        justifyContent: "center",
-        alignItems: "center",
-        marginTop: 20,
-        borderStyle: "solid",
-        borderRadius: 10,
-        padding: 10,
-        
-    },
-    textButton: {
-        color: "#ffffff",
-        fontWeight: "bold"
-    },
-    colorTextCheckBox: {
-        color: "black",
-        fontWeight: "bold"
-    },
-    dateTime: {
-        borderBottomWidth: 1,
-        width: 140,
-        marginLeft: 12,
-        flexDirection: "row",
-        padding: 5,
-        borderColor: "#747575",
-        marginBottom: 20
-    },
-    textError: { fontSize: 14, color: 'red', marginBottom: 20 },
-    inputText: { borderColor: "#212121", color: "#000"}
-});
+export const CardMov = styled(Card)`
+  border-radius: 15px;
+  padding: 20px;
+  margin: 10px;
+  background: #ffebb4;
+`
+export const ImageMov = styled.Image`
+  width: 90px;
+  height: 90px;
+  margin-right: 30px;
+`
 
-export default styles;
+export const TextInfo = styled(Text)`
+  font-size: 16px;
+  color: #262626;
+`
+
+export const InputFieldValue = styled(TextInputMask)`
+  background-color: rgb(247, 249, 252);
+  border-radius: 4px;
+  width: 100%;
+  padding: 7px 8px;
+  min-height: 40px;
+  padding-left: 20px;
+  border: 1px solid rgb(228, 233, 242);
+`
+
+export const InputFieldText = styled(Input)`
+  width: 100%;
+`
+
+export const TextError = styled(Text)`
+  font-size: 14px;
+  color: #ff4242;
+`
+
+export const ButtonSubmit = styled(TouchableOpacity)`
+  background-color: #187feb;
+  justify-content: center;
+  align-items: center;
+  margin-top: 40px;
+  border-style: solid;
+  border-radius: 10px;
+  padding: 10px;
+`
+
+export const TextButton = styled(Text)`
+  color: #fff;
+  font-weight: bold;
+`

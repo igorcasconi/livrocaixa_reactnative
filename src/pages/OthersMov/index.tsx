@@ -1,24 +1,21 @@
-import React from 'react';
-import { View } from 'react-native';
+import React, { useMemo } from 'react'
+import { View } from 'react-native'
+import { useRoute } from '@react-navigation/native'
 
-import MovAno from '../../components/MovAno';
-import MovMes from '../../components/MovMes';
+import MovAno from '../../components/MovAno'
+import MovMes from '../../components/MovMes'
+import { MovRouteProp } from '../../navigation/type'
 
-const OthersMov: React.FC = ({ route }) => {
+const OthersMov: React.FC = () => {
+  const route = useRoute<MovRouteProp>()
 
-    let componente;
+  const Component = useMemo(() => {
+    if (route.name === 'MovAno') return <MovAno />
 
-    if(route.name === 'MovAno'){
-        componente = (<MovAno />);
-    } else if(route.name === 'MovMes') {
-        componente = (<MovMes />);
-    }
+    if (route.name === 'MovMes') return <MovMes />
+  }, [])
 
-    return(
-        <View>
-            { componente }
-        </View>
-    );
+  return <View>{Component}</View>
 }
 
-export default OthersMov;
+export default OthersMov

@@ -8,27 +8,30 @@
  * @format
  */
 
-import React from 'react';
-import './src/config/StatusBarConfig';
-import { SafeAreaView } from 'react-native';
-import { AuthProvider } from './src/navigation/AuthProvider';
-import Routes from './src/navigation/Routes';
-import { NavigationContainer } from '@react-navigation/native';
+import React, { Fragment } from 'react'
+import './src/config/StatusBarConfig'
+import { SafeAreaView } from 'react-native'
+import Routes from './src/navigation/Routes'
+import { NavigationContainer } from '@react-navigation/native'
+import { AuthProvider } from './src/context/AuthContext'
+import * as eva from '@eva-design/eva'
+import { ApplicationProvider } from '@ui-kitten/components'
 
-declare const global: {HermesInternal: null | {}};
+declare const global: { HermesInternal: null | {} }
 
 const App = () => {
-  return(
-  <>
-  <SafeAreaView></SafeAreaView>
-  <NavigationContainer>
-    <AuthProvider>
-        <Routes />
-    </AuthProvider>
-  </NavigationContainer>
-  </> );
-  
-};
+  return (
+    <Fragment>
+      <SafeAreaView></SafeAreaView>
+      <ApplicationProvider {...eva} theme={eva.light}>
+        <NavigationContainer>
+          <AuthProvider>
+            <Routes />
+          </AuthProvider>
+        </NavigationContainer>
+      </ApplicationProvider>
+    </Fragment>
+  )
+}
 
-
-export default App;
+export default App
