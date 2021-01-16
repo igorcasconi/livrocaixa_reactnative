@@ -3,28 +3,28 @@ import { Card, Text } from 'react-native-elements'
 import { View } from 'react-native'
 import auth from '@react-native-firebase/auth'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
+import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import DatabaseService from '../../services/DatabaseService'
-import numberToReal from '../../utils/numberToReal'
+import { numberToReal } from '../../utils/numberToReal'
 
 import styles from './style'
 
-const SaldoCaixa: React.FC = () => {
-  const [saldo1, setSaldo1] = useState({
-    saldo: ''
-  })
+interface SaldoProps {
+  variant: number
+  value?: number
+}
 
-  const [visibleShimmer, setVisibleShimmer] = useState(false)
+const SaldoCaixa: React.FC<SaldoProps> = ({ variant, value }) => {
+  const [saldoValue, setSaldoValue] = useState<number>(0)
+  const [visibleShimmer, setVisibleShimmer] = useState<boolean>(true)
 
   const loadSaldo = async () => {
     try {
       const response = await DatabaseService.get('/movimentacao_caixa/saldo/' + auth().currentUser?.uid)
       const { saldo } = response.data
-      setSaldo1({
-        saldo
-      })
-
-      setVisibleShimmer(true)
+      setSaldoValue(saldo)
+      setVisibleShimmer(false)
     } catch (err) {
       console.log(err)
     }
@@ -32,20 +32,28 @@ const SaldoCaixa: React.FC = () => {
 
   useEffect(() => {
     loadSaldo()
-  }, [saldo1])
+  }, [saldoValue, loadSaldo])
+
+  if (variant === 1) {
+    return (
+      <View style={styles.viewConfig}>
+        <Card containerStyle={styles.cardConfig}>
+          <ShimmerPlaceHolder style={{ height: 22, width: 150, borderRadius: 10 }} visible={!visibleShimmer}>
+            <Text style={styles.textCard}>{numberToReal(Number(saldoValue))}</Text>
+          </ShimmerPlaceHolder>
+        </Card>
+      </View>
+    )
+  }
 
   return (
-    <View style={styles.viewConfig}>
-      <Card containerStyle={styles.cardConfig}>
-        <ShimmerPlaceHolder
-          autoRun={true}
-          style={{ height: 22, width: 150, borderRadius: 10 }}
-          visible={visibleShimmer}
-        >
-          <Text style={styles.textCard}>{numberToReal(saldo1.saldo)}</Text>
-        </ShimmerPlaceHolder>
-      </Card>
-    </View>
+    <ShimmerPlaceHolder style={{ height: 22, marginTop: -20, width: 150, borderRadius: 10 }} visible={!visibleShimmer}>
+      {!visibleShimmer && (
+        <Text style={styles.textCardInfo}>
+          <Ionicons name='wallet-outline' size={25} /> Saldo: {numberToReal(Number(value))}
+        </Text>
+      )}
+    </ShimmerPlaceHolder>
   )
 }
 

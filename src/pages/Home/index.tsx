@@ -1,20 +1,19 @@
-import React, { useState, Fragment, useLayoutEffect } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { Card, ListItem } from 'react-native-elements'
-import Ionicons from 'react-native-vector-icons/Ionicons'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt'
-import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
-import { useNavigation } from '@react-navigation/native'
+import { useNavigation, useIsFocused } from '@react-navigation/native'
 
-import DatabaseService from '../../services/DatabaseService'
 import AdsBanner from '../../components/AdsBanner'
 import VerifyInternet from '../../components/VerifyInternet'
+import SaldoCaixa from '../../components/SaldoCaixa'
 
-import numberToReal from '../../utils/numberToReal'
 import styles from './style'
 import { cards } from '../../helpers/home'
 import { useUser } from '../../context/AuthContext'
+import { getSaldo } from '../../services/saldo'
+import { useRequest } from 'ahooks'
 
 type MenuProps = {
   id: number
@@ -22,32 +21,22 @@ type MenuProps = {
   link: string
 }
 
-interface CaixaSaldoProps {
-  saldo: string
+interface SaldoProps {
+  data: { saldo: number }
 }
 
 const Home: React.FC = () => {
   const { navigate } = useNavigation()
-  const { uid } = useUser()
-  const [caixaSaldo, setCaixaSaldo] = useState<{ saldo: number }>({ saldo: 0 })
-  const [visibleShimmer, setVisibleShimmer] = useState(true)
+  const isFocused = useIsFocused()
   const date = new Date()
+  const { uid } = useUser()
+  const { data: getValue, run } = useRequest<SaldoProps>(() => uid && getSaldo(uid))
 
-  // ATUALIZAÇÃO // CARREGA O DADOS DO SALDO DO USUARIO
-  const loadSaldo = async () => {
-    try {
-      const response = await DatabaseService.get('/movimentacao_caixa/saldo/' + uid)
-      const { saldo } = response.data
-      setCaixaSaldo({ saldo })
-      setVisibleShimmer(false)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  useLayoutEffect(() => {
-    loadSaldo()
-  }, [caixaSaldo])
+  console.log(isFocused)
+  // const [saldo, setSaldo] = useState<number>()
+  useEffect(() => {
+    run(uid)
+  }, [isFocused])
 
   // RENDER DA LISTAGEM DOS BOTÕES
   const renderItem = ({ item }: { item: MenuProps }) => (
@@ -76,17 +65,8 @@ const Home: React.FC = () => {
               {/*eslint-disable-next-line */}
                 <Text style={styles.dateCardInfo}>{format(date, 'E, d \'de\' MMMM \'de\' yyyy', { locale: pt })}</Text>
             </View>
-            <ShimmerPlaceHolder
-              style={{ height: 25, marginTop: -20, borderRadius: 10 }}
-              autoRun={true}
-              visible={!visibleShimmer}
-            >
-              {!visibleShimmer && (
-                <Text style={styles.textCardInfo}>
-                  <Ionicons name='wallet-outline' size={25} /> Saldo: {numberToReal(String(caixaSaldo.saldo))}{' '}
-                </Text>
-              )}
-            </ShimmerPlaceHolder>
+
+            <SaldoCaixa variant={2} value={getValue?.data.saldo} />
           </View>
         </Card>
 

@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth'
 import { useNavigation } from '@react-navigation/native'
 
 import DatabaseService from '../../services/DatabaseService'
-import numberToReal from '../../utils/numberToReal'
+import { numberToReal } from '../../utils/numberToReal'
 
 import caixaImg from '../../assets/caixa-reg.png'
 import styles from './style'
@@ -37,7 +37,7 @@ const MovAno: React.FC = () => {
         <ListItem.Content>
           <ListItem.Title>{item.ano}</ListItem.Title>
         </ListItem.Content>
-        <ListItem.Title>{numberToReal(item.soma)}</ListItem.Title>
+        <ListItem.Title>{numberToReal(Number(item.soma))}</ListItem.Title>
       </ListItem>
     </TouchableOpacity>
   )
