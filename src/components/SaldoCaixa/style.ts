@@ -17,6 +17,14 @@ const styles = StyleSheet.create({
   textCard: {
     fontWeight: 'bold',
     fontSize: 16
+  },
+  textCardInfo: {
+    position: 'absolute',
+    left: 2,
+    bottom: 0,
+    fontWeight: 'bold',
+    fontSize: 17,
+    color: '#fff'
   }
 })
 

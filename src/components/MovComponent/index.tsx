@@ -3,15 +3,15 @@ import { Image, View, TouchableOpacity, Alert, ToastAndroid, ActivityIndicator, 
 import { ListItem, Avatar } from 'react-native-elements'
 import FAB from 'react-native-fab'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import auth from '@react-native-firebase/auth'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
 import reciboEntradaImg from '../../assets/recibo.png'
 import reciboSaidaImg from '../../assets/recibo_saida.png'
+import { useUser } from '../../context/AuthContext'
 
-import DatabaseService, { config } from '../../services/DatabaseService'
+import DatabaseService from '../../services/DatabaseService'
 import SaldoCaixa from '../SaldoCaixa'
-import numberToReal from '../../utils/numberToReal'
+import { numberToReal } from '../../utils/numberToReal'
 
 import styles from './style'
 import { MovComponentRouteProp } from '../../navigation/type'
@@ -28,6 +28,7 @@ interface MovProps {
 const Entrada: React.FC<MovProps> = () => {
   const [entrada, setEntrada] = useState([])
   const [loading, setLoading] = useState<boolean>(true)
+  const { uid } = useUser()
   // const [movType, setMovType] = useState<MovTypeProps | null>(null)
   const { navigate } = useNavigation()
   const route = useRoute<MovComponentRouteProp>()
@@ -38,17 +39,13 @@ const Entrada: React.FC<MovProps> = () => {
 
   // Deletar Movimentacao
   const deleteMov = (idMov: number, valueMov: number) => {
-    DatabaseService.post('/movimentacao_caixa/movs-delete', { id: idMov }, config)
+    DatabaseService.post('/movimentacao_caixa/movs-delete', { id: idMov })
       .then(() => showToast('Movimentação removida com sucessos!'))
       .catch(err => console.log(err))
 
-    DatabaseService.post(
-      `/caixa_saldo/updatesaldo/${auth().currentUser?.uid}/${route.name === 'Entradas' ? 2 : 1}`,
-      {
-        valor: valueMov
-      },
-      config
-    )
+    DatabaseService.post(`/caixa_saldo/updatesaldo/${uid}/${route.name === 'Entradas' ? 2 : 1}`, {
+      valor: valueMov
+    })
       .then(() => {
         setTimeout(() => {
           showToast('Saldo atualizado com sucesso!')
@@ -60,11 +57,9 @@ const Entrada: React.FC<MovProps> = () => {
   }
 
   // Carregar lista
-  const loadEntrada = async () => {
+  const loadMovs = async () => {
     try {
-      const response = await DatabaseService.get(
-        `/movimentacao_caixa/movs/${auth().currentUser?.uid}/${route.name === 'Entradas' ? 1 : 2}`
-      )
+      const response = await DatabaseService.get(`/movimentacao_caixa/movs/${uid}/${route.name === 'Entradas' ? 1 : 2}`)
       setEntrada(response.data)
       setLoading(false)
     } catch (err) {
@@ -73,12 +68,12 @@ const Entrada: React.FC<MovProps> = () => {
   }
 
   useEffect(() => {
-    loadEntrada()
+    loadMovs()
   }, [entrada])
 
   return (
     <View style={styles.list}>
-      <SaldoCaixa />
+      <SaldoCaixa variant={1} />
 
       {loading ? (
         <View style={styles.loading}>
@@ -104,7 +99,7 @@ const Entrada: React.FC<MovProps> = () => {
                       {item.Movimentacao_Caixa_Paymode + ' - ' + item.data_formatada + ' ' + item.hora_formatada}
                     </ListItem.Subtitle>
                   </ListItem.Content>
-                  <ListItem.Title>{numberToReal(item.Movimentacao_Caixa_value.toString())}</ListItem.Title>
+                  <ListItem.Title>{numberToReal(Number(item.Movimentacao_Caixa_value))}</ListItem.Title>
                   <TouchableOpacity
                     onPress={() =>
                       Alert.alert('Movimentações do Caixa', 'Deseja realmente excluir a movimentação?', [

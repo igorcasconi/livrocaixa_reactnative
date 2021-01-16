@@ -8,7 +8,7 @@ import pt from 'date-fns/locale/pt'
 import { useRoute } from '@react-navigation/native'
 
 import DatabaseService from '../../services/DatabaseService'
-import numberToReal from '../../utils/numberToReal'
+import { numberToReal } from '../../utils/numberToReal'
 import AdsBanner from '../../components/AdsBanner'
 
 import caixaImg from '../../assets/caixa-reg.png'
@@ -66,10 +66,10 @@ const DetailMov: React.FC = () => {
           </View>
 
           <Text style={styles.textSaldo}>
-            <Ionicons name='wallet-outline' size={20} /> Saldo: {numberToReal(String(detailmov?.soma))}
+            <Ionicons name='wallet-outline' size={20} /> Saldo: {numberToReal(Number(detailmov?.soma))}
           </Text>
           <Text style={styles.textSaldo}>
-            <Ionicons name='wallet-outline' size={20} /> Gastos: {numberToReal(String(detailmov?.gastos))}
+            <Ionicons name='wallet-outline' size={20} /> Gastos: {numberToReal(Number(detailmov?.gastos))}
           </Text>
           <Text style={styles.textTitle}>Quantidades de Movimentações</Text>
           <Text style={styles.textMov}>

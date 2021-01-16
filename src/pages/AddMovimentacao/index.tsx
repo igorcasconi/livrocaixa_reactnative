@@ -116,7 +116,7 @@ const AddMovimentacao: React.FC = () => {
                     }}
                     value={value}
                     onChangeText={onChange}
-                    placeholder='R$ 00,00'
+                    placeholder='R$ 0,00'
                   />
                 )}
               />

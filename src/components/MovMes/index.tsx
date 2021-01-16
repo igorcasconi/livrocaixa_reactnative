@@ -7,7 +7,7 @@ import { format, parseISO } from 'date-fns'
 import { useNavigation } from '@react-navigation/native'
 
 import DatabaseService from '../../services/DatabaseService'
-import numberToReal from '../../utils/numberToReal'
+import { numberToReal } from '../../utils/numberToReal'
 
 import caixaImg from '../../assets/caixa-reg.png'
 import styles from './style'
@@ -41,7 +41,7 @@ const MovMes: React.FC = () => {
             {format(parseISO(item.Movimentacao_Caixa_date), `MMMM${'/'}yyyy `, { locale: pt })}
           </ListItem.Title>
         </ListItem.Content>
-        <ListItem.Title>{numberToReal(item.soma)}</ListItem.Title>
+        <ListItem.Title>{numberToReal(Number(item.soma))}</ListItem.Title>
       </ListItem>
     </TouchableOpacity>
   )
