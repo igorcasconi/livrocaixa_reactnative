@@ -3,7 +3,7 @@ import { View, Text, FlatList, TouchableOpacity } from 'react-native'
 import { Card, ListItem } from 'react-native-elements'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt'
-import { useNavigation, useIsFocused } from '@react-navigation/native'
+import { useNavigation } from '@react-navigation/native'
 
 import AdsBanner from '../../components/AdsBanner'
 import VerifyInternet from '../../components/VerifyInternet'
@@ -27,16 +27,7 @@ interface SaldoProps {
 
 const Home: React.FC = () => {
   const { navigate } = useNavigation()
-  const isFocused = useIsFocused()
   const date = new Date()
-  const { uid } = useUser()
-  const { data: getValue, run } = useRequest<SaldoProps>(() => uid && getSaldo(uid))
-
-  console.log(isFocused)
-  // const [saldo, setSaldo] = useState<number>()
-  useEffect(() => {
-    run(uid)
-  }, [isFocused])
 
   // RENDER DA LISTAGEM DOS BOTÕES
   const renderItem = ({ item }: { item: MenuProps }) => (
@@ -66,7 +57,7 @@ const Home: React.FC = () => {
                 <Text style={styles.dateCardInfo}>{format(date, 'E, d \'de\' MMMM \'de\' yyyy', { locale: pt })}</Text>
             </View>
 
-            <SaldoCaixa variant={2} value={getValue?.data.saldo} />
+            <SaldoCaixa variant={2} />
           </View>
         </Card>
 

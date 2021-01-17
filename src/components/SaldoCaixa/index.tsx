@@ -4,6 +4,7 @@ import { View } from 'react-native'
 import auth from '@react-native-firebase/auth'
 import ShimmerPlaceHolder from 'react-native-shimmer-placeholder'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import { useIsFocused } from '@react-navigation/native'
 
 import DatabaseService from '../../services/DatabaseService'
 import { numberToReal } from '../../utils/numberToReal'
@@ -12,12 +13,12 @@ import styles from './style'
 
 interface SaldoProps {
   variant: number
-  value?: number
 }
 
-const SaldoCaixa: React.FC<SaldoProps> = ({ variant, value }) => {
+const SaldoCaixa: React.FC<SaldoProps> = ({ variant }) => {
   const [saldoValue, setSaldoValue] = useState<number>(0)
   const [visibleShimmer, setVisibleShimmer] = useState<boolean>(true)
+  const isFocused = useIsFocused()
 
   const loadSaldo = async () => {
     try {
@@ -32,7 +33,7 @@ const SaldoCaixa: React.FC<SaldoProps> = ({ variant, value }) => {
 
   useEffect(() => {
     loadSaldo()
-  }, [saldoValue, loadSaldo])
+  }, [saldoValue, loadSaldo, isFocused])
 
   if (variant === 1) {
     return (
@@ -50,7 +51,7 @@ const SaldoCaixa: React.FC<SaldoProps> = ({ variant, value }) => {
     <ShimmerPlaceHolder style={{ height: 22, marginTop: -20, width: 150, borderRadius: 10 }} visible={!visibleShimmer}>
       {!visibleShimmer && (
         <Text style={styles.textCardInfo}>
-          <Ionicons name='wallet-outline' size={25} /> Saldo: {numberToReal(Number(value))}
+          <Ionicons name='wallet-outline' size={25} /> Saldo: {numberToReal(Number(saldoValue))}
         </Text>
       )}
     </ShimmerPlaceHolder>
