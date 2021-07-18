@@ -10,3 +10,7 @@ export const LoginSchema = Yup.object().shape({
   user: Yup.string().required(),
   password: Yup.string().required()
 })
+
+export const ForgotPasswordSchema = Yup.object().shape({
+  email: Yup.string().required()
+})

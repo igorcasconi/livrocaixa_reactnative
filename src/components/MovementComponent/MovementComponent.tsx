@@ -10,34 +10,31 @@ import reciboSaidaImg from '../../assets/recibo_saida.png'
 import { useUser } from '../../context/AuthContext'
 
 import DatabaseService from '../../services/DatabaseService'
-import SaldoCaixa from '../SaldoCaixa'
+import { BalanceCash } from '../BalanceCash'
 import { numberToReal } from '../../utils/numberToReal'
 
 import styles from './style'
 import { MovComponentRouteProp } from '../../navigation/type'
+import { useQuery } from 'react-query'
+import { getMovements } from '../../services/movimentacao'
+import { MovementProps } from '../../shared/movement'
+import { format } from 'date-fns'
+import { Column } from '../Column'
 
-interface MovProps {
-  Movimentacao_Caixa_id: number
-  Movimentacao_Caixa_product: string
-  Movimentacao_Caixa_value: number
-  data_formatada: string
-  hora_formatada: string
-  Movimentacao_Caixa_Paymode: string
+const showToast = (message: string) => {
+  ToastAndroid.show(message, ToastAndroid.LONG)
 }
 
-const Entrada: React.FC<MovProps> = () => {
-  const [entrada, setEntrada] = useState([])
-  const [loading, setLoading] = useState<boolean>(true)
+const MovementComponent: React.FC<MovementProps> = () => {
   const { uid } = useUser()
   // const [movType, setMovType] = useState<MovTypeProps | null>(null)
   const { navigate } = useNavigation()
   const route = useRoute<MovComponentRouteProp>()
 
-  const showToast = (message: string) => {
-    ToastAndroid.show(message, ToastAndroid.LONG)
-  }
+  const { data: dataMovement, isLoading: isGettingMovement } = useQuery(['movementGetter', uid, route.name], () =>
+    getMovements({ uid, type: route.name === 'Entradas' ? 1 : 2 })
+  )
 
-  // Deletar Movimentacao
   const deleteMov = (idMov: number, valueMov: number) => {
     DatabaseService.post('/movimentacao_caixa/movs-delete', { id: idMov })
       .then(() => showToast('Movimentação removida com sucessos!'))
@@ -56,26 +53,10 @@ const Entrada: React.FC<MovProps> = () => {
       })
   }
 
-  // Carregar lista
-  const loadMovs = async () => {
-    try {
-      const response = await DatabaseService.get(`/movimentacao_caixa/movs/${uid}/${route.name === 'Entradas' ? 1 : 2}`)
-      setEntrada(response.data)
-      setLoading(false)
-    } catch (err) {
-      console.log(err)
-    }
-  }
-
-  useEffect(() => {
-    loadMovs()
-  }, [entrada])
-
   return (
-    <View style={styles.list}>
-      <SaldoCaixa variant={1} />
-
-      {loading ? (
+    <Column flex={1}>
+      <BalanceCash variant={1} />
+      {isGettingMovement ? (
         <View style={styles.loading}>
           <Image
             style={styles.imageCaixaLoading}
@@ -84,29 +65,33 @@ const Entrada: React.FC<MovProps> = () => {
           <ActivityIndicator size='large' color='#4db476' />
         </View>
       ) : (
-        <View style={{ flex: 1 }}>
+        <Column flex={1}>
           <ScrollView>
-            {entrada.map((item: MovProps) => {
-              return (
-                <ListItem key={item.Movimentacao_Caixa_id} bottomDivider>
+            {dataMovement &&
+              dataMovement.data.map((item: MovementProps) => (
+                <ListItem key={item.id} bottomDivider>
                   <Avatar
                     source={route.name === 'Entradas' ? reciboEntradaImg : reciboSaidaImg}
                     containerStyle={styles.imageRecibo}
                   />
                   <ListItem.Content>
-                    <ListItem.Title>{item.Movimentacao_Caixa_product}</ListItem.Title>
+                    <ListItem.Title>{item.product}</ListItem.Title>
                     <ListItem.Subtitle>
-                      {item.Movimentacao_Caixa_Paymode + ' - ' + item.data_formatada + ' ' + item.hora_formatada}
+                      {item.payMode +
+                        ' - ' +
+                        format(new Date(item.date), 'dd/MM/yyyy') +
+                        ' ' +
+                        format(new Date(item.date), 'HH:mm')}
                     </ListItem.Subtitle>
                   </ListItem.Content>
-                  <ListItem.Title>{numberToReal(Number(item.Movimentacao_Caixa_value))}</ListItem.Title>
+                  <ListItem.Title>{numberToReal(item.value)}</ListItem.Title>
                   <TouchableOpacity
                     onPress={() =>
                       Alert.alert('Movimentações do Caixa', 'Deseja realmente excluir a movimentação?', [
                         { text: 'Cancelar', onPress: () => null, style: 'cancel' },
                         {
                           text: 'EXCLUIR',
-                          onPress: () => deleteMov(item.Movimentacao_Caixa_id, item.Movimentacao_Caixa_value)
+                          onPress: () => deleteMov(item.id, item.value)
                         }
                       ])
                     }
@@ -114,10 +99,9 @@ const Entrada: React.FC<MovProps> = () => {
                     <Ionicons name='trash-bin' color='red' size={25} />
                   </TouchableOpacity>
                 </ListItem>
-              )
-            })}
+              ))}
           </ScrollView>
-        </View>
+        </Column>
       )}
 
       <FAB
@@ -127,8 +111,8 @@ const Entrada: React.FC<MovProps> = () => {
         iconTextComponent={route.name === 'Entradas' ? <Ionicons name='arrow-up' /> : <Ionicons name='arrow-down' />}
         onClickAction={() => navigate('AddMov', { type: route.name === 'Entradas' ? 1 : 2 })}
       />
-    </View>
+    </Column>
   )
 }
 
-export default Entrada
+export default MovementComponent

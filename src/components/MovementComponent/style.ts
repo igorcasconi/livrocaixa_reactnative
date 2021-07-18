@@ -5,9 +5,6 @@ const styles = StyleSheet.create({
     width: 60,
     height: 60
   },
-  list: {
-    flex: 1
-  },
   fab: {
     position: 'absolute',
     margin: 10,

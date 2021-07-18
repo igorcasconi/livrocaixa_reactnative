@@ -17,11 +17,15 @@ const AdsBanner: React.FC<AdsProps> = ({ margin }) => {
         requestOptions={{
           requestNonPersonalizedAdsOnly: true
         }}
-        onAdLoaded={() => console.log('AdLoaded')}
-        onAdFailedToLoad={() => console.log('AdLoaded')}
-        onAdOpened={() => console.log('AdLoaded')}
-        onAdClosed={() => console.log('AdLoaded')}
-        onAdLeftApplication={() => console.log('Ad')}
+        //eslint-disable-next-line
+        onAdLoaded={() => {}}
+        onAdFailedToLoad={() => console.log('Failed ad')}
+        //eslint-disable-next-line
+        onAdOpened={() => {}}
+        //eslint-disable-next-line
+        onAdClosed={() => {}}
+        //eslint-disable-next-line
+        onAdLeftApplication={() => {}}
       />
     </View>
   )

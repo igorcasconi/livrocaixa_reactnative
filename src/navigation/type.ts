@@ -8,8 +8,9 @@ type ParamsConfirmScreen = {
   email: string
 }
 
-type ParamsDetailMov = {
-  data: Date
+type ParamsMovementDetail = {
+  dateMovement: Date | string
+  type: string
 }
 
 export type ParamsList = {
@@ -20,9 +21,10 @@ export type ParamsList = {
   MovAno: undefined
   MovMes: undefined
   Tutorial: undefined
-  DetailMovAno: ParamsDetailMov
-  DetailMovMes: ParamsDetailMov
+  MovementDetailYear: ParamsMovementDetail
+  MovementDetailMonth: ParamsMovementDetail
   About: undefined
+  Movimentacao: undefined
 }
 
 export type ParamsListLogin = {
@@ -34,6 +36,6 @@ export type ParamsListLogin = {
 
 export type AddMovRouteProp = RouteProp<ParamsList, 'AddMov'>
 export type ConfirmScreenRouteProp = RouteProp<ParamsListLogin, 'ConfirmScreen'>
-export type DetailMovRouteProp = RouteProp<ParamsList, 'DetailMovAno' | 'DetailMovMes'>
+export type DetailMovRouteProp = RouteProp<ParamsList, 'MovementDetailYear' | 'MovementDetailMonth'>
 export type MovRouteProp = RouteProp<ParamsList, 'MovAno' | 'MovMes'>
 export type MovComponentRouteProp = RouteProp<ParamsList, 'Entradas' | 'Saidas'>

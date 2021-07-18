@@ -8,20 +8,33 @@
  * @format
  */
 
-import React, { Fragment } from 'react'
-import './src/config/StatusBarConfig'
+import React from 'react'
+import codePush from 'react-native-code-push'
 import { SafeAreaView } from 'react-native'
-import Routes from './src/navigation/Routes'
-import { NavigationContainer } from '@react-navigation/native'
-import { AuthProvider } from './src/context/AuthContext'
 import * as eva from '@eva-design/eva'
 import { ApplicationProvider } from '@ui-kitten/components'
+import { NavigationContainer } from '@react-navigation/native'
+import { QueryClient, QueryClientProvider } from 'react-query'
 
-declare const global: { HermesInternal: null | {} }
+import { AuthProvider } from './src/context/AuthContext'
+import Routes from './src/navigation/Routes'
 
-const App = () => {
+import './src/config/StatusBarConfig'
+
+declare const global: { HermesInternal: null }
+const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_START }
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      cacheTime: 200000,
+      refetchOnWindowFocus: false
+    }
+  }
+})
+
+const App: React.FC = () => {
   return (
-    <Fragment>
+    <QueryClientProvider client={queryClient}>
       <SafeAreaView></SafeAreaView>
       <ApplicationProvider {...eva} theme={eva.light}>
         <NavigationContainer>
@@ -30,8 +43,8 @@ const App = () => {
           </AuthProvider>
         </NavigationContainer>
       </ApplicationProvider>
-    </Fragment>
+    </QueryClientProvider>
   )
 }
 
-export default App
+export default codePush(codePushOptions)(App)

@@ -1,12 +1,11 @@
 import React from 'react'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-
-import MovComponent from '../../components/MovComponent'
+import { MovementComponent } from '../../components'
 
 const Tab = createBottomTabNavigator()
 
-const Movimentacao: React.FC = () => (
+const Movement: React.FC = () => (
   <Tab.Navigator
     initialRouteName='Entradas'
     screenOptions={({ route }) => ({
@@ -49,14 +48,14 @@ const Movimentacao: React.FC = () => (
   >
     <Tab.Screen
       name='Entradas'
-      component={MovComponent}
+      component={MovementComponent}
       options={{
         tabBarLabel: 'Entradas'
       }}
     />
     <Tab.Screen
       name='Saidas'
-      component={MovComponent}
+      component={MovementComponent}
       options={{
         tabBarLabel: 'Saídas'
       }}
@@ -64,4 +63,4 @@ const Movimentacao: React.FC = () => (
   </Tab.Navigator>
 )
 
-export default Movimentacao
+export default Movement

@@ -1,16 +1,14 @@
-import React from 'react'
+import React, { Fragment } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 import { TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { useUser } from '../context/AuthContext'
 
-import Home from '../pages/Home'
-import Movimentacao from '../pages/Movimentacao'
+import { Home, MovementDetail, Movement } from '../pages'
 import AddMovimentacao from '../pages/AddMovimentacao'
 import OthersMov from '../pages/OthersMov'
 import Tutorial from '../pages/Tutorial'
-import DetailMov from '../pages/DetailMov'
 import About from '../pages/About'
 
 import { ParamsList } from './type'
@@ -27,7 +25,7 @@ const AuthNavigation: React.FC = () => {
   )
 
   return (
-    <>
+    <Fragment>
       <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen
           name='Home'
@@ -45,7 +43,7 @@ const AuthNavigation: React.FC = () => {
         />
         <Stack.Screen
           name='Movimentacao'
-          component={Movimentacao}
+          component={Movement}
           options={{
             headerTitle: 'Movimentação do Caixa',
             headerTintColor: '#000',
@@ -104,8 +102,8 @@ const AuthNavigation: React.FC = () => {
           }}
         />
         <Stack.Screen
-          name='DetailMovAno'
-          component={DetailMov}
+          name='MovementDetailYear'
+          component={MovementDetail}
           options={{
             headerTitle: 'Detalhes',
             headerTintColor: '#000',
@@ -116,8 +114,8 @@ const AuthNavigation: React.FC = () => {
           }}
         />
         <Stack.Screen
-          name='DetailMovMes'
-          component={DetailMov}
+          name='MovementDetailMonth'
+          component={MovementDetail}
           options={{
             headerTitle: 'Detalhes',
             headerTintColor: '#000',
@@ -140,7 +138,7 @@ const AuthNavigation: React.FC = () => {
           }}
         />
       </Stack.Navigator>
-    </>
+    </Fragment>
   )
 }
 

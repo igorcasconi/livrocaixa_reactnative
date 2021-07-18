@@ -2,4 +2,5 @@
     <string name="app_name">Livro Caixa</string>
     <string name="appCenterCrashes_whenToSendCrashes" moduleConfig="true" translatable="false">DO_NOT_ASK_JAVASCRIPT</string>
     <string name="appCenterAnalytics_whenToEnableAnalytics" moduleConfig="true" translatable="false">ALWAYS_SEND</string>
+    <string moduleConfig="true" name="CodePushDeploymentKey">O7WEbdttS17OnILx1sB2uWq_MwR1eiugdCXZn</string>
 </resources>

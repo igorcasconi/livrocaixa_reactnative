@@ -1,9 +1,8 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
-import Login from '../pages/Login'
+import { Login, ForgotPassword } from '../pages'
 import Signup from '../pages/Signup'
-import ForgotPassword from '../pages/ForgotPassword'
 import ConfirmScreen from '../pages/ConfirmScreen'
 
 import { ParamsListLogin } from './type'

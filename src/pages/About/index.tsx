@@ -3,9 +3,7 @@ import { View, ScrollView, Text, Image } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Link from '../../components/Link'
-
 import logoImg from '../../assets/logo.png'
-
 import styles from './style'
 
 const About: React.FC = () => (
@@ -21,7 +19,7 @@ const About: React.FC = () => (
 
       <View style={styles.viewInfoVersion}>
         <Ionicons name='checkmark-circle' size={22} color='green' />
-        <Text style={styles.textInfo}> Versão 1.3.0</Text>
+        <Text style={styles.textInfo}> Versão 1.3.2</Text>
       </View>
 
       <View style={styles.viewInfo}>
@@ -37,10 +35,6 @@ const About: React.FC = () => (
         <View style={styles.viewInfoVersion}>
           <Ionicons name='person' size={25} color='#4db476' />
           <Text style={styles.textInfo}> Igor Casconi de Oliveira</Text>
-        </View>
-        <View style={styles.viewInfoVersion}>
-          <Ionicons name='link-outline' size={25} color='gray' />
-          <Link url='http://idotdev.online'> Blog I.Dev</Link>
         </View>
 
         <View style={styles.viewInfoVersion}>
