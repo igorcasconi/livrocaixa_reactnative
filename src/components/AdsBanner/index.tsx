@@ -1,8 +1,9 @@
 import React from 'react'
 import { BannerAd, BannerAdSize } from '@react-native-firebase/admob'
 import { View } from 'react-native'
+import Config from 'react-native-config'
 
-const adUnitId = 'ca-app-pub-1207130538939906/1471737538'
+const adUnitId = Config.ADMOB_AD_BANNER
 
 interface AdsProps {
   margin?: number

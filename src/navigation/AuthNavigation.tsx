@@ -1,13 +1,12 @@
 import React, { Fragment } from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
-import { TouchableOpacity } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import { useUser } from '../context/AuthContext'
+import { Button, Row } from '../components'
 
-import { Home, MovementDetail, Movement } from '../pages'
+import { Home, MovementDetail, Movement, MovementReport } from '../pages'
 import AddMovimentacao from '../pages/AddMovimentacao'
-import OthersMov from '../pages/OthersMov'
 import Tutorial from '../pages/Tutorial'
 import About from '../pages/About'
 
@@ -19,9 +18,9 @@ const AuthNavigation: React.FC = () => {
   const { logout } = useUser()
 
   const Logout = () => (
-    <TouchableOpacity onPress={logout} style={{ marginRight: 10 }}>
+    <Button onPress={logout} mr={10}>
       <Ionicons name='log-out-outline' color='white' size={30} />
-    </TouchableOpacity>
+    </Button>
   )
 
   return (
@@ -31,25 +30,24 @@ const AuthNavigation: React.FC = () => {
           name='Home'
           component={Home}
           options={{
-            headerTitle: 'Livro Caixa',
-            headerTintColor: '#000',
             headerLeft: undefined,
+            headerTitle: 'Livro Caixa',
+            headerRight: () => <Logout />,
+            headerTintColor: '#000',
             headerStyle: {
               backgroundColor: '#4db476'
             },
-            headerTitleAlign: 'center',
-            headerRight: () => <Logout />
+            headerTitleAlign: 'center'
           }}
         />
         <Stack.Screen
-          name='Movimentacao'
+          name='MovementFinancial'
           component={Movement}
           options={{
             headerTitle: 'Movimentação do Caixa',
             headerTintColor: '#000',
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
+            headerTransparent: true,
+            headerBackground: () => <Row width={1} backgroundColor='#4db476' height={60} mb={60} />,
             headerTitleAlign: 'center'
           }}
         />
@@ -66,8 +64,8 @@ const AuthNavigation: React.FC = () => {
           }}
         />
         <Stack.Screen
-          name='MovAno'
-          component={OthersMov}
+          name='MovementByYear'
+          component={MovementReport}
           options={{
             headerTitle: 'Movimentações/Ano',
             headerTintColor: '#000',
@@ -78,8 +76,8 @@ const AuthNavigation: React.FC = () => {
           }}
         />
         <Stack.Screen
-          name='MovMes'
-          component={OthersMov}
+          name='MovementByMonth'
+          component={MovementReport}
           options={{
             headerTitle: 'Movimentações/Mês',
             headerTintColor: '#000',

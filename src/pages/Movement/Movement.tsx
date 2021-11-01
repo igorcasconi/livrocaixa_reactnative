@@ -7,14 +7,14 @@ const Tab = createBottomTabNavigator()
 
 const Movement: React.FC = () => (
   <Tab.Navigator
-    initialRouteName='Entradas'
+    initialRouteName='Entries'
     screenOptions={({ route }) => ({
       tabBarIcon: ({ focused, color, size }) => {
         let iconName = ''
 
-        if (route.name === 'Entradas') {
+        if (route.name === 'Entries') {
           iconName = focused ? 'arrow-up-circle' : 'arrow-up-circle-outline'
-        } else if (route.name === 'Saidas') {
+        } else if (route.name === 'Outflows') {
           iconName = focused ? 'arrow-down-circle' : 'arrow-down-circle-outline'
         }
         return <Ionicons name={iconName} size={size} color={color} />
@@ -47,14 +47,14 @@ const Movement: React.FC = () => (
     }}
   >
     <Tab.Screen
-      name='Entradas'
+      name='Entries'
       component={MovementComponent}
       options={{
         tabBarLabel: 'Entradas'
       }}
     />
     <Tab.Screen
-      name='Saidas'
+      name='Outflows'
       component={MovementComponent}
       options={{
         tabBarLabel: 'Saídas'

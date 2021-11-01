@@ -4,14 +4,13 @@ import { Controller, useForm } from 'react-hook-form'
 import { useNavigation } from '@react-navigation/native'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Ionicons from 'react-native-vector-icons/Ionicons'
+import styled from 'styled-components/native'
 
 import { useUser } from '../../context/AuthContext'
 import InputLogin from '../../components/InputLogin'
 import { Row, Button, Text } from '../../components'
 
 import logoImg from '../../assets/logo.png'
-
-import styles, { Container, TextButton, ImageLogo } from './style'
 import { LoginSchema } from '../../schemas/loginSchema'
 
 interface LoginProps {
@@ -22,12 +21,7 @@ interface LoginProps {
 const Login: React.FC = () => {
   const { erro, login, loading } = useUser()
   const { navigate } = useNavigation()
-  const {
-    handleSubmit,
-    control,
-    errors,
-    formState: { isSubmitting }
-  } = useForm<LoginProps>({
+  const { handleSubmit, control, errors } = useForm<LoginProps>({
     defaultValues: { user: '', password: '' },
     resolver: yupResolver(LoginSchema),
     mode: 'onBlur',
@@ -84,7 +78,11 @@ const Login: React.FC = () => {
             />
           )}
         />
-        {errors.user && <Text style={styles.textErroPassword}>{errors.user.message}</Text>}
+        {errors.user && (
+          <Text color='#f15555' fontWeight='bold' fontSize={13} mt={-15} mb={2} textAlign='center'>
+            {errors.user.message}
+          </Text>
+        )}
 
         <Controller
           control={control}
@@ -100,7 +98,13 @@ const Login: React.FC = () => {
             />
           )}
         />
-        {errors.password && <Text style={styles.textErroPassword}>{errors.password.message}</Text>}
+
+        {errors.password && (
+          <Text color='#f15555' fontWeight='bold' fontSize={13} mt={-15} mb={2} textAlign='center'>
+            {errors.password.message}
+          </Text>
+        )}
+
         <Row width={1} px='10px' mt='15px'>
           <Button
             width={1}
@@ -163,5 +167,16 @@ const Login: React.FC = () => {
     </Container>
   )
 }
+
+export const Container = styled.KeyboardAvoidingView`
+  background-color: #4db476;
+  height: 100%;
+  padding: 20px;
+`
+
+export const ImageLogo = styled.Image`
+  width: 90px;
+  height: 90px;
+`
 
 export default Login

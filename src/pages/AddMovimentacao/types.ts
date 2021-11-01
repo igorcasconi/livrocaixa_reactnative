@@ -9,6 +9,6 @@ export interface MovPayloadProps {
   product: string
   value: number
   paymode: string
-  date: string
+  date: Date
   time: string
 }

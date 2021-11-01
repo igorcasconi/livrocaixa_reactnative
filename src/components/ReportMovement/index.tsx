@@ -6,31 +6,35 @@ import { useQuery } from 'react-query'
 
 import { numberToReal } from '../../utils/numberToReal'
 import { useUser } from '../../context/AuthContext'
-import { MovementYearProps } from '../../shared/movement'
-import { getMovementByYear } from '../../services/movimentacao'
+import { ReportListProps } from '../../shared/movement'
+import { financialReportList } from '../../services/movimentacao'
 
 import caixaImg from '../../assets/caixa-reg.png'
 import styles from './style'
+import { format } from 'date-fns'
 
 const MovAno: React.FC = () => {
   const { navigate } = useNavigation()
   const { uid } = useUser()
 
   const { data: dataMovement, isLoading: isGettingMovementYear } = useQuery(['movementListGetter', uid], () =>
-    getMovementByYear({ uid })
+    financialReportList({ uid, type: 'year' })
   )
 
-  const renderItem = ({ item, index }: { item: MovementYearProps; index: number }) => (
-    <TouchableOpacity onPress={() => navigate('MovementDetailYear', { dateMovement: item.year, type: 'year' })}>
-      <ListItem key={`${index}-${item.year}`} bottomDivider>
-        <Avatar source={caixaImg} containerStyle={styles.imageCaixa} />
-        <ListItem.Content>
-          <ListItem.Title>{item.year}</ListItem.Title>
-        </ListItem.Content>
-        <ListItem.Title>{numberToReal(Number(item.balance))}</ListItem.Title>
-      </ListItem>
-    </TouchableOpacity>
-  )
+  const renderItem = ({ item, index }: { item: ReportListProps; index: number }) => {
+    const year = format(new Date(item.date), 'yyyy')
+    return (
+      <TouchableOpacity onPress={() => navigate('MovementDetailYear', { dateMovement: year, type: 'year' })}>
+        <ListItem key={`${index}-${year}`} bottomDivider>
+          <Avatar source={caixaImg} containerStyle={styles.imageCaixa} />
+          <ListItem.Content>
+            <ListItem.Title>{year}</ListItem.Title>
+          </ListItem.Content>
+          <ListItem.Title>{numberToReal(Number(item.balance))}</ListItem.Title>
+        </ListItem>
+      </TouchableOpacity>
+    )
+  }
 
   return (
     <View>
@@ -42,7 +46,7 @@ const MovAno: React.FC = () => {
       ) : (
         <FlatList
           data={dataMovement?.data}
-          keyExtractor={(item, index) => `${index}-${item.year}`}
+          keyExtractor={(item, index) => `${index}-${item.date}`}
           renderItem={renderItem}
         />
       )}

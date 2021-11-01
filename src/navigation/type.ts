@@ -4,7 +4,7 @@ type ParamsAddMov = {
   type: number
 }
 
-type ParamsConfirmScreen = {
+type ParamsCompletionForgotPass = {
   email: string
 }
 
@@ -13,29 +13,33 @@ type ParamsMovementDetail = {
   type: string
 }
 
+type MovementsProps = {
+  isRefetchRequest?: boolean
+}
+
 export type ParamsList = {
   Home: undefined
   AddMov: ParamsAddMov
-  Entradas: undefined
-  Saidas: undefined
-  MovAno: undefined
-  MovMes: undefined
+  Entries: MovementsProps
+  Outflows: MovementsProps
+  MovementByYear: undefined
+  MovementByMonth: undefined
   Tutorial: undefined
   MovementDetailYear: ParamsMovementDetail
   MovementDetailMonth: ParamsMovementDetail
   About: undefined
-  Movimentacao: undefined
+  MovementFinancial: undefined
 }
 
 export type ParamsListLogin = {
   Login: undefined
   SignUp: undefined
   ForgotPassword: undefined
-  ConfirmScreen: ParamsConfirmScreen
+  CompletionForgotPass: ParamsCompletionForgotPass
 }
 
 export type AddMovRouteProp = RouteProp<ParamsList, 'AddMov'>
-export type ConfirmScreenRouteProp = RouteProp<ParamsListLogin, 'ConfirmScreen'>
+export type CompletionForgotPassProps = RouteProp<ParamsListLogin, 'CompletionForgotPass'>
 export type DetailMovRouteProp = RouteProp<ParamsList, 'MovementDetailYear' | 'MovementDetailMonth'>
-export type MovRouteProp = RouteProp<ParamsList, 'MovAno' | 'MovMes'>
-export type MovComponentRouteProp = RouteProp<ParamsList, 'Entradas' | 'Saidas'>
+export type MovementReportProp = RouteProp<ParamsList, 'MovementByYear' | 'MovementByMonth'>
+export type MovComponentRouteProp = RouteProp<ParamsList, 'Entries' | 'Outflows'>

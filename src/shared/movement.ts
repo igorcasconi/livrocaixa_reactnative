@@ -1,5 +1,5 @@
-export interface MovementYearProps {
-  year: string
+export interface ReportListProps {
+  date: string
   balance: number
 }
 
@@ -13,4 +13,5 @@ export interface MovementProps {
   value: number
   payMode: string
   date: string
+  type?: string
 }

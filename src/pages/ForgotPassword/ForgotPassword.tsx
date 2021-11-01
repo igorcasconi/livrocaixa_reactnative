@@ -1,15 +1,12 @@
 import React, { Fragment } from 'react'
-import { View, TouchableOpacity, ActivityIndicator } from 'react-native'
+import { View, ActivityIndicator } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
-import { Formik } from 'formik'
-import * as yup from 'yup'
 import { useNavigation } from '@react-navigation/native'
 
 import { useUser } from '../../context/AuthContext'
 import { Column, Row, Text, Button } from '../../components'
 import InputLogin from '../../components/InputLogin'
 
-import styles from './style'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ForgotPasswordSchema } from '../../schemas/loginSchema'
 import { Controller, useForm } from 'react-hook-form'
@@ -30,7 +27,7 @@ const ForgotPassword: React.FC = () => {
 
   const onSubmit = (values: ForgotPasswordProps) => {
     verifyPassword(values.email)
-    navigate('ConfirmScreen', { email: values.email })
+    navigate('CompletionForgotPass', { email: values.email })
   }
 
   return (

@@ -139,8 +139,8 @@ android {
         applicationId "com.reacttsproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "1.3.3"
+        versionCode 12
+        versionName "1.4.0"
         multiDexEnabled true
     }
     splits {
@@ -211,6 +211,10 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation project(':react-native-fs')
+    implementation project(':@react-native-async-storage')
+
+    compile project(':react-native-doc-viewer')
     
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'

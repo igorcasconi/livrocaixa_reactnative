@@ -3,26 +3,31 @@ export const cards = [
   {
     id: 1,
     name: 'Movimentação do Caixa',
-    link: 'Movimentacao'
+    link: 'MovementFinancial',
+    icon: 'swap-vertical-outline'
   },
   {
     id: 2,
-    name: 'Movimentação/Ano',
-    link: 'MovAno'
+    name: 'Relatório: Movimentação/Ano',
+    link: 'MovementByYear',
+    icon: 'receipt-outline'
   },
   {
     id: 3,
-    name: 'Movimentação/Mês',
-    link: 'MovMes'
+    name: 'Relatório: Movimentação/Mês',
+    link: 'MovementByMonth',
+    icon: 'receipt-outline'
   },
   {
     id: 4,
     name: 'Ajuda',
-    link: 'Tutorial'
+    link: 'Tutorial',
+    icon: 'help-circle-outline'
   },
   {
     id: 5,
     name: 'Sobre',
-    link: 'About'
+    link: 'About',
+    icon: 'information-circle-outline'
   }
 ]

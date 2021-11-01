@@ -11,36 +11,24 @@ import { Text } from '../Text'
 import { Row } from '../Row'
 
 import { numberToReal } from '../../utils/numberToReal'
-import styles from './style'
 
-interface SaldoProps {
-  variant: number
+interface BalanceCashProps {
+  isRefetchRequest?: boolean
 }
 
-const BalanceCash: React.FC<SaldoProps> = ({ variant }) => {
+const BalanceCash: React.FC<BalanceCashProps> = ({ isRefetchRequest }) => {
   const isFocused = useIsFocused()
   const { uid } = useUser()
 
-  const { data: dataBalance, isLoading: isGettingBalance } = useQuery(['balanceGetter', isFocused, uid], () =>
-    getBalanceCash({ uid })
+  const { data: dataBalance, isLoading: isGettingBalance, isFetching } = useQuery(
+    ['balanceGetter', isFocused, uid, isRefetchRequest],
+    () => getBalanceCash({ uid })
   )
-
-  if (variant === 1) {
-    return (
-      <Row justifyContent='center' alignItems='center'>
-        <Card containerStyle={styles.cardConfig}>
-          <Text fontSize={16} fontWeight='bold'>
-            {dataBalance?.data && numberToReal(dataBalance?.data[0].balance)}
-          </Text>
-        </Card>
-      </Row>
-    )
-  }
 
   return (
     <Row minWidth={110} alignItems='center' px='8px' py='4px' backgroundColor='white' borderRadius={14}>
       <Ionicons name='wallet-outline' size={25} />
-      {isGettingBalance ? (
+      {isGettingBalance || isFetching ? (
         <Row ml='6px'>
           <ActivityIndicator size='small' color='#4db476' />
         </Row>

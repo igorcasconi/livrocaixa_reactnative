@@ -14,7 +14,7 @@ export default function Routes() {
       setUser(userState)
       if (initializing) setInitializing(false)
     })
-    return subscriber // unsubscribe on unmount
+    return subscriber
   }, [])
 
   return user ? <AuthNavigation /> : <LoginNavigation />

@@ -1,5 +1,5 @@
 import React from 'react'
-import { ToastAndroid, ScrollView, ActivityIndicator } from 'react-native'
+import { ScrollView, ActivityIndicator } from 'react-native'
 import { format } from 'date-fns'
 import auth from '@react-native-firebase/auth'
 import { yupResolver } from '@hookform/resolvers/yup'
@@ -30,14 +30,17 @@ import {
 import { MovPayloadProps, MovProps } from './types'
 import { MovSchema } from '../../schemas'
 import { AddMovRouteProp } from '../../navigation/type'
+import { useMutation } from 'react-query'
+import { showToast } from '../../utils/notification'
 
 const AddMovimentacao: React.FC = () => {
   const route = useRoute<AddMovRouteProp>()
   const { type } = route.params
   const { navigate } = useNavigation()
-  const showToast = (message: string) => {
-    ToastAndroid.show(message, ToastAndroid.LONG)
-  }
+  const uid = auth().currentUser?.uid
+  const routeNameAfterSuccess = type === 1 ? 'Entries' : 'Outflows'
+
+  const { mutateAsync: mutateAddMovement, isLoading: isAddingMovement } = useMutation(addMov)
 
   const {
     control,
@@ -52,17 +55,18 @@ const AddMovimentacao: React.FC = () => {
   })
 
   const onSubmit = async (values: MovProps) => {
-    const val = parseFloat(values.value.replace('R$ ', '').replace('.', '').replace(',', '.'))
+    const amount = parseFloat(values.value.replace('R$ ', '').replace('.', '').replace(',', '.'))
+
     try {
       const payload: MovPayloadProps = {
         ...values,
-        value: val,
-        date: format(values.datetime, 'dd/MM/yyyy'),
+        value: amount,
+        date: values.datetime,
         time: format(values.datetime, 'HH:mm')
       }
-      await addMov(auth().currentUser?.uid, type, payload)
+      await mutateAddMovement({ uid, type, payload })
 
-      navigate('Movimentacao')
+      navigate(routeNameAfterSuccess, { isRefetchRequest: true })
       interstitialShow()
       showToast('Movimentação cadastrada com sucesso!')
     } catch (err) {
@@ -158,8 +162,14 @@ const AddMovimentacao: React.FC = () => {
               {errors.datetime && <TextError>Insira a informação de data!</TextError>}
             </Column>
 
-            <ButtonSubmit onPress={handleSubmit(onSubmit)} disabled={isSubmitting}>
-              <Row>{isSubmitting ? <ActivityIndicator color='#0fd734' /> : <TextButton>Gravar</TextButton>}</Row>
+            <ButtonSubmit onPress={handleSubmit(onSubmit)} disabled={isSubmitting || isAddingMovement}>
+              <Row>
+                {isSubmitting || isAddingMovement ? (
+                  <ActivityIndicator color='#0fd734' />
+                ) : (
+                  <TextButton>Gravar</TextButton>
+                )}
+              </Row>
             </ButtonSubmit>
           </Column>
         </CardMov>

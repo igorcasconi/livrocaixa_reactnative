@@ -6,7 +6,8 @@ const styles = StyleSheet.create({
   },
   imageCard: {
     width: 120,
-    height: 120
+    height: 120,
+    minHeight: 120
   }
 })
 
