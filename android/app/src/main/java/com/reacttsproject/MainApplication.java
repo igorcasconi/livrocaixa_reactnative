@@ -7,8 +7,6 @@ import com.facebook.react.ReactApplication;
 import com.reactlibrary.RNReactNativeDocViewerPackage;
 import com.lugg.ReactNativeConfig.ReactNativeConfigPackage;
 import com.oblador.vectoricons.VectorIconsPackage;
-import co.apptailor.googlesignin.RNGoogleSigninPackage;
-import com.oblador.vectoricons.VectorIconsPackage;
 import com.facebook.react.ReactInstanceManager;
 import com.facebook.react.ReactNativeHost;
 import com.facebook.react.ReactPackage;

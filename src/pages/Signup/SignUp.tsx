@@ -5,11 +5,10 @@ import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 
 import { useUser } from '../../context/AuthContext'
-import InputLogin from '../../components/InputLogin'
+import { Button, Column, Row, Text, Input } from '../../components'
 
 import { SignupSchema } from '../../schemas/signup'
 import { SignupProps } from './types'
-import { Button, Column, Row, Text } from '../../components'
 
 const defaultValues = { email: '', password: '', passwordVerify: '' }
 
@@ -101,11 +100,11 @@ const SignUp: React.FC = () => {
             name='email'
             control={control}
             render={({ value, onChange }) => (
-              <InputLogin
+              <Input
                 label='e-mail'
                 placeholder='email@exemplo.com'
                 keyboardType='email-address'
-                icon='person-circle-outline'
+                icon='at'
                 autoCapitalize='none'
                 value={value}
                 onChangeText={onChange}
@@ -117,11 +116,11 @@ const SignUp: React.FC = () => {
             name='password'
             control={control}
             render={({ value, onChange }) => (
-              <InputLogin
+              <Input
                 label='Senha'
                 placeholder='*******'
                 secureTextEntry={true}
-                icon='lock-closed'
+                icon='lock'
                 value={value}
                 onChangeText={onChange}
               />
@@ -132,11 +131,11 @@ const SignUp: React.FC = () => {
             name='passwordVerify'
             control={control}
             render={({ value, onChange }) => (
-              <InputLogin
+              <Input
                 label='Repita a senha'
                 placeholder='*******'
                 secureTextEntry={true}
-                icon='lock-closed'
+                icon='lock'
                 value={value}
                 onChangeText={onChange}
               />

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useNavigation, useRoute } from '@react-navigation/native'
 
@@ -13,11 +13,15 @@ const CompletionForgotPass: React.FC = () => {
   const route = useRoute<CompletionForgotPassProps>()
   const { email } = route.params
 
-  const textInfo = erroVerifyPassword
-    ? `Ocorreu um erro ao alterar a senha, possivelmente o e-mail ${email} não está cadastrado!`
-    : `O link de alteração de senha foi enviado para o e-mail ${email}, acesse o link no seu e-mail e realize a alteração da senha.`
-  const icon = erroVerifyPassword ? 'alert-circle-outline' : 'checkmark-circle-outline'
-  const color = erroVerifyPassword ? 'red' : 'white'
+  const informationDataWithError = useMemo(() => {
+    const text = erroVerifyPassword
+      ? `Ocorreu um erro ao alterar a senha, possivelmente o e-mail ${email} não está cadastrado!`
+      : `O link de alteração de senha foi enviado para o e-mail ${email}, acesse o link no seu e-mail e realize a alteração da senha.`
+    const icon = erroVerifyPassword ? 'alert-circle-outline' : 'checkmark-circle-outline'
+    const color = erroVerifyPassword ? 'red' : 'white'
+
+    return { text, icon, color }
+  }, [erroVerifyPassword, email])
 
   return (
     <Column flex={1} backgroundColor='#4db476' padding={20} justifyContent='center' alignItems='center'>
@@ -26,9 +30,9 @@ const CompletionForgotPass: React.FC = () => {
           Esqueceu a senha?
         </Text>
 
-        <Ionicons name={icon} color={color} size={40} />
+        <Ionicons name={informationDataWithError.icon} color={informationDataWithError.color} size={40} />
         <Text textAlign='center' fontSize={16} marginBottom={20}>
-          {textInfo}
+          {informationDataWithError.text}
         </Text>
 
         <Button

@@ -1,6 +1,10 @@
 export interface ReportListProps {
-  date: string
-  balance: number
+  [key: string]: string | number | Date
+  date: Date
+  balanceOutflows: number
+  balanceEntries: number
+  entries: number
+  outflows: number
 }
 
 export interface BalanceProps {
@@ -8,10 +12,21 @@ export interface BalanceProps {
 }
 
 export interface MovementProps {
-  id: number
+  userFirebase: number
   product: string
   value: number
-  payMode: string
+  paymode: string
   date: string
   type?: string
+  index: number
+}
+
+export interface MovementPayloadProps {
+  product: string
+  value: number
+  paymode: string
+  date: Date
+  time: string
+  type: string
+  index?: number
 }

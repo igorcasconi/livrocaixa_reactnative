@@ -4,8 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native'
 
 import { useUser } from '../../context/AuthContext'
-import { Column, Row, Text, Button } from '../../components'
-import InputLogin from '../../components/InputLogin'
+import { Column, Row, Text, Button, Input } from '../../components'
 
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ForgotPasswordSchema } from '../../schemas/loginSchema'
@@ -47,7 +46,7 @@ const ForgotPassword: React.FC = () => {
             control={control}
             name='email'
             render={({ value, onChange }) => (
-              <InputLogin
+              <Input
                 label='e-mail'
                 placeholder='email@exemplo.com'
                 keyboardType='email-address'
@@ -58,7 +57,7 @@ const ForgotPassword: React.FC = () => {
             )}
           />
 
-          <Column width={1} px='10px'>
+          <Column width={1} mt={20}>
             <Button
               width={1}
               height={40}

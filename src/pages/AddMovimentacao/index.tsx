@@ -1,7 +1,6 @@
 import React from 'react'
 import { ScrollView, ActivityIndicator } from 'react-native'
 import { format } from 'date-fns'
-import auth from '@react-native-firebase/auth'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import DatePicker from 'react-native-date-picker'
@@ -12,7 +11,6 @@ import AdsInterstitial, { interstitialShow } from '../../components/AdsInterstit
 import VerifyInternet from '../../components/VerifyInternet'
 import Row from '../../components/Row/Row'
 import Column from '../../components/Column/Column'
-import { addMov } from '../../services/movimentacao'
 
 import reciboEntradaImg from '../../assets/recibo.png'
 import reciboSaidaImg from '../../assets/recibo_saida.png'
@@ -27,20 +25,22 @@ import {
   TextError,
   TextInfo
 } from './style'
-import { MovPayloadProps, MovProps } from './types'
+import { MovProps } from './types'
 import { MovSchema } from '../../schemas'
 import { AddMovRouteProp } from '../../navigation/type'
-import { useMutation } from 'react-query'
 import { showToast } from '../../utils/notification'
+import { MovementPayloadProps } from '../../shared/movement'
+import { useRealm } from '../../context/RealmContext'
+import { useUser } from '../../context/AuthContext'
+import { unformatCurrency } from '../../utils/formatters'
 
 const AddMovimentacao: React.FC = () => {
   const route = useRoute<AddMovRouteProp>()
   const { type } = route.params
   const { navigate } = useNavigation()
-  const uid = auth().currentUser?.uid
+  const { uid } = useUser()
   const routeNameAfterSuccess = type === 1 ? 'Entries' : 'Outflows'
-
-  const { mutateAsync: mutateAddMovement, isLoading: isAddingMovement } = useMutation(addMov)
+  const { createFinancialMovement, getNextIndex } = useRealm()
 
   const {
     control,
@@ -55,16 +55,19 @@ const AddMovimentacao: React.FC = () => {
   })
 
   const onSubmit = async (values: MovProps) => {
-    const amount = parseFloat(values.value.replace('R$ ', '').replace('.', '').replace(',', '.'))
+    const amount = unformatCurrency(values.value)
+    const index = getNextIndex()
 
     try {
-      const payload: MovPayloadProps = {
+      const payload: MovementPayloadProps = {
         ...values,
         value: amount,
         date: values.datetime,
-        time: format(values.datetime, 'HH:mm')
+        time: format(values.datetime, 'HH:mm'),
+        type: routeNameAfterSuccess,
+        index: index
       }
-      await mutateAddMovement({ uid, type, payload })
+      !!uid && createFinancialMovement(uid, payload)
 
       navigate(routeNameAfterSuccess, { isRefetchRequest: true })
       interstitialShow()
@@ -162,14 +165,8 @@ const AddMovimentacao: React.FC = () => {
               {errors.datetime && <TextError>Insira a informação de data!</TextError>}
             </Column>
 
-            <ButtonSubmit onPress={handleSubmit(onSubmit)} disabled={isSubmitting || isAddingMovement}>
-              <Row>
-                {isSubmitting || isAddingMovement ? (
-                  <ActivityIndicator color='#0fd734' />
-                ) : (
-                  <TextButton>Gravar</TextButton>
-                )}
-              </Row>
+            <ButtonSubmit onPress={handleSubmit(onSubmit)} disabled={isSubmitting}>
+              <Row>{isSubmitting ? <ActivityIndicator color='#0fd734' /> : <TextButton>Gravar</TextButton>}</Row>
             </ButtonSubmit>
           </Column>
         </CardMov>

@@ -1,18 +1,16 @@
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { View, Image, ScrollView, ActivityIndicator, PermissionsAndroid } from 'react-native'
-import { Card } from 'react-native-elements'
+import { Image, ScrollView, PermissionsAndroid } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { format } from 'date-fns'
 import pt from 'date-fns/locale/pt'
 import { useRoute } from '@react-navigation/native'
-import { useQuery } from 'react-query'
 import XLSX from 'xlsx'
 import OpenFile from 'react-native-doc-viewer'
 import { RewardedAd, RewardedAdEventType } from '@react-native-firebase/admob'
 import Config from 'react-native-config'
 
-import { numberToReal } from '../../utils/numberToReal'
+import { formatCurrency } from '../../utils/formatters'
 import AdsBanner from '../../components/AdsBanner'
 import { useUser } from '../../context/AuthContext'
 import { Column, Row, Text, Button } from '../../components'
@@ -21,8 +19,9 @@ import caixaImg from '../../assets/caixa-reg.png'
 
 import styles from './style'
 import { DetailMovRouteProp } from '../../navigation/type'
-import { financialMovementReportDetail, financialMovementReportListDoc } from '../../services/movimentacao'
+import { useRealm } from '../../context/RealmContext'
 import { showToast } from '../../utils/notification'
+import styled from 'styled-components'
 //eslint-disable-next-line
 var RNFS = require('react-native-fs');
 
@@ -35,6 +34,10 @@ const MovementDetail: React.FC = () => {
   const [isLoadingAd, setLoadingAd] = useState<boolean>(false)
   const [isVisibleAd, setVisibleAd] = useState<boolean>(true)
   const rewarded = RewardedAd.createForAdRequest(adUnitId)
+  const { getReportList, getDataReportListForExcel } = useRealm()
+  const isTypeYear = type === 'year'
+  const dataReportMovement = useMemo(() => getReportList(uid, !isTypeYear), [getReportList, uid, isTypeYear])
+  const dataReportDetail = dataReportMovement?.find(movement => String(movement.date) === String(dateMovement))
 
   const getAccessPermission = async () => {
     try {
@@ -55,26 +58,11 @@ const MovementDetail: React.FC = () => {
     }
   }
 
-  const getDateMovement = useMemo((): { year: string; month?: string } => {
-    if (type === 'year') return { year: String(dateMovement) }
-
-    return { year: format(new Date(dateMovement), 'yyyy'), month: format(new Date(dateMovement), 'MMMM') }
-  }, [dateMovement, type])
-
-  const { data: financialMovementData, isLoading: isGettingMovementYear } = useQuery(
-    ['movementGetter', uid, getDateMovement],
-    () => financialMovementReportDetail({ uid, year: getDateMovement.year, month: getDateMovement.month })
-  )
-
-  const { data: dataExportedList, isLoading: isGettingReportList } = useQuery(
-    ['reportListGetter', getDateMovement, uid],
-    () => financialMovementReportListDoc({ uid, year: getDateMovement.year, month: getDateMovement.month }),
-    {
-      onError: (error: any) => {
-        console.log(error)
-      }
-    }
-  )
+  const getDateMovement = useMemo((): { year: number; month?: string } => {
+    const selectedYear = new Date(dateMovement).getFullYear()
+    const formattedMonth = format(new Date(dateMovement), 'MMMM', { locale: pt })
+    return { year: selectedYear, month: formattedMonth }
+  }, [dateMovement])
 
   const showVisibleAD = useCallback(() => {
     if (!rewarded.loaded) {
@@ -87,14 +75,16 @@ const MovementDetail: React.FC = () => {
 
   const exportReportList = useCallback(async () => {
     const isGrantedAccess = await getAccessPermission()
+    const dataExported = getDataReportListForExcel(String(dateMovement), uid, !isTypeYear)
+    setLoadingAd(true)
 
-    if (!isGrantedAccess || !dataExportedList) {
+    if (!isGrantedAccess || !dataExported) {
       setLoadingAd(false)
       return showToast('erro ao gerar o arquivo')
     }
 
     const wb = XLSX.utils.book_new()
-    const ws = XLSX.utils.json_to_sheet(dataExportedList.data)
+    const ws = XLSX.utils.json_to_sheet(dataExported)
     XLSX.utils.book_append_sheet(wb, ws, 'Users')
     const wbout = XLSX.write(wb, { type: 'binary', bookType: 'xlsx' })
     const filePath = RNFS.DownloadDirectoryPath + '/relatorio_livro_caixa' + new Date().getTime() + '.xlsx'
@@ -112,73 +102,74 @@ const MovementDetail: React.FC = () => {
       setLoadingAd(false)
       showToast('Ocorreu erro ao criar seu arquivo!')
     }
-  }, [dataExportedList])
+  }, [dateMovement, uid, isTypeYear])
 
   const titleMov = useMemo(() => {
-    if (type === 'year') return `Ano ${String(dateMovement)}`
+    if (isTypeYear) return `Ano ${getDateMovement.year}`
 
-    return `Mês ${format(new Date(dateMovement), `MMMM${'/'}yyyy`, { locale: pt })}`
-  }, [dateMovement, type])
+    return `Mês ${getDateMovement.month}/${getDateMovement.year}`
+  }, [dateMovement, isTypeYear])
 
   useEffect(() => {
     const eventListener = rewarded.onAdEvent((type, error) => {
-      if (isVisibleAd) {
-        rewarded.show()
-        setVisibleAd(false)
-      }
-
+      if (isVisibleAd) setVisibleAd(false)
       if (type === RewardedAdEventType.EARNED_REWARD) exportReportList()
-
       if (!!error) rewarded.show()
     })
 
     if (!rewarded.loaded) rewarded.load()
 
     return () => eventListener()
-  }, [rewarded, isVisibleAd, setVisibleAd, dataExportedList])
+  }, [rewarded, isVisibleAd, setVisibleAd])
+
+  if (!dataReportDetail) return <Column flex={1} width={1} />
 
   return (
     <ScrollView>
-      <View>
-        <AdsBanner />
-        <Card containerStyle={styles.cardConfig}>
-          <Card.Title>{titleMov}</Card.Title>
-          <Card.Divider />
-          {isGettingMovementYear ? (
-            <Row width={1} height='100%' flex={1}>
-              <ActivityIndicator size='large' color='#4db476' />
+      <AdsBanner />
+      <Column width={1} height='100%' flex={1} px={20}>
+        <StyledCard width={1} height={400} backgroundColor='white' p={20} borderRadius={8} mt={20}>
+          <Row
+            width={1}
+            height={30}
+            pb={10}
+            borderBottomWidth={0.2}
+            borderBottomColor='#c1c1c1'
+            justifyContent='center'
+            alignItems='center'
+            mb={20}
+          >
+            <Text fontSize={16} color='#777777' fontWeight='bold'>
+              {titleMov}
+            </Text>
+          </Row>
+          <Fragment>
+            <Row width={1} justifyContent='center' alignItems='center' mb={20}>
+              <Image style={styles.imageCard} source={caixaImg} />
             </Row>
-          ) : (
-            <Fragment>
-              <Row width={1} justifyContent='center' alignItems='center' mb={20}>
-                <Image style={styles.imageCard} source={caixaImg} />
-              </Row>
 
-              <Text fontSize={20} fontWeight='bold' mb={10}>
-                <Ionicons name='wallet-outline' size={20} /> Saldo:{' '}
-                {numberToReal(Number(financialMovementData?.data?.cashTotal))}
-              </Text>
-              <Text fontSize={20} fontWeight='bold' mb={10}>
-                <Ionicons name='wallet-outline' size={20} /> Gastos:{' '}
-                {numberToReal(Number(financialMovementData?.data?.expenses))}
-              </Text>
-              <Text fontSize={20} mb={2}>
-                Quantidades de Movimentações
-              </Text>
-              <Text fontSize={15}>
-                <Ionicons name='arrow-up-circle-outline' size={15} color='green' /> Entradas:{' '}
-                {financialMovementData?.data?.entries}
-              </Text>
-              <Text fontSize={15}>
-                <Ionicons name='arrow-down-circle-outline' size={15} color='red' /> Saídas:{' '}
-                {financialMovementData?.data?.outflows}
-              </Text>
-            </Fragment>
-          )}
-        </Card>
+            <Text fontSize={20} fontWeight='bold' mb={10}>
+              <Ionicons name='wallet-outline' size={20} color='green' /> Saldo:{' '}
+              {formatCurrency(dataReportDetail?.balanceEntries - dataReportDetail?.balanceOutflows)}
+            </Text>
+            <Text fontSize={20} fontWeight='bold' mb={10}>
+              <Ionicons name='wallet-outline' size={20} color='red' /> Gastos:{' '}
+              {formatCurrency(dataReportDetail.balanceOutflows)}
+            </Text>
+            <Text fontSize={20} mb={2}>
+              Quantidades de Movimentações
+            </Text>
+            <Text fontSize={15}>
+              <Ionicons name='arrow-up-circle-outline' size={15} color='green' /> Entradas: {dataReportDetail.entries}
+            </Text>
+            <Text fontSize={15}>
+              <Ionicons name='arrow-down-circle-outline' size={15} color='red' /> Saídas: {dataReportDetail.outflows}
+            </Text>
+          </Fragment>
+        </StyledCard>
 
         <Column width={1} mt={10} justifyContent='center' alignItems='center'>
-          <Column
+          <StyledCard
             width={1}
             justifyContent='center'
             alignItems='center'
@@ -202,33 +193,39 @@ const MovementDetail: React.FC = () => {
                 - Caso não tenha recebido a mensagem que não está sendo gerado o seu arquivo, tente novamente!
               </Text>
             </Row>
-          </Column>
-          {isGettingReportList || isLoadingAd ? (
-            <ActivityIndicator size='large' color='#4db476' />
-          ) : (
-            <Button
-              height={50}
-              borderRadius={8}
-              border='1px solid'
-              borderColor='#000'
-              py={20}
-              mt={10}
-              alignItems='center'
-              width={170}
-              justifyContent='center'
-              backgroundColor='#fdfdfd'
-              onPress={() => showVisibleAD()}
-            >
-              <Icon name='file-excel' size={20} />
-              <Text ml={10} fontSize={16} fontWeight='bold'>
-                Gerar arquivo
-              </Text>
-            </Button>
-          )}
+          </StyledCard>
+
+          <Button
+            height={50}
+            borderRadius={8}
+            border='1px solid'
+            borderColor='#000'
+            py={20}
+            mt={10}
+            mb={30}
+            alignItems='center'
+            width={170}
+            justifyContent='center'
+            backgroundColor='#fdfdfd'
+            onPress={() => showVisibleAD()}
+          >
+            {!isLoadingAd && (
+              <Fragment>
+                <Icon name='file-excel' size={20} />
+                <Text ml={10} fontSize={16} fontWeight='bold'>
+                  Gerar arquivo
+                </Text>
+              </Fragment>
+            )}
+          </Button>
         </Column>
-      </View>
+      </Column>
     </ScrollView>
   )
 }
+
+const StyledCard = styled(Column)`
+  elevation: 2;
+`
 
 export default MovementDetail

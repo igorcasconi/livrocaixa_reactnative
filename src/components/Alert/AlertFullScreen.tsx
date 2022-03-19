@@ -6,10 +6,7 @@ import { Button, Column, Text, Row } from '..'
 
 interface AlertFullScreenProps {
   title?: string
-  message1?: string
-  message2?: string
-  message3?: string
-  message4?: string
+  messages?: string[]
   isVisibleCheckbox?: boolean
   messageCheckbox?: string
   buttonText?: string
@@ -18,10 +15,7 @@ interface AlertFullScreenProps {
 
 const AlertFullScreen: React.FC<AlertFullScreenProps> = ({
   title,
-  message1,
-  message2,
-  message3,
-  message4,
+  messages,
   isVisibleCheckbox = false,
   messageCheckbox,
   buttonText,
@@ -46,32 +40,13 @@ const AlertFullScreen: React.FC<AlertFullScreenProps> = ({
         </Text>
       </Column>
       <Column width={1}>
-        <Row width={1}>
-          <Text fontSize={16} color='#0C0C0C' textAlign='center'>
-            {message1}
-          </Text>
-        </Row>
-        {!!message2 && (
-          <Row mt={10} width={1}>
+        {messages?.map((message, index) => (
+          <Row width={1} mt={10}>
             <Text fontSize={16} color='#0C0C0C' textAlign='center'>
-              {message2}
+              {message}
             </Text>
           </Row>
-        )}
-        {!!message3 && (
-          <Row mt={10} width={1}>
-            <Text fontSize={16} color='#0C0C0C' textAlign='center'>
-              {message3}
-            </Text>
-          </Row>
-        )}
-        {!!message4 && (
-          <Row mt={10} width={1}>
-            <Text fontSize={16} color='#0C0C0C' textAlign='center'>
-              {message4}
-            </Text>
-          </Row>
-        )}
+        ))}
       </Column>
       <Column width={1} justifyContent='center' alignItems='center'>
         {isVisibleCheckbox && (

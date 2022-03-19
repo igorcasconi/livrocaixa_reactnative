@@ -1,19 +1,19 @@
-import React from 'react'
-import { View, Image, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native'
-import { ListItem, Avatar } from 'react-native-elements'
+import React, { useMemo } from 'react'
+import { Image } from 'react-native'
 import { useNavigation, useRoute } from '@react-navigation/native'
-import { useQuery } from 'react-query'
+import { FlatList } from 'react-native-gesture-handler'
 
-import { numberToReal } from '../../utils/numberToReal'
+import { formatCurrency } from '../../utils/formatters'
 import { useUser } from '../../context/AuthContext'
 import { ReportListProps } from '../../shared/movement'
-import { financialReportList } from '../../services/movimentacao'
 
 import caixaImg from '../../assets/caixa-reg.png'
 import styles from './style'
 import { format } from 'date-fns'
 import { MovementReportProp } from '../../navigation/type'
 import { pt } from 'date-fns/locale'
+import { useRealm } from '../../context/RealmContext'
+import { Button, Column, Row, Text } from '../../components'
 
 const screenYear = 'MovementByYear'
 const routeNavigateDetailYear = 'MovementDetailYear'
@@ -21,7 +21,7 @@ const routeNavigateDetailMonth = 'MovementDetailMonth'
 const year = 'year'
 const month = 'month'
 
-const MovAno: React.FC = () => {
+const MovementReport: React.FC = () => {
   const { navigate } = useNavigation()
   const route = useRoute<MovementReportProp>()
   const { uid } = useUser()
@@ -29,46 +29,48 @@ const MovAno: React.FC = () => {
   const isTypeYear = type === screenYear
   const typeRequest = isTypeYear ? year : month
   const routeNavigateDetail = isTypeYear ? routeNavigateDetailYear : routeNavigateDetailMonth
-
-  const { data: dataMovement, isLoading: isGettingMovementYear } = useQuery(
-    ['movementListGetter', uid, typeRequest],
-    () => financialReportList({ uid, type: typeRequest })
-  )
+  const { getReportList } = useRealm()
+  const dataReportMovement = useMemo(() => getReportList(uid, !isTypeYear), [getReportList, uid, isTypeYear])
 
   const renderItem = ({ item, index }: { item: ReportListProps; index: number }) => {
-    const date = isTypeYear ? format(new Date(item.date), 'yyyy') : new Date(item.date)
+    // const date = isTypeYear ? format(new Date(item.date), 'yyyy') : new Date(item.date)
+    const balance = item.balanceEntries - item.balanceOutflows
     const itemName = isTypeYear
       ? format(new Date(item.date), 'yyyy')
       : format(new Date(item.date), 'MMMM/yyyy', { locale: pt })
     return (
-      <TouchableOpacity onPress={() => navigate(routeNavigateDetail, { dateMovement: date, type: typeRequest })}>
-        <ListItem key={`${index}-${date}`} bottomDivider>
-          <Avatar source={caixaImg} containerStyle={styles.imageCaixa} />
-          <ListItem.Content>
-            <ListItem.Title>{itemName}</ListItem.Title>
-          </ListItem.Content>
-          <ListItem.Title>{numberToReal(Number(item.balance))}</ListItem.Title>
-        </ListItem>
-      </TouchableOpacity>
+      <Button key={index} onPress={() => navigate(routeNavigateDetail, { dateMovement: item.date, type: typeRequest })}>
+        <Row
+          width={1}
+          height={80}
+          p={18}
+          border='0.5px solid #c1c1c1'
+          justifyContent='space-between'
+          alignItems='center'
+        >
+          <Row width={200} alignItems='center'>
+            <Image source={caixaImg} style={styles.imageCaixa} />
+            <Text fontSize={16} color='#21262c' fontWeight='bold' ml={16}>
+              {itemName}
+            </Text>
+          </Row>
+          <Text fontSize={16} color='#21262c'>
+            {formatCurrency(balance)}
+          </Text>
+        </Row>
+      </Button>
     )
   }
 
   return (
-    <View>
-      {isGettingMovementYear ? (
-        <View style={styles.loading}>
-          <Image style={styles.imageCaixaLoading} source={caixaImg} />
-          <ActivityIndicator size='large' color='#4db476' />
-        </View>
-      ) : (
-        <FlatList
-          data={dataMovement?.data}
-          keyExtractor={(item, index) => `${index}-${item.date}`}
-          renderItem={renderItem}
-        />
-      )}
-    </View>
+    <Column flex={1}>
+      <FlatList
+        data={dataReportMovement}
+        keyExtractor={(item, index) => `${index}-${item.date}`}
+        renderItem={renderItem}
+      />
+    </Column>
   )
 }
 
-export default MovAno
+export default MovementReport

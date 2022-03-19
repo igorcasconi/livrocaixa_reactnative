@@ -1,6 +1,5 @@
-export const messageAlertHome = {
-  message1:
-    'Em breve o Livro Caixa sofrerá alterações para se manter vivo, todas suas movimentações serão salvas no dispositivo que você estiver acessando após essa nova atualização, os seus dados não serão mais armazenados online, mas fique tranquilo não perderá nenhuma informação e quando isso acontecer, você será avisado!',
-  message2:
-    'Uma novidade já disponível é que agora em Relatórios, você poderá gerar arquivos em excel para visualizar todas as movimentações, e elas serão salvas em um arquivo no seu dispositivo. Para isso basta entrar em Relatórios, acessar o detalhes da movimentação desejada e clicar no botão "Gerar relatório", que estará disponível para você!'
-}
+export const messageAlertHome = [
+  'Pronto, chegou a nova atualização do Livro Caixa, como foi avisado na atualização anterior, o aplicativo passa a operar no modo offline, armazenando seus dados de movimentações em seu dispositivo.',
+  'Após concordar com essa mensagem abaixo, o aplicativo irá baixar todas as movimentações anteriores para o seu dispositivo para que não perca nenhuma movimentação feita. O aplicativo ainda possui relatórios para serem extraídos e funciona normalmente.',
+  'As propaganda irão continuar para que o aplicativo continue existindo dentro da Play Store.'
+]

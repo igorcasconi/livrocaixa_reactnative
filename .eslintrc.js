@@ -35,6 +35,8 @@ module.exports = {
     'space-before-function-paren': 0,
     'react/prop-types': 'off',
     '@typescript-eslint/no-unused-vars': ['warn', { varsIgnorePattern: '^_', argsIgnorePattern: '^_' }],
-    '@typescript-eslint/explicit-function-return-type': 'off'
+    '@typescript-eslint/explicit-function-return-type': 'off',
+    '@typescript-eslint/ban-ts-ignore': 'off',
+    'react/no-unescaped-entities': 'off'
   }
 }

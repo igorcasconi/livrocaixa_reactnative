@@ -4,11 +4,3 @@ export interface MovProps {
   paymode: string
   datetime: Date
 }
-
-export interface MovPayloadProps {
-  product: string
-  value: number
-  paymode: string
-  date: Date
-  time: string
-}

@@ -139,8 +139,8 @@ android {
         applicationId "com.reacttsproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 12
-        versionName "1.4.0"
+        versionCode 14
+        versionName "3.0.5"
         multiDexEnabled true
     }
     splits {
@@ -205,6 +205,12 @@ android {
     }
 }
 
+preBuild.doFirst {
+    ant.replaceregexp(match: 'android.support.v4.content', replace: 'androidx.core.content', flags: 'g', byline: true)
+        {
+            fileset(dir: '../../node_modules/react-native-doc-viewer/android/src/main/java/com/reactlibrary/', includes: '*.java')
+        }
+}
 
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])

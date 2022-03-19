@@ -16,7 +16,7 @@ provider.interceptors.request.use(async ({ headers, ...config }) => {
 
 provider.interceptors.response.use(
   response => response?.data,
-  err => Promise.reject(err?.response?.data)
+  err => Promise.reject(err)
 )
 
 export default provider

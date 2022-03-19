@@ -19,7 +19,7 @@ const About: React.FC = () => (
 
       <View style={styles.viewInfoVersion}>
         <Ionicons name='checkmark-circle' size={22} color='green' />
-        <Text style={styles.textInfo}> Versão 1.3.2</Text>
+        <Text style={styles.textInfo}> Versão 3.0.5</Text>
       </View>
 
       <View style={styles.viewInfo}>
@@ -35,11 +35,6 @@ const About: React.FC = () => (
         <View style={styles.viewInfoVersion}>
           <Ionicons name='person' size={25} color='#4db476' />
           <Text style={styles.textInfo}> Igor Casconi de Oliveira</Text>
-        </View>
-
-        <View style={styles.viewInfoVersion}>
-          <Ionicons name='link-outline' size={25} color='gray' />
-          <Link url='https://www.linkedin.com/in/igorcasconioliveira/'> Linkedin</Link>
         </View>
       </View>
     </View>

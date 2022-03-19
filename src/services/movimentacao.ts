@@ -1,20 +1,15 @@
 import api from '../providers/api'
-import { MovPayloadProps } from '../pages/AddMovimentacao/types'
+
 import { DetailMovProps } from '../pages/MovementDetail/type'
 import { PaginationProps } from '../shared/pagination'
 import { BalanceProps, MovementProps, ReportListProps } from '../shared/movement'
 
-export const addMov = ({ uid, type, payload }: { uid?: string; type: number; payload: MovPayloadProps }) =>
+export const addMov = ({ uid, type, payload }: { uid?: string; type: number; payload: any }) =>
   api.post(`/create-mov/${uid}/${type}`, payload)
 export const getBalanceCash = ({ uid }: { uid?: string | null }): Promise<BalanceProps> =>
   api.get(`/financial-balance/${uid}`)
-export const getMovements = ({
-  uid,
-  type
-}: {
-  uid?: string | null
-  type: number
-}): Promise<PaginationProps<MovementProps>> => api.get(`/financial-movement/${uid}/${type}`)
+export const getMovements = ({ uid }: { uid?: string | null }): Promise<PaginationProps<MovementProps>> =>
+  api.get(`/financial-movement/${uid}`)
 export const deleteFinancialMovement = ({ uid, idMovement }: { idMovement: number; uid?: string | null }) =>
   api.delete(`/financial-movement-delete/${uid}/${idMovement}`)
 export const financialMovementReportByYearDetail = ({
@@ -50,3 +45,5 @@ export const financialMovementReportListDoc = ({
   month?: string | null
 }): Promise<PaginationProps<MovementProps>> =>
   api.get(`/financial-report-list-doc/${uid}${!!year ? `/${year}` : ''}${!!month ? `/${month}` : ''}`)
+export const getAllMovements = ({ uid }: { uid?: string | null }): Promise<PaginationProps<MovementProps>> =>
+  api.get(`/all-financial-movement/${uid}`)

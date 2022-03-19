@@ -7,8 +7,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import styled from 'styled-components/native'
 
 import { useUser } from '../../context/AuthContext'
-import InputLogin from '../../components/InputLogin'
-import { Row, Button, Text } from '../../components'
+import { Row, Button, Text, Input } from '../../components'
 
 import logoImg from '../../assets/logo.png'
 import { LoginSchema } from '../../schemas/loginSchema'
@@ -67,10 +66,10 @@ const Login: React.FC = () => {
           control={control}
           name='user'
           render={({ value, onChange }) => (
-            <InputLogin
+            <Input
               label='e-mail'
               keyboardType='email-address'
-              icon='person-circle-outline'
+              icon='at'
               autoCapitalize='none'
               placeholder='email@exemplo.com'
               value={value}
@@ -88,10 +87,10 @@ const Login: React.FC = () => {
           control={control}
           name='password'
           render={({ value, onChange }) => (
-            <InputLogin
-              label='senha'
+            <Input
+              label='Senha'
               placeholder='*******'
-              icon='lock-closed'
+              icon='lock'
               value={value}
               secureTextEntry={true}
               onChangeText={onChange}
@@ -105,7 +104,7 @@ const Login: React.FC = () => {
           </Text>
         )}
 
-        <Row width={1} px='10px' mt='15px'>
+        <Row width={1} mt='15px'>
           <Button
             width={1}
             backgroundColor='#3b61e6'

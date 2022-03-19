@@ -18,6 +18,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { AuthProvider } from './src/context/AuthContext'
 import Routes from './src/navigation/Routes'
+import { RealmProvider } from './src/context/RealmContext'
 
 import './src/config/StatusBarConfig'
 
@@ -26,23 +27,23 @@ const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_START }
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
-      cacheTime: 200000,
       refetchOnWindowFocus: false
     }
   }
 })
-
 const App: React.FC = () => {
   return (
     <QueryClientProvider client={queryClient}>
-      <SafeAreaView></SafeAreaView>
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <NavigationContainer>
-          <AuthProvider>
-            <Routes />
-          </AuthProvider>
-        </NavigationContainer>
-      </ApplicationProvider>
+      <RealmProvider>
+        <SafeAreaView />
+        <ApplicationProvider {...eva} theme={eva.light}>
+          <NavigationContainer>
+            <AuthProvider>
+              <Routes />
+            </AuthProvider>
+          </NavigationContainer>
+        </ApplicationProvider>
+      </RealmProvider>
     </QueryClientProvider>
   )
 }
