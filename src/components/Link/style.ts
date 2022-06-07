@@ -4,7 +4,8 @@ const styles = StyleSheet.create({
   textInfoLink: {
     fontSize: 20,
     color: '#1092e6',
-    textDecorationLine: 'underline'
+    textDecorationLine: 'underline',
+    marginLeft: 10
   }
 })
 

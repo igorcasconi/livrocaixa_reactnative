@@ -3,7 +3,7 @@ import { createStackNavigator, StackNavigationOptions } from '@react-navigation/
 
 import { Row } from '../components'
 
-import { Home, MovementDetail, Movement, MovementReport, About } from '../pages'
+import { Home, MovementDetail, Movement, MovementReport, About, PolicyPrivacy } from '../pages'
 import AddMovimentacao from '../pages/AddMovimentacao'
 import Tutorial from '../pages/Tutorial'
 
@@ -104,6 +104,14 @@ const AuthNavigation: React.FC = () => {
           component={About}
           options={{
             headerTitle: 'Sobre',
+            ...optionsHeader
+          }}
+        />
+        <Stack.Screen
+          name='PolicyPrivacy'
+          component={PolicyPrivacy}
+          options={{
+            headerTitle: 'Política de Privacidade',
             ...optionsHeader
           }}
         />

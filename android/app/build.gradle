@@ -139,8 +139,8 @@ android {
         applicationId "com.reacttsproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 14
-        versionName "3.0.5"
+        versionCode 17
+        versionName "3.0.8"
         multiDexEnabled true
     }
     splits {
@@ -219,6 +219,10 @@ dependencies {
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation project(':react-native-fs')
     implementation project(':@react-native-async-storage')
+    implementation project(':appcenter-crashes')
+    implementation project(':appcenter-analytics')
+    implementation project(':appcenter')
+    implementation 'com.squareup.okhttp3:okhttp:4.9.0' 
 
     compile project(':react-native-doc-viewer')
     

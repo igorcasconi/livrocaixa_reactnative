@@ -29,6 +29,7 @@ export type ParamsList = {
   MovementDetailMonth: ParamsMovementDetail
   About: undefined
   MovementFinancial: undefined
+  PolicyPrivacy: undefined
 }
 
 export type ParamsListLogin = {

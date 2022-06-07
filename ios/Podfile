@@ -89,6 +89,8 @@ target 'ReactTSProject' do
 
   pod 'RNReactNativeDocViewer', :path => '../node_modules/react-native-doc-viewer'
 
+  pod 'react-native-webview', :path => '../node_modules/react-native-webview'
+
   target 'ReactTSProjectTests' do
     inherit! :complete
     # Pods for testing
