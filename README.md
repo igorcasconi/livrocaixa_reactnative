@@ -17,23 +17,15 @@ Construção da ideia para o App
 
 Versão em produção
 ===============================
-### 1.2.9
-
-Screenshots da aplicação
-==============================
-<img src="./app-apresentcao/2-apresentacao-tela1.png" alt="Tela Inicial" width="250"/> <img src="./app-apresentcao/3-apresentacao-entradas.png" alt="Tela de Movimentação Entrada" width="250"/> <img src="./app-apresentcao/4-apresentacao-saidas.png" alt="Tela de Movimentação Saídas" width="250"/>
-<img src="./app-apresentcao/5-apresentacao-adicione.png" alt="Tela Adicionar Movimentação" width="250"/> <img src="./app-apresentcao/6-apresentacao-relatorio-anual.png" alt="Relatório Anual" width="250"/> <img src="./app-apresentcao/7-apresentacao-relatorio-mensal.png" alt="Relatório Mensal" width="250"/>
+### 3.1.1
 
 Linguagem e Tecnologias
 ===============================
   - Typescript
   - Front-end
     - React Native
+    - Realm Database
   - Back-end
-    - NodeJS
-      - Sequelize (Conexão, criação de estrutura e querys no banco de dados)
-      - Express (rotas e construção da api)
-      - Cors (permissão de acesso a api)
     - Firebase Authentication (Criação e conexão do usuário para controle dos dados no banco de dados)
 
 BIbliotecas
@@ -46,5 +38,11 @@ BIbliotecas
 - react-native-elements
 - react-native-paper
 - react-nativer-masked-text
-- formik
+- react-hook-form
 - yup
+- realm
+- styled-components
+- styled-system
+- react-native-doc-viewer
+- react-native-webview
+
