@@ -26,13 +26,7 @@ const Home: React.FC = () => {
   const { navigate } = useNavigation()
   const date = new Date()
   const [hasConfirmedTerm, setConfirmedTerm] = useState<boolean>(true)
-  const {
-    realm,
-    createUserFirebase,
-    getAllFinancialMovementsOnline,
-    isWritingOnlineData,
-    userFirebaseRegistered
-  } = useRealm()
+  const { realm, createUserFirebase, isWritingOnlineData } = useRealm()
   const { uid } = useUser()
 
   const verifyStatusConfirmationTerm = async () => {
@@ -41,14 +35,14 @@ const Home: React.FC = () => {
     if (!Boolean(hasConfirmAlert)) return setConfirmedTerm(false)
   }
 
-  const downloadOnlineData = async (uid?: string | null) => {
-    const downloadedData = await getValueStorage('@downloadedOnlineData')
-    const isUserRegistered = userFirebaseRegistered(uid)
+  // const downloadOnlineData = async (uid?: string | null) => {
+  //   const downloadedData = await getValueStorage('@downloadedOnlineData')
+  //   const isUserRegistered = userFirebaseRegistered(uid)
 
-    if (Boolean(downloadedData) || !isUserRegistered) return
+  //   if (Boolean(downloadedData) || !isUserRegistered) return
 
-    return getAllFinancialMovementsOnline(uid)
-  }
+  //   return getAllFinancialMovementsOnline(uid)
+  // }
 
   const setUserFirebaseId = (uid?: string | null) => {
     if (!!realm?.objects('UserData').length) return
@@ -86,22 +80,21 @@ const Home: React.FC = () => {
     </Button>
   )
 
-  if (!hasConfirmedTerm) {
-    return (
-      <AlertFullScreen
-        title='Atenção'
-        messages={messageAlertHome}
-        buttonText='Continuar'
-        messageCheckbox='Clique aqui para confirmar que está de acordo com o aviso acima e continuar para o uso do Livro Caixa.'
-        isVisibleCheckbox={true}
-        buttonHandler={() => {
-          setStorage('@terms', 'true')
-          setConfirmedTerm(true)
-          downloadOnlineData(uid)
-        }}
-      />
-    )
-  }
+  // if (!hasConfirmedTerm) {
+  //   return (
+  //     <AlertFullScreen
+  //       title='Atenção'
+  //       messages={messageAlertHome}
+  //       buttonText='Continuar'
+  //       messageCheckbox='Clique aqui para confirmar que está de acordo com o aviso acima e continuar para o uso do Livro Caixa.'
+  //       isVisibleCheckbox={true}
+  //       buttonHandler={() => {
+  //         setStorage('@terms', 'true')
+  //         setConfirmedTerm(true)
+  //       }}
+  //     />
+  //   )
+  // }
 
   if (isWritingOnlineData) {
     return (
@@ -120,7 +113,7 @@ const Home: React.FC = () => {
         <Row width={1} mb={10} justifyContent='center'>
           <Text fontSize={16} fontWeight='bold' textAlign='center' color='black'>
             {/* eslint-disable-next-line */}
-          {format(date, "E, d 'de' MMMM 'de' yyyy", { locale: pt })}
+            {format(date, "E, d 'de' MMMM 'de' yyyy", { locale: pt })}
           </Text>
         </Row>
         <Row width={1}>
@@ -134,9 +127,6 @@ const Home: React.FC = () => {
         keyExtractor={(item: MenuProps, index: number) => `${index}-${item.id}`}
         renderItem={renderItem}
       />
-      <Text fontSize={12} mt={2} textAlign='center'>
-        - As propagandas ajudam o aplicativo a continuar existindo -
-      </Text>
       <AdsBanner margin={-1} />
     </Column>
   )

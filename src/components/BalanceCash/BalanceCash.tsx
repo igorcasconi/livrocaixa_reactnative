@@ -18,12 +18,10 @@ const BalanceCash: React.FC<BalanceCashProps> = ({ needUpdateBalance }) => {
   const { getBalanceCash } = useRealm()
   const isFocused = useIsFocused()
 
-  const balanceCash = useCallback(() => formatCurrency(getBalanceCash(uid)), [
-    getBalanceCash,
-    uid,
-    isFocused,
-    needUpdateBalance
-  ])
+  const balanceCash = useCallback(
+    () => formatCurrency(getBalanceCash(uid)),
+    [getBalanceCash, uid, isFocused, needUpdateBalance]
+  )
 
   useEffect(() => {
     if (needUpdateBalance) balanceCash()

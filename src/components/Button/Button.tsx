@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import styled, { css } from 'styled-components/native'
 import { flexbox, layout, space, color, position, border } from 'styled-system'
 
@@ -8,7 +8,7 @@ type ButtonProps = StyledProps & {
   onPress?: () => void
 }
 
-const Button: React.FC<ButtonProps> = styled.TouchableOpacity<ButtonProps>(
+const Button: React.FC<PropsWithChildren<ButtonProps>> = styled.TouchableOpacity<ButtonProps>(
   () => css`
     flex-direction: row;
     ${color};

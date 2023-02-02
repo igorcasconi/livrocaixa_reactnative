@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { PropsWithChildren } from 'react'
 import styled, { css } from 'styled-components/native'
 import { space, layout, color, flexbox, position, border } from 'styled-system'
 
@@ -8,7 +8,7 @@ export interface RowProps extends StyledProps {
   as?: unknown
 }
 
-const Row: React.FC<RowProps> = styled.View<RowProps>(
+const Row: React.FC<PropsWithChildren<RowProps>> = styled.View<RowProps>(
   () => css`
     flex-direction: row;
     ${color};

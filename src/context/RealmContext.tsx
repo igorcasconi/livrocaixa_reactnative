@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react'
+import React, { createContext, useState, useContext, useEffect, PropsWithChildren } from 'react'
 import { useMutation } from 'react-query'
 import Realm from 'realm'
 
@@ -26,7 +26,7 @@ interface ContextProps {
 
 const RealmContext = createContext<ContextProps>({} as ContextProps)
 
-const RealmProvider: React.FC = ({ children }) => {
+const RealmProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [realm, setRealm] = useState<Realm | null>(null)
   const [isWritingOnlineData, setWritingOnlineData] = useState<boolean | null>(null)
 

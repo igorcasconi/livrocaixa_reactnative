@@ -23,7 +23,7 @@ import { useRealm } from '../../context/RealmContext'
 import { showToast } from '../../utils/notification'
 import styled from 'styled-components'
 //eslint-disable-next-line
-var RNFS = require('react-native-fs');
+var RNFS = require('react-native-fs')
 
 const adUnitId = Config.ADMOB_AD_REWARDS
 
@@ -33,6 +33,7 @@ const MovementDetail: React.FC = () => {
   const { uid } = useUser()
   const [isLoadingAd, setLoadingAd] = useState<boolean>(false)
   const [isVisibleAd, setVisibleAd] = useState<boolean>(true)
+  const [hasClickForGenerateFile, setClickForGenerateFile] = useState<boolean>(false)
   const rewarded = RewardedAd.createForAdRequest(adUnitId)
   const { getReportList, getDataReportListForExcel } = useRealm()
   const isTypeYear = type === 'year'
@@ -64,17 +65,9 @@ const MovementDetail: React.FC = () => {
     return { year: selectedYear, month: formattedMonth }
   }, [dateMovement])
 
-  const showVisibleAD = useCallback(() => {
-    if (!rewarded.loaded) {
-      setVisibleAd(true)
-      return rewarded.load()
-    }
-
-    return rewarded.show()
-  }, [rewarded])
-
   const exportReportList = useCallback(async () => {
     const isGrantedAccess = await getAccessPermission()
+
     const dataExported = getDataReportListForExcel(String(dateMovement), uid, !isTypeYear)
     setLoadingAd(true)
 
@@ -97,12 +90,32 @@ const MovementDetail: React.FC = () => {
         (error: any) =>
           error && showToast('Ocorreu um erro ao abrir seu arquivo de relatório, ele se encontra em downloads!')
       )
-      setLoadingAd(false)
     } catch (error: any) {
       setLoadingAd(false)
       showToast('Ocorreu erro ao criar seu arquivo!')
+    } finally {
+      setLoadingAd(false)
+      setClickForGenerateFile(false)
     }
   }, [dateMovement, uid, isTypeYear])
+
+  const showVisibleAD = useCallback(() => {
+    rewarded.onAdEvent((_, error) => {
+      if (hasClickForGenerateFile) return exportReportList()
+      if (error) {
+        showToast(
+          'Ocorreu erro ao criar seu arquivo, por favor clique novamente para que seu relatório seja gerado corretamente!'
+        )
+        setClickForGenerateFile(true)
+      }
+    })
+    if (!rewarded.loaded) {
+      setVisibleAd(true)
+      return rewarded.load()
+    }
+
+    return rewarded.show()
+  }, [rewarded])
 
   const titleMov = useMemo(() => {
     if (isTypeYear) return `Ano ${getDateMovement.year}`
@@ -114,7 +127,9 @@ const MovementDetail: React.FC = () => {
     const eventListener = rewarded.onAdEvent((type, error) => {
       if (isVisibleAd) setVisibleAd(false)
       if (type === RewardedAdEventType.EARNED_REWARD) exportReportList()
-      if (!!error) rewarded.show()
+      if (!!error) {
+        rewarded.show()
+      }
     })
 
     if (!rewarded.loaded) rewarded.load()
@@ -128,7 +143,7 @@ const MovementDetail: React.FC = () => {
     <ScrollView>
       <AdsBanner />
       <Column width={1} height='100%' flex={1} px={20}>
-        <StyledCard width={1} height={400} backgroundColor='white' p={20} borderRadius={8} mt={20}>
+        <StyledCard width={1} minHeight={400} backgroundColor='white' p={20} borderRadius={8} mt={20}>
           <Row
             width={1}
             height={30}
@@ -184,19 +199,14 @@ const MovementDetail: React.FC = () => {
               </Text>
             </Row>
             <Row width={1}>
-              <Text fontSize={12}>
-                - Após assistir a propaganda seu arquivo estará disponível na pasta de downloads do dispositivo
-              </Text>
-            </Row>
-            <Row width={1}>
-              <Text fontSize={12}>
-                - Caso não tenha recebido a mensagem que não está sendo gerado o seu arquivo, tente novamente!
+              <Text fontSize={12} color='red'>
+                - Caso não tenha recebido a mensagem que "está sendo gerado o seu arquivo", tente novamente!
               </Text>
             </Row>
           </StyledCard>
 
           <Button
-            height={50}
+            height={60}
             borderRadius={8}
             border='1px solid'
             borderColor='#000'
@@ -211,8 +221,8 @@ const MovementDetail: React.FC = () => {
           >
             {!isLoadingAd && (
               <Fragment>
-                <Icon name='file-excel' size={20} />
-                <Text ml={10} fontSize={16} fontWeight='bold'>
+                <Icon name='file-excel' size={18} />
+                <Text ml={10} fontSize={14} lineHeight='20px' fontWeight='bold'>
                   Gerar arquivo
                 </Text>
               </Fragment>
