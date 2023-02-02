@@ -1,9 +1,12 @@
-import axios from "axios";
+import axios from 'axios'
+import Config from 'react-native-config'
 
-const DatabaseService = axios.create({baseURL: "http://igorcasconi-dev.umbler.net/api"});
+const DatabaseService = axios.create({ baseURL: `${Config.API_URL}` })
 
-export const config = {
-    headers: {'X-My-Custom-Header': 'Header-Value'}
-};
+DatabaseService.defaults.headers.common['X-My-Custom-Header'] = 'Header-Value'
+<<<<<<< HEAD
+DatabaseService.defaults.headers.common['Accept'] = '*/*'
+=======
+>>>>>>> 000880b (fix(app): fixed app)
 
-export default DatabaseService;
+export default DatabaseService
