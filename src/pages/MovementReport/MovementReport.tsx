@@ -40,23 +40,16 @@ const MovementReport: React.FC = () => {
       : format(new Date(item.date), 'MMMM/yyyy', { locale: pt })
     return (
       <Button key={index} onPress={() => navigate(routeNavigateDetail, { dateMovement: item.date, type: typeRequest })}>
-        <Row
-          width={1}
-          height={80}
-          p={18}
-          border='0.5px solid #c1c1c1'
-          justifyContent='space-between'
-          alignItems='center'
-        >
-          <Row width={200} alignItems='center'>
-            <Image source={caixaImg} style={styles.imageCaixa} />
-            <Text fontSize={16} color='#21262c' fontWeight='bold' ml={16}>
+        <Row width={1} height={80} p={18} border='0.5px solid #c1c1c1' justifyContent='flex-start' alignItems='center'>
+          <Image source={caixaImg} style={styles.imageCaixa} />
+          <Column width={200} px={16} alignItems='flex-start'>
+            <Text fontSize={16} color='#21262c' fontWeight='bold'>
               {itemName}
             </Text>
-          </Row>
-          <Text fontSize={16} color='#21262c'>
-            {formatCurrency(balance)}
-          </Text>
+            <Text fontSize={16} color='#21262c'>
+              {formatCurrency(balance)}
+            </Text>
+          </Column>
         </Row>
       </Button>
     )

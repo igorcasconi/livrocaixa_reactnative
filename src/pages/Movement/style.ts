@@ -8,7 +8,9 @@ export const tabBarOptions: BottomTabBarOptions = {
   style: {
     elevation: 0,
     shadowOpacity: 0,
-    height: 64
+    height: 64,
+    flexDirection: 'column',
+    justifyContent: 'center'
   },
   tabStyle: {
     flexDirection: 'row',
@@ -17,8 +19,8 @@ export const tabBarOptions: BottomTabBarOptions = {
   },
   iconStyle: {
     flex: 0,
-    width: 20,
-    height: 20
+    width: 22,
+    height: 40
   },
   labelStyle: {
     fontSize: 14,

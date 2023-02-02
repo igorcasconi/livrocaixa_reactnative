@@ -2,6 +2,7 @@ import React, { useMemo, useState } from 'react'
 import { Alert, ToastAndroid, FlatList, Image } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useIsFocused, useNavigation, useRoute } from '@react-navigation/native'
+import styled from 'styled-components/native'
 
 import reciboEntradaImg from '../../assets/recibo.png'
 import reciboSaidaImg from '../../assets/recibo_saida.png'
@@ -53,41 +54,57 @@ const MovementComponent: React.FC<MovementProps> = () => {
     ])
   }
 
-  const MovementItem = React.memo((props: MovementProps) => {
+  const MovementItem = (props: MovementProps) => {
     const imageItem = isTypeRoute === 1 ? reciboEntradaImg : reciboSaidaImg
+    const colorValue = isTypeRoute === 1 ? '#4db476' : 'red'
     const formattedDate = format(new Date(props.date), 'dd/MM/yyyy')
-    const payModeWithDate = !!props.paymode ? `${props.paymode} - ${formattedDate}` : formattedDate
+    const payMode = props.paymode
     const formattedValue = formatCurrency(props?.value)
     return (
-      <Row width={1} height={80} p={18} border='0.5px solid #c1c1c1' justifyContent='space-between' alignItems='center'>
-        <Column width={200}>
-          <Row width={1}>
+      <Row
+        width={1}
+        height='auto'
+        minHeight={80}
+        flex={1}
+        px={16}
+        py={18}
+        border='0.5px solid #c1c1c1'
+        justifyContent='center'
+        alignItems='center'
+      >
+        <Column width={1} maxWidth='90%'>
+          <Row width='80%' ml='8px'>
             <Image source={imageItem} style={styles.imageRecibo} />
-            <Column width={1} height='100%' justifyContent='center'>
+            <Column width='100%' height='100%' justifyContent='center'>
               <Text fontSize={16} color='#21262c' fontWeight='bold'>
                 {props.product}
               </Text>
+              <Text fontSize={16} color={colorValue} mr='16px' fontWeight='bold'>
+                {formattedValue}
+              </Text>
+              {!!payMode && (
+                <Text fontSize={14} color='#21262c'>
+                  {payMode}
+                </Text>
+              )}
               <Text fontSize={14} color='#21262c'>
-                {payModeWithDate}
+                {formattedDate}
               </Text>
             </Column>
           </Row>
         </Column>
-        <Row alignItems='center' justifyContent='flex-start'>
-          <Text fontSize={14} color='#21262c' mr='16px'>
-            {formattedValue}
-          </Text>
+        <Column maxWidth='10%' justifyContent='flex-end'>
           <Button backgroundColor='transparent' onPress={() => alertDeleteHandler(props?.index)}>
             <Ionicons name='trash-bin' color='red' size={25} />
           </Button>
-        </Row>
+        </Column>
       </Row>
     )
-  })
+  }
 
   return (
-    <Column flex={1} width={1} mt={60}>
-      <Column width={1} height={60} justifyContent='center' px={16} backgroundColor='#4db476' zIndex={99}>
+    <Column flex={1} height='100%' width={1} mt={60}>
+      <Column width={1} minHeight={60} justifyContent='center' px={16} backgroundColor='#4db476' zIndex={99}>
         <Row width={1} justifyContent='space-between' alignItems='center'>
           <BalanceCash needUpdateBalance={isDeletedMovement} />
           <Button
@@ -105,18 +122,22 @@ const MovementComponent: React.FC<MovementProps> = () => {
           </Button>
         </Row>
       </Column>
-      <Column flex={1}>
-        <FlatList
-          data={dataFinancialMovement}
-          keyExtractor={(item, index) => `${item.index}-${index}`}
-          renderItem={({ item }) => <MovementItem {...item} />}
-          updateCellsBatchingPeriod={50}
-          maxToRenderPerBatch={50}
-          initialNumToRender={20}
-        />
-      </Column>
+      <MovementList
+        data={dataFinancialMovement}
+        keyExtractor={(item, index) => `${item.index}-${index}`}
+        renderItem={({ item }) => <MovementItem {...item} />}
+        updateCellsBatchingPeriod={50}
+        maxToRenderPerBatch={50}
+        initialNumToRender={20}
+      />
     </Column>
   )
 }
+
+const MovementList = styled.FlatList`
+  height: 100%;
+  flex: 1;
+  width: 100%;
+`
 
 export default MovementComponent

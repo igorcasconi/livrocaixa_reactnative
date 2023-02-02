@@ -140,7 +140,7 @@ const Login: React.FC = () => {
             borderRadius={8}
             onPress={() => navigate('SignUp')}
           >
-            <Text fontSize='16px' fontWeight='bold' color='white' textAlign='center'>
+            <Text fontSize='16px' fontWeight='bold' lineHeight='16px' color='white' textAlign='center'>
               Novo no Aplicativo? Cadastre-se!
             </Text>
           </Button>
@@ -157,7 +157,7 @@ const Login: React.FC = () => {
             borderRadius={8}
             onPress={() => navigate('ForgotPassword')}
           >
-            <Text fontSize='16px' fontWeight='bold' color='white' textAlign='center'>
+            <Text fontSize='16px' fontWeight='bold' lineHeight='16px' color='white' textAlign='center'>
               Esqueceu a senha?
             </Text>
           </Button>
