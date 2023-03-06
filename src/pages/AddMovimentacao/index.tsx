@@ -82,7 +82,6 @@ const AddMovimentacao: React.FC = () => {
   return (
     <Column>
       <ScrollView>
-        <AdsBanner />
         <AdsInterstitial />
         <CardMov>
           <Row justifyContent='space-around' mb={20} height='80px'>
@@ -180,6 +179,7 @@ const AddMovimentacao: React.FC = () => {
             </Button>
           </Column>
         </CardMov>
+        <AdsBanner />
       </ScrollView>
     </Column>
   )
