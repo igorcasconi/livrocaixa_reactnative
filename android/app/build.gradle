@@ -147,8 +147,8 @@ android {
         applicationId "com.reacttsproject"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 19
-        versionName "3.1.1"
+        versionCode 20
+        versionName "3.1.2"
         multiDexEnabled true
     }
     splits {
@@ -228,6 +228,7 @@ preBuild.doFirst {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
+    implementation('androidx.work:work-runtime:2.7.1')
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
     implementation project(':react-native-fs')
@@ -269,9 +270,5 @@ task copyDownloadableDepsToLibs(type: Copy) {
 }
 googleServices {disableVersionCheck = true}
 apply from: file("../../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesAppBuildGradle(project)
-<<<<<<< HEAD
 apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply from: "../../node_modules/react-native-code-push/android/codepush.gradle"
-=======
-apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
->>>>>>> 000880b (fix(app): fixed app)

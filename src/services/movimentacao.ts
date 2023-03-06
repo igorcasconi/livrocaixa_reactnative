@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import api from '../providers/api'
 
 import { DetailMovProps } from '../pages/MovementDetail/type'
@@ -48,10 +47,3 @@ export const financialMovementReportListDoc = ({
   api.get(`/financial-report-list-doc/${uid}${!!year ? `/${year}` : ''}${!!month ? `/${month}` : ''}`)
 export const getAllMovements = ({ uid }: { uid?: string | null }): Promise<PaginationProps<MovementProps>> =>
   api.get(`/all-financial-movement/${uid}`)
-=======
-import DatabaseService from './DatabaseService'
-import { MovPayloadProps } from '../pages/AddMovimentacao/types'
-
-export const addMov = (uid: string | undefined, type: number, payload: MovPayloadProps) =>
-  DatabaseService.post(`/movimentacao_caixa/create-mov/${uid}/${type}/`, payload)
->>>>>>> 000880b (fix(app): fixed app)

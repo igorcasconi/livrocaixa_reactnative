@@ -1,8 +1,14 @@
 export const formatCurrency = (money: number): string => {
   if (money) {
-    const numero = parseFloat(String(money)).toFixed(2).split('.')
-    numero[0] = 'R$ ' + numero[0].split(/(?=(?:...)*$)/).join('.')
-    return numero.join(',')
+    const numberFloat = parseFloat(String(money)).toFixed(2).split('.')
+    const numberSplitted = numberFloat[0].split(/(?=(?:...)*$)/)
+    console.log(numberSplitted)
+    const numberSliced = numberSplitted.slice(1)
+    const numberFixed = numberSplitted.includes('-')
+      ? numberSplitted[0] + numberSliced.join('.')
+      : numberSplitted.join('.')
+    const formatted = 'R$ ' + numberFixed + ',' + numberFloat[1]
+    return formatted
   }
 
   return 'R$ 0,00'

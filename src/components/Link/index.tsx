@@ -1,34 +1,29 @@
-import React, { useCallback, Fragment } from 'react'
-import { Alert, Linking, TouchableOpacity, Text } from 'react-native'
+import React, { useCallback, Fragment, PropsWithChildren } from 'react'
+import { Alert, Linking } from 'react-native'
 
-import styles from './style'
+import { Text } from '../Text'
+import { Button } from '../Button'
 
 interface LinkProps {
   url: string
 }
 
-const Link: React.FC<LinkProps> = ({ url, children }) => {
+const Link: React.FC<PropsWithChildren<LinkProps>> = ({ url, children }) => {
   const handlePress = useCallback(async () => {
-<<<<<<< HEAD
     try {
       await Linking.openURL(url)
     } catch (err) {
-=======
-    const supported = await Linking.canOpenURL(url)
-
-    if (supported) {
-      await Linking.openURL(url)
-    } else {
->>>>>>> 000880b (fix(app): fixed app)
       Alert.alert('Não foi possível abrir a URL:' + url)
     }
   }, [url])
 
   return (
     <Fragment>
-      <TouchableOpacity onPress={handlePress}>
-        <Text style={styles.textInfoLink}>{children}</Text>
-      </TouchableOpacity>
+      <Button onPress={handlePress}>
+        <Text fontSize={10} color='#1092e6' textDecorationLine='underline' marginLeft={10}>
+          {children}
+        </Text>
+      </Button>
     </Fragment>
   )
 }

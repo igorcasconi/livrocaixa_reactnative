@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react'
-import { View, ActivityIndicator } from 'react-native'
+import { ActivityIndicator } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import { useNavigation } from '@react-navigation/native'
 
@@ -41,7 +41,7 @@ const ForgotPassword: React.FC = () => {
       </Column>
 
       <Column>
-        <View>
+        <Column>
           <Controller
             control={control}
             name='email'
@@ -96,7 +96,7 @@ const ForgotPassword: React.FC = () => {
               </Row>
             )}
           </Column>
-        </View>
+        </Column>
       </Column>
     </Column>
   )

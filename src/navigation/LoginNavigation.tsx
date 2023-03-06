@@ -1,14 +1,7 @@
 import React from 'react'
 import { createStackNavigator } from '@react-navigation/stack'
 
-<<<<<<< HEAD
 import { Login, ForgotPassword, CompletionForgotPass, SignUp } from '../pages'
-=======
-import Login from '../pages/Login'
-import Signup from '../pages/Signup'
-import ForgotPassword from '../pages/ForgotPassword'
-import ConfirmScreen from '../pages/ConfirmScreen'
->>>>>>> 000880b (fix(app): fixed app)
 
 import { ParamsListLogin } from './type'
 
@@ -26,11 +19,7 @@ const LoginNavigation = () => {
       />
       <Stack.Screen
         name='SignUp'
-<<<<<<< HEAD
         component={SignUp}
-=======
-        component={Signup}
->>>>>>> 000880b (fix(app): fixed app)
         options={{
           headerShown: false
         }}
@@ -45,13 +34,8 @@ const LoginNavigation = () => {
       />
 
       <Stack.Screen
-<<<<<<< HEAD
         name='CompletionForgotPass'
         component={CompletionForgotPass}
-=======
-        name='ConfirmScreen'
-        component={ConfirmScreen}
->>>>>>> 000880b (fix(app): fixed app)
         options={{
           headerShown: false
         }}

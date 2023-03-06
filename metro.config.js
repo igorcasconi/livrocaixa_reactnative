@@ -10,11 +10,7 @@ module.exports = {
     getTransformOptions: async () => ({
       transform: {
         experimentalImportSupport: false,
-<<<<<<< HEAD
         inlineRequires: true
-=======
-        inlineRequires: false
->>>>>>> 000880b (fix(app): fixed app)
       },
       resolver: {
         /* resolver options */

@@ -1,4 +1,4 @@
-import React, { createContext, useState, Dispatch, useContext, useEffect } from 'react'
+import React, { createContext, useState, Dispatch, useContext, useEffect, PropsWithChildren } from 'react'
 import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth'
 
 interface ContextProps {
@@ -17,7 +17,7 @@ interface ContextProps {
 
 const AuthContext = createContext<ContextProps>({} as ContextProps)
 
-const AuthProvider: React.FC = ({ children }) => {
+const AuthProvider: React.FC<PropsWithChildren<any>> = ({ children }) => {
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null)
   const [erro, setErro] = useState<boolean>(false)
   const [uid, setUid] = useState<string | null | undefined>(null)

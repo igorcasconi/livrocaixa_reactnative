@@ -3,7 +3,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons'
 import { CheckBox } from '@ui-kitten/components'
 
 import { Button, Column, Text, Row } from '..'
-import { ScrollView } from 'react-native'
+import { ScrollView } from 'react-native-gesture-handler'
 
 interface AlertFullScreenProps {
   title?: string

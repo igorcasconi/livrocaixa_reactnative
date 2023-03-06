@@ -1,11 +1,11 @@
 import React from 'react'
-import { ScrollView, Keyboard, ActivityIndicator } from 'react-native'
+import { Keyboard, ActivityIndicator } from 'react-native'
 import { Controller, useForm } from 'react-hook-form'
 import { useNavigation } from '@react-navigation/native'
 import { yupResolver } from '@hookform/resolvers/yup'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import styled from 'styled-components/native'
-
+import { ScrollView } from 'react-native-gesture-handler'
 import { useUser } from '../../context/AuthContext'
 import { Row, Button, Text, Input } from '../../components'
 

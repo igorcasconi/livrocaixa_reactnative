@@ -1,5 +1,5 @@
 import React, { Fragment, useCallback, useEffect, useMemo, useState } from 'react'
-import { Image, ScrollView, PermissionsAndroid } from 'react-native'
+import { Image, PermissionsAndroid } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 import Icon from 'react-native-vector-icons/FontAwesome5'
 import { format } from 'date-fns'
@@ -9,6 +9,7 @@ import XLSX from 'xlsx'
 import OpenFile from 'react-native-doc-viewer'
 import { RewardedAd, RewardedAdEventType } from '@react-native-firebase/admob'
 import Config from 'react-native-config'
+import { ScrollView } from 'react-native-gesture-handler'
 
 import { formatCurrency } from '../../utils/formatters'
 import AdsBanner from '../../components/AdsBanner'
@@ -25,7 +26,7 @@ import styled from 'styled-components'
 //eslint-disable-next-line
 var RNFS = require('react-native-fs')
 
-const adUnitId = Config.ADMOB_AD_REWARDS
+const adUnitId = Config.ADMOB_AD_REWARDS ?? ''
 
 const MovementDetail: React.FC = () => {
   const route = useRoute<DetailMovRouteProp>()

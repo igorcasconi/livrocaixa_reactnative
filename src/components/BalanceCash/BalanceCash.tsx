@@ -23,6 +23,8 @@ const BalanceCash: React.FC<BalanceCashProps> = ({ needUpdateBalance }) => {
     [getBalanceCash, uid, isFocused, needUpdateBalance]
   )
 
+  console.log(getBalanceCash(uid))
+
   useEffect(() => {
     if (needUpdateBalance) balanceCash()
   }, [needUpdateBalance, balanceCash])

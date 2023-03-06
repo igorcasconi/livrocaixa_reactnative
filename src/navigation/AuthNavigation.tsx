@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import React, { Fragment } from 'react'
 import { createStackNavigator, StackNavigationOptions } from '@react-navigation/stack'
 
@@ -7,29 +6,12 @@ import { Row } from '../components'
 import { Home, MovementDetail, Movement, MovementReport, About, PolicyPrivacy } from '../pages'
 import AddMovimentacao from '../pages/AddMovimentacao'
 import Tutorial from '../pages/Tutorial'
-=======
-import React from 'react'
-import { createStackNavigator } from '@react-navigation/stack'
-import { TouchableOpacity } from 'react-native'
-import Ionicons from 'react-native-vector-icons/Ionicons'
-
-import { useUser } from '../context/AuthContext'
-
-import Home from '../pages/Home'
-import Movimentacao from '../pages/Movimentacao'
-import AddMovimentacao from '../pages/AddMovimentacao'
-import OthersMov from '../pages/OthersMov'
-import Tutorial from '../pages/Tutorial'
-import DetailMov from '../pages/DetailMov'
-import About from '../pages/About'
->>>>>>> 000880b (fix(app): fixed app)
 
 import { ParamsList } from './type'
 
 const Stack = createStackNavigator<ParamsList>()
 
 const AuthNavigation: React.FC = () => {
-<<<<<<< HEAD
   // const { logout } = useUser()
 
   // const Logout = () => (
@@ -48,24 +30,11 @@ const AuthNavigation: React.FC = () => {
 
   return (
     <Fragment>
-=======
-  const { logout } = useUser()
-
-  const Logout = () => (
-    <TouchableOpacity onPress={logout} style={{ marginRight: 10 }}>
-      <Ionicons name='log-out-outline' color='white' size={30} />
-    </TouchableOpacity>
-  )
-
-  return (
-    <>
->>>>>>> 000880b (fix(app): fixed app)
       <Stack.Navigator initialRouteName='Home'>
         <Stack.Screen
           name='Home'
           component={Home}
           options={{
-<<<<<<< HEAD
             headerLeft: undefined,
             headerTitle: 'Livro Caixa',
             ...optionsHeader
@@ -79,27 +48,6 @@ const AuthNavigation: React.FC = () => {
             headerTintColor: '#000',
             headerTransparent: true,
             headerBackground: () => <Row width={1} backgroundColor='#4db476' height={60} mb={60} />,
-=======
-            headerTitle: 'Livro Caixa',
-            headerTintColor: '#000',
-            headerLeft: undefined,
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
-            headerTitleAlign: 'center',
-            headerRight: () => <Logout />
-          }}
-        />
-        <Stack.Screen
-          name='Movimentacao'
-          component={Movimentacao}
-          options={{
-            headerTitle: 'Movimentação do Caixa',
-            headerTintColor: '#000',
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
->>>>>>> 000880b (fix(app): fixed app)
             headerTitleAlign: 'center'
           }}
         />
@@ -108,7 +56,6 @@ const AuthNavigation: React.FC = () => {
           component={AddMovimentacao}
           options={{
             headerTitle: 'Adicionar Movimentação',
-<<<<<<< HEAD
             ...optionsHeader
           }}
         />
@@ -126,37 +73,6 @@ const AuthNavigation: React.FC = () => {
           options={{
             headerTitle: 'Movimentações/Mês',
             ...optionsHeader
-=======
-            headerTintColor: '#000',
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
-            headerTitleAlign: 'center'
-          }}
-        />
-        <Stack.Screen
-          name='MovAno'
-          component={OthersMov}
-          options={{
-            headerTitle: 'Movimentações/Ano',
-            headerTintColor: '#000',
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
-            headerTitleAlign: 'center'
-          }}
-        />
-        <Stack.Screen
-          name='MovMes'
-          component={OthersMov}
-          options={{
-            headerTitle: 'Movimentações/Mês',
-            headerTintColor: '#000',
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
-            headerTitleAlign: 'center'
->>>>>>> 000880b (fix(app): fixed app)
           }}
         />
         <Stack.Screen
@@ -164,7 +80,6 @@ const AuthNavigation: React.FC = () => {
           component={Tutorial}
           options={{
             headerTitle: 'Ajuda',
-<<<<<<< HEAD
             ...optionsHeader
           }}
         />
@@ -182,37 +97,6 @@ const AuthNavigation: React.FC = () => {
           options={{
             headerTitle: 'Detalhes',
             ...optionsHeader
-=======
-            headerTintColor: '#000',
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
-            headerTitleAlign: 'center'
-          }}
-        />
-        <Stack.Screen
-          name='DetailMovAno'
-          component={DetailMov}
-          options={{
-            headerTitle: 'Detalhes',
-            headerTintColor: '#000',
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
-            headerTitleAlign: 'center'
-          }}
-        />
-        <Stack.Screen
-          name='DetailMovMes'
-          component={DetailMov}
-          options={{
-            headerTitle: 'Detalhes',
-            headerTintColor: '#000',
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
-            headerTitleAlign: 'center'
->>>>>>> 000880b (fix(app): fixed app)
           }}
         />
         <Stack.Screen
@@ -220,7 +104,6 @@ const AuthNavigation: React.FC = () => {
           component={About}
           options={{
             headerTitle: 'Sobre',
-<<<<<<< HEAD
             ...optionsHeader
           }}
         />
@@ -234,17 +117,6 @@ const AuthNavigation: React.FC = () => {
         />
       </Stack.Navigator>
     </Fragment>
-=======
-            headerTintColor: '#000',
-            headerStyle: {
-              backgroundColor: '#4db476'
-            },
-            headerTitleAlign: 'center'
-          }}
-        />
-      </Stack.Navigator>
-    </>
->>>>>>> 000880b (fix(app): fixed app)
   )
 }
 

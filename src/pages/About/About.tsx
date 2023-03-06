@@ -1,56 +1,70 @@
 import React from 'react'
-import { View, ScrollView, Text, Image, TouchableOpacity } from 'react-native'
+import { Image } from 'react-native'
 import Ionicons from 'react-native-vector-icons/Ionicons'
 
 import Link from '../../components/Link'
 import logoImg from '../../assets/logo.png'
 import styles from './style'
 import { useNavigation } from '@react-navigation/native'
+import { Button, Column, Text } from '../../components'
+import { ScrollView } from 'react-native-gesture-handler'
 
 const About: React.FC = () => {
   const { navigate } = useNavigation()
   return (
     <ScrollView>
-      <View style={styles.container}>
-        <View style={styles.viewButton}>
+      <Column style={styles.container}>
+        <Column style={styles.viewButton}>
           <Text style={styles.textInit}>Livro Caixa</Text>
-        </View>
+        </Column>
 
-        <View style={styles.viewImageLogo}>
+        <Column style={styles.viewImageLogo}>
           <Image style={styles.imageLogo} source={logoImg} />
-        </View>
+        </Column>
 
-        <View style={styles.viewInfoVersion}>
+        <Column style={styles.viewInfoVersion}>
           <Ionicons name='checkmark-circle' size={22} color='green' />
-          <Text style={styles.textInfo}> Versão 3.0.5</Text>
-        </View>
+          <Text fontSize={20} fontWeight='bold'>
+            {' '}
+            Versão 3.0.5
+          </Text>
+        </Column>
 
-        <View style={styles.viewInfo}>
-          <Text style={styles.textInfo}>Crédito ao autor das imagens das Movimentações:</Text>
-          <View style={styles.viewInfoVersion}>
+        <Column style={styles.viewInfo}>
+          <Text fontSize={20} fontWeight='bold'>
+            Crédito ao autor das imagens das Movimentações:
+          </Text>
+          <Column style={styles.viewInfoVersion}>
             <Ionicons name='link-outline' size={25} color='gray' />
             <Link url='https://www.flaticon.com/br/autores/icongeek26'>Icongeek26</Link>
-          </View>
-        </View>
+          </Column>
+        </Column>
 
-        <View style={styles.viewInfo}>
-          <Text style={styles.textInfo}>Informações do aplicativo</Text>
-          <View style={styles.viewInfoVersion}>
+        <Column style={styles.viewInfo}>
+          <Text fontSize={20} fontWeight='bold'>
+            Informações do aplicativo
+          </Text>
+          <Column style={styles.viewInfoVersion}>
             <Ionicons name='link-outline' size={25} color='gray' />
-            <TouchableOpacity onPress={() => navigate('PolicyPrivacy')}>
+            <Button onPress={() => navigate('PolicyPrivacy')}>
               <Text style={styles.textInfoLink}>Política de Privacidade</Text>
-            </TouchableOpacity>
-          </View>
-        </View>
+            </Button>
+          </Column>
+        </Column>
 
-        <View style={styles.viewInfo}>
-          <Text style={styles.textInfo}>Aplicativo desenvolvido por:</Text>
-          <View style={styles.viewInfoVersion}>
+        <Column style={styles.viewInfo}>
+          <Text fontSize={20} fontWeight='bold'>
+            Aplicativo desenvolvido por:
+          </Text>
+          <Column style={styles.viewInfoVersion}>
             <Ionicons name='person' size={25} color='#4db476' />
-            <Text style={styles.textInfo}> Igor Casconi de Oliveira</Text>
-          </View>
-        </View>
-      </View>
+            <Text fontSize={20} fontWeight='bold'>
+              {' '}
+              Igor Casconi de Oliveira
+            </Text>
+          </Column>
+        </Column>
+      </Column>
     </ScrollView>
   )
 }
