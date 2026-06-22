@@ -1,0 +1,18 @@
+current directory: /Users/macnav9/projects-igor/Project1/vendor/bundle/ruby/3.3.0/gems/nkf-0.3.0/ext/nkf
+/Users/macnav9/.rbenv/versions/3.3.0/bin/ruby extconf.rb
+creating Makefile
+
+current directory: /Users/macnav9/projects-igor/Project1/vendor/bundle/ruby/3.3.0/gems/nkf-0.3.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20260621-20181-6248f sitelibdir\=./.gem.20260621-20181-6248f clean
+
+current directory: /Users/macnav9/projects-igor/Project1/vendor/bundle/ruby/3.3.0/gems/nkf-0.3.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20260621-20181-6248f sitelibdir\=./.gem.20260621-20181-6248f
+compiling nkf.c
+linking shared-object nkf.bundle
+
+current directory: /Users/macnav9/projects-igor/Project1/vendor/bundle/ruby/3.3.0/gems/nkf-0.3.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20260621-20181-6248f sitelibdir\=./.gem.20260621-20181-6248f install
+/usr/bin/install -c -m 0755 nkf.bundle ./.gem.20260621-20181-6248f
+
+current directory: /Users/macnav9/projects-igor/Project1/vendor/bundle/ruby/3.3.0/gems/nkf-0.3.0/ext/nkf
+make DESTDIR\= sitearchdir\=./.gem.20260621-20181-6248f sitelibdir\=./.gem.20260621-20181-6248f clean

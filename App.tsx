@@ -8,74 +8,33 @@
  * @format
  */
 
-<<<<<<< HEAD
 import React from 'react'
-import codePush from 'react-native-code-push'
-import { SafeAreaView } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context'
 import * as eva from '@eva-design/eva'
 import { ApplicationProvider } from '@ui-kitten/components'
 import { NavigationContainer } from '@react-navigation/native'
-import { QueryClient, QueryClientProvider } from 'react-query'
 
 import { AuthProvider } from './src/context/AuthContext'
-import Routes from './src/navigation/Routes'
+import Routes from './src/core/navigation/Routes'
 import { RealmProvider } from './src/context/RealmContext'
 
-import './src/config/StatusBarConfig'
+import './src/core/config/StatusBarConfig'
 
-declare const global: { HermesInternal: null }
-const codePushOptions = { checkFrequency: codePush.CheckFrequency.ON_APP_START }
-const queryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      refetchOnWindowFocus: false
-    }
-  }
-})
 const App: React.FC = () => {
+  console.log('App component rendered')
   return (
-    <QueryClientProvider client={queryClient}>
-      <RealmProvider>
-        <SafeAreaView />
+    <RealmProvider>
+      <SafeAreaView style={{ flex: 1 }}>
         <ApplicationProvider {...eva} theme={eva.light}>
-          <NavigationContainer>
-            <AuthProvider>
-              <Routes />
-            </AuthProvider>
-          </NavigationContainer>
-        </ApplicationProvider>
-      </RealmProvider>
-    </QueryClientProvider>
-  )
-}
-
-export default codePush(codePushOptions)(App)
-=======
-import React, { Fragment } from 'react'
-import './src/config/StatusBarConfig'
-import { SafeAreaView } from 'react-native'
-import Routes from './src/navigation/Routes'
-import { NavigationContainer } from '@react-navigation/native'
-import { AuthProvider } from './src/context/AuthContext'
-import * as eva from '@eva-design/eva'
-import { ApplicationProvider } from '@ui-kitten/components'
-
-declare const global: { HermesInternal: null | {} }
-
-const App = () => {
-  return (
-    <Fragment>
-      <SafeAreaView></SafeAreaView>
-      <ApplicationProvider {...eva} theme={eva.light}>
-        <NavigationContainer>
           <AuthProvider>
-            <Routes />
+            <NavigationContainer>
+              <Routes />
+            </NavigationContainer>
           </AuthProvider>
-        </NavigationContainer>
-      </ApplicationProvider>
-    </Fragment>
+        </ApplicationProvider>
+      </SafeAreaView>
+    </RealmProvider>
   )
 }
 
 export default App
->>>>>>> 000880b (fix(app): fixed app)
