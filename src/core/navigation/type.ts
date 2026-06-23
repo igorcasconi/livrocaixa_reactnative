@@ -9,7 +9,7 @@ type ParamsCompletionForgotPass = {
 }
 
 type ParamsMovementDetail = {
-  dateMovement: Date | string
+  transactionDate: Date | string
   type: string
 }
 

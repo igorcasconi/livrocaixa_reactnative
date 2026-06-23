@@ -1,19 +1,19 @@
-export const FinancialMovementSchema = {
-  name: 'FinancialMovement',
+export const TransactionDataTableSchema = {
+  name: 'Transactions',
   properties: {
-    userFirebase: 'string',
+    userId: 'string',
     product: 'string',
     value: 'double',
     type: 'string',
-    date: 'date',
+    datetime: 'datetime',
     paymode: 'string',
-    index: 'int'
+    uid: 'string'
   }
 }
 
 export const UserDataSchema = {
-  name: 'UserData',
+  name: 'Users',
   properties: {
-    idFirebase: 'string'
+    userId: 'string'
   }
 }

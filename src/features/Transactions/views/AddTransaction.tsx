@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { ScrollView, ActivityIndicator } from 'react-native'
-import { format } from 'date-fns'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import DatePicker from 'react-native-date-picker'
@@ -14,10 +13,6 @@ import Column from '../../../core/components/Column/Column'
 import reciboEntradaImg from '../../../assets/recibo.png'
 import reciboSaidaImg from '../../../assets/recibo_saida.png'
 
-import { showToast } from '../../../core/utils/notification'
-import { useRealm } from '../../../context/RealmContext'
-import { useUser } from '../../../context/AuthContext'
-import { unformatCurrency } from '../../../core/utils/formatters'
 import { AddTransactionPayloadFormProps, AddTransactionProps } from '../models/TransactionModel'
 import { AddTransactionRouteProp, ParamsList } from '../../../core/navigation/type'
 import {
@@ -30,49 +25,31 @@ import {
   TextError,
   TextInfo
 } from './styles/addTransactionStyles'
+import useAddTransactionViewmodel from '../viewmodels/useAddTransactionViewmodel'
+import { transactionFormSchema } from '../models/schemas/transactionSchema'
 
 const AddTransaction: React.FC = () => {
   const route = useRoute<AddTransactionRouteProp>()
   const { type } = route.params
-  const { navigate } = useNavigation<NativeStackNavigationProp<ParamsList>>()
-  const { uid } = useUser()
-  const routeNameAfterSuccess = type === 1 ? 'Entries' : 'Outflows'
-  const { createFinancialMovement, getNextIndex } = useRealm()
+  const { goBack } = useNavigation<NativeStackNavigationProp<ParamsList>>()
+  const { onSubmit, isAllowToNavigateBack } = useAddTransactionViewmodel(type)
 
   const {
     control,
     handleSubmit,
-
     formState: { isSubmitting, errors }
-  } = useForm<AddTransactionProps>({
-    defaultValues: { product: '', value: '', paymode: '', datetime: new Date() },
-    // resolver: yupResolver(MovSchema),
+  } = useForm<AddTransactionPayloadFormProps>({
+    defaultValues: { product: '', value: '', paymode: '', datetime: new Date(), type: '' },
+    resolver: yupResolver(transactionFormSchema) as any,
     mode: 'onBlur',
     reValidateMode: 'onChange'
   })
 
-  const onSubmit = async (values: AddTransactionProps) => {
-    const amount = unformatCurrency(values.value)
-    const index = getNextIndex()
-
-    try {
-      const payload: AddTransactionPayloadFormProps = {
-        ...values,
-        value: amount,
-        date: values.datetime,
-        time: format(values.datetime, 'HH:mm'),
-        type: routeNameAfterSuccess,
-        index: index
-      }
-      !!uid && createFinancialMovement(uid, payload)
-
-      navigate(routeNameAfterSuccess, { isRefetchRequest: true })
-      showToast('Movimentação cadastrada com sucesso!')
-    } catch (err) {
-      console.log(err)
-      showToast('Ocorreu um erro ao cadastrar Movimentação!')
+  useEffect(() => {
+    if (isAllowToNavigateBack) {
+      goBack()
     }
-  }
+  }, [isAllowToNavigateBack])
 
   return (
     <Column>
@@ -132,7 +109,7 @@ const AddTransaction: React.FC = () => {
                 control={control}
                 render={({ field: { value, onChange } }) => (
                   <InputFieldText
-                    value={value}
+                    value={value || ''}
                     onChangeText={onChange}
                     placeholder='ex: Cartão de Débito, Dinheiro, etc.'
                   />

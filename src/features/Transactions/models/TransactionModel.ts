@@ -30,16 +30,26 @@ export interface TransactionProps {
 export interface AddTransactionProps {
   product: string
   value: string
-  paymode: string
+  paymode?: string | null
   datetime: Date
   uid: string
+  type: string
 }
 
 export interface AddTransactionPayloadFormProps {
   product: string
-  value: number
-  paymode: string
-  date: Date
-  time: string
+  value: string
+  datetime: Date
   type: string
+  paymode?: string | null
+}
+
+export interface ReportListProps {
+  key: 'month' | 'year'
+  reportType: string
+  balanceOutflows: number
+  balanceEntries: number
+  date: Date
+  entries: number
+  outflows: number
 }

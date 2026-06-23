@@ -1,10 +1,10 @@
 import { format } from 'date-fns'
-import { pt } from 'date-fns/locale'
-import { MovementProps } from '../shared/movement'
+import { ptBR } from 'date-fns/locale'
 import { formatCurrency } from './formatters'
+import { TransactionProps } from '../../features/Transactions/models/TransactionModel'
 
-export const reducedMovementsByMonthOrYear = (movements?: Array<any>, isByMonth?: boolean) =>
-  movements?.reduce((acc, cur) => {
+export const reducedTransactionReportDataByMonthOrYear = (transactions?: Array<any>, isByMonth?: boolean) =>
+  transactions?.reduce((acc, cur) => {
     const key = isByMonth ? 'month' : 'year'
     const isTypeEntries = cur.type === 'Entries'
     const isTypeOutflows = cur.type === 'Outflows'
@@ -19,7 +19,8 @@ export const reducedMovementsByMonthOrYear = (movements?: Array<any>, isByMonth?
     if (!acc.length)
       return [
         {
-          [key]: currentDate,
+          type: key,
+          reportType: currentDate,
           balanceOutflows: currentBalanceOutflows,
           balanceEntries: currentBalanceEntries,
           date: new Date(cur?.date),
@@ -57,32 +58,36 @@ export const reducedMovementsByMonthOrYear = (movements?: Array<any>, isByMonth?
     ]
   }, 0)
 
-export const getAllMovementsForExport = (movements: MovementProps[], dateFiltered: string, isByMonth?: boolean) => {
-  const movementsReportFiltered = isByMonth
-    ? movements.filter(item => {
+export const getAllTransactionForReport = (
+  transactions: TransactionProps[],
+  dateFiltered: string,
+  isByMonth?: boolean
+) => {
+  const transactionsReportFiltered = isByMonth
+    ? transactions.filter(item => {
         if (new Date(item.date).getMonth() === new Date(dateFiltered).getMonth()) return item
       })
-    : movements.filter(item => {
+    : transactions.filter(item => {
         if (new Date(item.date).getFullYear() === new Date(dateFiltered).getFullYear()) return item
       })
 
-  const allMovementsReport = movementsReportFiltered.map(item => ({
+  const allTransactionReport = transactionsReportFiltered.map(item => ({
     Descrição: item.product,
     Valor: formatCurrency(item.value),
-    'Tipo de pagamento': format(new Date(item.date), 'dd/MM/yyyy', { locale: pt }),
+    'Tipo de pagamento': format(new Date(item.date), 'dd/MM/yyyy', { locale: ptBR }),
     Data: item.type === 'Entries' ? 'Entrada' : 'Saída'
   }))
 
-  return allMovementsReport
+  return allTransactionReport
 }
 
-export const sortByDate = (movements: MovementProps[], descending?: boolean): MovementProps[] => {
+export const sortByDate = (transactions: TransactionProps[], descending?: boolean): TransactionProps[] => {
   if (descending)
-    return movements.sort(
+    return transactions.sort(
       (movementA, movementB) => new Date(movementB.date).getTime() - new Date(movementA.date).getTime()
     )
 
-  return movements.sort(
+  return transactions.sort(
     (movementA, movementB) => new Date(movementA?.date).getTime() - new Date(movementB?.date).getTime()
   )
 }
