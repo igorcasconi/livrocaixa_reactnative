@@ -25,7 +25,8 @@ const Transactions: React.FC = () => (
     initialRouteName='Entries'
     screenOptions={({ route }) => ({
       ...screenRoute(route),
-      ...tabBarOptions
+      ...tabBarOptions,
+      headerShown: false
     })}
   >
     <Tab.Screen

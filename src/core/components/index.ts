@@ -1,5 +1,3 @@
-export * from './AdsBanner'
-export * from './AdsInterstitial'
 export * from './Input'
 export * from './Link'
 export * from './Row'

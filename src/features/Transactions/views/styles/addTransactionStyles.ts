@@ -5,30 +5,29 @@ import { Card, Input, Text } from '@ui-kitten/components'
 // @ts-ignore
 import styled from 'styled-components/native'
 
-export const CardMov = styled(Card)`
+export const TransactionFormCard = styled(Card)`
   border-radius: 15px;
-  padding: 20px;
+  padding: 16px;
   margin: 10px;
   background: #ffebb4;
 `
-export const ImageMov = styled.Image`
+export const TransactionImage = styled.Image`
   width: 90px;
   height: 90px;
-  margin-right: 30px;
 `
 
 export const TextInfo = styled(Text)`
   font-size: 16px;
   color: #262626;
+  flex-wrap: wrap;
 `
 
 export const InputFieldValue = styled(TextInputMask)`
   background-color: rgb(247, 249, 252);
   border-radius: 4px;
   width: 100%;
-  padding: 7px 8px;
+  padding: 7px 20px 7px 8px;
   min-height: 40px;
-  padding-left: 20px;
   border: 1px solid rgb(228, 233, 242);
 `
 

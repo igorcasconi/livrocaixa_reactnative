@@ -1,18 +1,16 @@
 import React, { Fragment, useCallback, useMemo, useState } from 'react'
-import { Image, ScrollView, PermissionsAndroid } from 'react-native'
+import { ScrollView, PermissionsAndroid } from 'react-native'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { format } from 'date-fns'
 import { useRoute } from '@react-navigation/native'
 import XLSX from 'xlsx'
 
 import { formatCurrency } from '../../../core/utils/formatters'
-import AdsBanner from '../../../core/components/AdsBanner'
 import { useUser } from '../../../context/AuthContext'
 import { Column, Row, Text, Button } from '../../../core/components'
 // import ReactNativeFS from 'react-native-fs'
 // import caixaImg from '../../assets/caixa-reg.png'
 
-import { TransactionDetailStyles } from './styles/style'
 import { TransactionDetailRouteProp } from '../../../core/navigation/type'
 import { useRealm } from '../../../context/RealmContext'
 import { showToast } from '../../../core/utils/notification'
@@ -95,7 +93,6 @@ const TransactionDetail: React.FC = () => {
 
   return (
     <ScrollView>
-      <AdsBanner />
       <Column width={1} height='100%' flex={1} px={20}>
         <StyledCard width={1} minHeight={400} backgroundColor='white' p={20} borderRadius={8} mt={20}>
           <Row

@@ -1,6 +1,6 @@
 import { useIsFocused } from '@react-navigation/native'
 import { useUser } from '../../../context/AuthContext'
-import { useMemo, useState } from 'react'
+import { useState } from 'react'
 import { useRealm } from '../../../context/RealmContext'
 import { Alert } from 'react-native'
 
@@ -12,7 +12,7 @@ export const useTransactionViewmodel = (routeName: string) => {
   const isTypeRoute = routeName === 'Entries' ? 1 : 2
   const { financialMovementList, deleteFinancialMovement } = useRealm()
 
-  const dataFinancialMovement = financialMovementList(routeName, uid)
+  const transactionListData = financialMovementList(routeName, uid)
 
   const nameRouteNormalized = routeName === 'Entries' ? 'Entrada' : 'Saída'
 
@@ -34,7 +34,7 @@ export const useTransactionViewmodel = (routeName: string) => {
     isFocused,
     isDeletedMovement,
     isTypeRoute,
-    dataFinancialMovement,
+    transactionListData,
     nameRouteNormalized,
     alertDeleteHandler
   }

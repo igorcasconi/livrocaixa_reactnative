@@ -35,6 +35,13 @@ const AuthNavigation: React.FC = () => {
     )
   }
 
+  const optionTransactionHeader: NativeStackNavigationOptions = {
+    headerTintColor: '#000',
+    headerBackground: () => <Row width={1} backgroundColor='#4db476' height={60} />,
+    headerTitleAlign: 'center',
+    headerTitle: 'Movimentação do caixa'
+  }
+
   return (
     <Fragment>
       <Stack.Navigator initialRouteName='Home'>
@@ -50,46 +57,32 @@ const AuthNavigation: React.FC = () => {
           name='Entries'
           component={Transactions}
           options={{
-            headerTitle: 'Movimentação do Caixa',
-            headerTintColor: '#000',
-            headerTransparent: true,
-            headerBackground: () => <Row width={1} backgroundColor='#4db476' height={60} mb={60} />,
-            headerTitleAlign: 'center'
+            ...optionTransactionHeader
           }}
         />
-        <Stack.Screen
-          name='Outflows'
-          component={Transactions}
-          options={{
-            headerTitle: 'Movimentação do Caixa',
-            headerTintColor: '#000',
-            headerTransparent: true,
-            headerBackground: () => <Row width={1} backgroundColor='#4db476' height={60} mb={60} />,
-            headerTitleAlign: 'center'
-          }}
-        />
+        <Stack.Screen name='Outflows' component={Transactions} options={{ ...optionTransactionHeader }} />
         <Stack.Screen
           name='AddTransaction'
           component={AddTransaction}
           options={{
-            headerTitle: 'Adicionar Movimentação',
-            ...optionsHeader
+            ...optionTransactionHeader,
+            headerTitle: 'Adicionar Movimentação'
           }}
         />
         <Stack.Screen
           name='TransactionsByYear'
           component={TransactionReport}
           options={{
-            headerTitle: 'Movimentações/Ano',
-            ...optionsHeader
+            ...optionTransactionHeader,
+            headerTitle: 'Movimentações/Ano'
           }}
         />
         <Stack.Screen
           name='TransactionsByMonth'
           component={TransactionReport}
           options={{
-            headerTitle: 'Movimentações/Mês',
-            ...optionsHeader
+            ...optionTransactionHeader,
+            headerTitle: 'Movimentações/Mês'
           }}
         />
         {/* <Stack.Screen
@@ -97,39 +90,39 @@ const AuthNavigation: React.FC = () => {
           component={Tutorial}
           options={{
             headerTitle: 'Ajuda',
-            ...optionsHeader
+            ...optionTransactionHeader
           }}
         /> */}
         <Stack.Screen
           name='TransactionDetailYear'
           component={TransactionDetail}
           options={{
-            headerTitle: 'Detalhes',
-            ...optionsHeader
+            ...optionTransactionHeader,
+            headerTitle: 'Detalhes'
           }}
         />
         <Stack.Screen
           name='TransactionDetailMonth'
           component={TransactionDetail}
           options={{
-            headerTitle: 'Detalhes',
-            ...optionsHeader
+            ...optionTransactionHeader,
+            headerTitle: 'Detalhes'
           }}
         />
         <Stack.Screen
           name='About'
           component={About}
           options={{
-            headerTitle: 'Sobre',
-            ...optionsHeader
+            ...optionTransactionHeader,
+            headerTitle: 'Sobre'
           }}
         />
         <Stack.Screen
           name='PolicyPrivacy'
           component={PolicyPrivacy}
           options={{
-            headerTitle: 'Política de Privacidade',
-            ...optionsHeader
+            ...optionTransactionHeader,
+            headerTitle: 'Política de Privacidade'
           }}
         />
       </Stack.Navigator>

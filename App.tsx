@@ -9,6 +9,7 @@
  */
 
 import React from 'react'
+import { StatusBar } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import * as eva from '@eva-design/eva'
 import { ApplicationProvider } from '@ui-kitten/components'
@@ -18,13 +19,16 @@ import { AuthProvider } from './src/context/AuthContext'
 import Routes from './src/core/navigation/Routes'
 import { RealmProvider } from './src/context/RealmContext'
 
-import './src/core/config/StatusBarConfig'
-
 const App: React.FC = () => {
-  console.log('App component rendered')
   return (
     <RealmProvider>
       <SafeAreaView style={{ flex: 1 }}>
+        <StatusBar
+          barStyle='default'
+          backgroundColor='#4db476' // Android only
+          translucent={false} // Android only
+          hidden={true}
+        />
         <ApplicationProvider {...eva} theme={eva.light}>
           <AuthProvider>
             <NavigationContainer>

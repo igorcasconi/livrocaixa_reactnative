@@ -1,7 +1,8 @@
+import { JSX } from 'react'
+
 export interface TransactionDetailModel {
   data: {
     expenses: number
-    gastos: number
     entries: number
     cashTotal: number
     outflows: number
@@ -10,11 +11,10 @@ export interface TransactionDetailModel {
   }
 }
 export interface TransactionTypeModel {
-  typeMov: number
-  colorMov: string
-  imageMov: any
-  typeMovDelete: number
-  iconMov: JSX.Element
+  type: number
+  color: string
+  image: any
+  icon: JSX.Element
 }
 
 export interface TransactionProps {
@@ -24,7 +24,7 @@ export interface TransactionProps {
   paymode: string
   date: string
   type?: string
-  index: number
+  uid: string
 }
 
 export interface AddTransactionProps {
@@ -32,4 +32,14 @@ export interface AddTransactionProps {
   value: string
   paymode: string
   datetime: Date
+  uid: string
+}
+
+export interface AddTransactionPayloadFormProps {
+  product: string
+  value: number
+  paymode: string
+  date: Date
+  time: string
+  type: string
 }

@@ -1,32 +1,29 @@
 import { BottomTabNavigationOptions } from '@react-navigation/bottom-tabs'
 import { StyleSheet } from 'react-native'
+import styled from 'styled-components/native'
 
 export const tabBarOptions: BottomTabNavigationOptions = {
   tabBarActiveTintColor: 'white',
   tabBarInactiveTintColor: 'black',
   tabBarInactiveBackgroundColor: '#4db476',
-  tabBarActiveBackgroundColor: '#89ac97'
-  // style: {
-  //   elevation: 0,
-  //   shadowOpacity: 0,
-  //   height: 64,
-  //   flexDirection: 'column',
-  //   justifyContent: 'center'
-  // },
-  // tabStyle: {
-  //   flexDirection: 'row',
-  //   alignItems: 'center',
-  //   justifyContent: 'center'
-  // },
-  // iconStyle: {
-  //   flex: 0,
-  //   width: 22,
-  //   height: 40
-  // },
-  // labelStyle: {
-  //   fontSize: 14,
-  //   marginLeft: 16
-  // }
+  tabBarActiveBackgroundColor: '#89ac97',
+  tabBarStyle: {
+    elevation: 0,
+    shadowOpacity: 0,
+    height: 64,
+    flexDirection: 'column',
+    justifyContent: 'center'
+  },
+  tabBarIconStyle: {
+    flex: 0,
+    width: 24,
+    height: 28,
+    marginTop: 6
+  },
+  tabBarLabelStyle: {
+    fontSize: 13,
+    marginLeft: 6
+  }
 }
 
 export const TransactionDetailStyles = StyleSheet.create({
@@ -129,3 +126,9 @@ export const TransactionComponentStyles = StyleSheet.create({
     alignItems: 'center'
   }
 })
+
+export const TransactionListComponent = styled.FlatList`
+  height: 100%;
+  flex: 1;
+  width: 100%;
+`

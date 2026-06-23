@@ -7,27 +7,23 @@ import DatePicker from 'react-native-date-picker'
 import { Controller, useForm } from 'react-hook-form'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
-import AdsBanner from '../../../core/components/AdsBanner'
-import AdsInterstitial from '../../../core/components/AdsInterstitial'
 import VerifyInternet from '../../../core/components/VerifyInternet'
 import Row from '../../../core/components/Row/Row'
 import Column from '../../../core/components/Column/Column'
 
-// import reciboEntradaImg from '../../assets/recibo.png'
-// import reciboSaidaImg from '../../assets/recibo_saida.png'
+import reciboEntradaImg from '../../../assets/recibo.png'
+import reciboSaidaImg from '../../../assets/recibo_saida.png'
 
-import { MovSchema } from '../../../schemas'
 import { showToast } from '../../../core/utils/notification'
-import { MovementPayloadProps } from '../../../core/shared/movement'
 import { useRealm } from '../../../context/RealmContext'
 import { useUser } from '../../../context/AuthContext'
 import { unformatCurrency } from '../../../core/utils/formatters'
-import { AddTransactionProps } from '../models/TransactionModel'
+import { AddTransactionPayloadFormProps, AddTransactionProps } from '../models/TransactionModel'
 import { AddTransactionRouteProp, ParamsList } from '../../../core/navigation/type'
 import {
   ButtonSubmit,
-  CardMov,
-  ImageMov,
+  TransactionFormCard,
+  TransactionImage,
   InputFieldText,
   InputFieldValue,
   TextButton,
@@ -60,7 +56,7 @@ const AddTransaction: React.FC = () => {
     const index = getNextIndex()
 
     try {
-      const payload: MovementPayloadProps = {
+      const payload: AddTransactionPayloadFormProps = {
         ...values,
         value: amount,
         date: values.datetime,
@@ -82,14 +78,10 @@ const AddTransaction: React.FC = () => {
     <Column>
       <VerifyInternet />
       <ScrollView>
-        <AdsBanner />
-        <AdsInterstitial />
-        <CardMov>
-          <Row justifyContent='space-around' mb={20} height={80}>
-            {/* <ImageMov
-              source={type === 1 ? require('../../assets/recibo.png') : require('../../assets/recibo_saida.png')}
-            /> */}
-            <Row width='90%'>
+        <TransactionFormCard>
+          <Row justifyContent='space-between' mb={20}>
+            <TransactionImage source={type === 1 ? reciboEntradaImg : reciboSaidaImg} />
+            <Row width='70%'>
               <TextInfo>Adicionar uma nova {type === 1 ? 'Entrada' : 'Saída'} ao Caixa</TextInfo>
             </Row>
           </Row>
@@ -148,14 +140,16 @@ const AddTransaction: React.FC = () => {
               />
             </Column>
 
-            <Column width='100%' mt={10}>
+            <Column width='100%' mt={20}>
               <TextInfo>Data e Hora (Arraste para alterar)</TextInfo>
 
-              <Controller
-                name='datetime'
-                control={control}
-                render={({ field: { value, onChange } }) => <DatePicker date={value} onDateChange={onChange} />}
-              />
+              <Column width='100%' justifyContent='center' alignItems='center'>
+                <Controller
+                  name='datetime'
+                  control={control}
+                  render={({ field: { value, onChange } }) => <DatePicker date={value} onDateChange={onChange} />}
+                />
+              </Column>
               {errors.datetime && <TextError>Insira a informação de data!</TextError>}
             </Column>
 
@@ -163,7 +157,7 @@ const AddTransaction: React.FC = () => {
               <Row>{isSubmitting ? <ActivityIndicator color='#0fd734' /> : <TextButton>Gravar</TextButton>}</Row>
             </ButtonSubmit>
           </Column>
-        </CardMov>
+        </TransactionFormCard>
       </ScrollView>
     </Column>
   )
