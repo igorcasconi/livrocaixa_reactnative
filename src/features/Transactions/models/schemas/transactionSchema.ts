@@ -1,15 +1,22 @@
-import * as Yup from 'yup'
+export class TransactionSchema extends Realm.Object<TransactionSchema> {
+  userId!: string
+  product!: string
+  value!: number
+  datetime!: string
+  paymode!: string
+  uid!: string
+  type?: string
 
-Yup.setLocale({
-  mixed: {
-    required: 'Campo necessário'
+  static schema = {
+    name: 'Transactions',
+    properties: {
+      userId: 'string',
+      product: 'string',
+      value: 'double',
+      type: 'string',
+      datetime: 'string',
+      paymode: 'string',
+      uid: 'string'
+    }
   }
-})
-
-export const transactionFormSchema = Yup.object().shape({
-  product: Yup.string().required(),
-  value: Yup.string().required(),
-  paymode: Yup.string().optional().nullable(),
-  datetime: Yup.date().required(),
-  type: Yup.string().required()
-})
+}

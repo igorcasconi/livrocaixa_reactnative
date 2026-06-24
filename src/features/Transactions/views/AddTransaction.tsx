@@ -13,7 +13,7 @@ import Column from '../../../core/components/Column/Column'
 import reciboEntradaImg from '../../../assets/recibo.png'
 import reciboSaidaImg from '../../../assets/recibo_saida.png'
 
-import { AddTransactionPayloadFormProps, AddTransactionProps } from '../models/TransactionModel'
+import { AddTransactionPayloadFormProps } from '../models/TransactionModel'
 import { AddTransactionRouteProp, ParamsList } from '../../../core/navigation/type'
 import {
   ButtonSubmit,
@@ -26,20 +26,22 @@ import {
   TextInfo
 } from './styles/addTransactionStyles'
 import useAddTransactionViewmodel from '../viewmodels/useAddTransactionViewmodel'
-import { transactionFormSchema } from '../models/schemas/transactionSchema'
+import { transactionFormSchema } from '../models/formSchemas/transactionSchema'
 
 const AddTransaction: React.FC = () => {
   const route = useRoute<AddTransactionRouteProp>()
   const { type } = route.params
   const { goBack } = useNavigation<NativeStackNavigationProp<ParamsList>>()
   const { onSubmit, isAllowToNavigateBack } = useAddTransactionViewmodel(type)
+  const isEntries = type === 1
+  const typeValue = isEntries ? 'Entries' : 'Outflows'
 
   const {
     control,
     handleSubmit,
     formState: { isSubmitting, errors }
   } = useForm<AddTransactionPayloadFormProps>({
-    defaultValues: { product: '', value: '', paymode: '', datetime: new Date(), type: '' },
+    defaultValues: { product: '', value: '', paymode: '', datetime: new Date(), type: typeValue },
     resolver: yupResolver(transactionFormSchema) as any,
     mode: 'onBlur',
     reValidateMode: 'onChange'
@@ -57,9 +59,9 @@ const AddTransaction: React.FC = () => {
       <ScrollView>
         <TransactionFormCard>
           <Row justifyContent='space-between' mb={20}>
-            <TransactionImage source={type === 1 ? reciboEntradaImg : reciboSaidaImg} />
+            <TransactionImage source={isEntries ? reciboEntradaImg : reciboSaidaImg} />
             <Row width='70%'>
-              <TextInfo>Adicionar uma nova {type === 1 ? 'Entrada' : 'Saída'} ao Caixa</TextInfo>
+              <TextInfo>Adicionar uma nova {isEntries ? 'Entrada' : 'Saída'} ao Caixa</TextInfo>
             </Row>
           </Row>
 

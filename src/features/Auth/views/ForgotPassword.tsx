@@ -5,7 +5,7 @@ import Ionicons from '@react-native-vector-icons/ionicons'
 import { Column, Row, Text, Button, Input } from '../../../core/components'
 
 import { yupResolver } from '@hookform/resolvers/yup'
-import { ForgotPasswordSchema } from '../models/schemas/loginSchema'
+import { ForgotPasswordSchema } from '../models/formSchemas/loginSchema'
 import { Controller, useForm } from 'react-hook-form'
 import { ForgotPasswordProps } from '../models/ForgotPasswordModel'
 import { useForgotPasswordViewmodel } from '../viewmodels/useForgotPasswordViewmodel'

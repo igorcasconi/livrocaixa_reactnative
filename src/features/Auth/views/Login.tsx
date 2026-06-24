@@ -10,7 +10,7 @@ import styled from 'styled-components/native'
 import { Row, Button, Text, Input, Column } from '../../../core/components'
 
 import logoImg from '../../../assets/logo.png'
-import { LoginSchema } from '../models/schemas/loginSchema'
+import { LoginSchema } from '../models/formSchemas/loginSchema'
 import { LoginProps } from '../models/AuthModel'
 import { useAuthViewmodel } from '../viewmodels/useAuthViewmodel'
 import { ParamsListLogin } from '../../../core/navigation/type'

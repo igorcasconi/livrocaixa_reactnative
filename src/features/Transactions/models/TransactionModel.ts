@@ -18,20 +18,20 @@ export interface TransactionTypeModel {
 }
 
 export interface TransactionProps {
-  userFirebase: number
+  userId: string
   product: string
   value: number
   paymode: string
-  date: string
+  datetime: string
   type?: string
   uid: string
 }
 
 export interface AddTransactionProps {
   product: string
-  value: string
+  value: number
   paymode?: string | null
-  datetime: Date
+  datetime: string
   uid: string
   type: string
 }
@@ -49,7 +49,7 @@ export interface ReportListProps {
   reportType: string
   balanceOutflows: number
   balanceEntries: number
-  date: Date
+  datetime: string
   entries: number
   outflows: number
 }

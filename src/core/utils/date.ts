@@ -9,8 +9,8 @@ export const reducedTransactionReportDataByMonthOrYear = (transactions?: Array<a
     const isTypeEntries = cur.type === 'Entries'
     const isTypeOutflows = cur.type === 'Outflows'
     const currentDate = isByMonth
-      ? `${new Date(cur?.date).getMonth() + 1}/${new Date(cur?.date).getFullYear()}`
-      : new Date(cur?.date).getFullYear()
+      ? `${new Date(cur?.datetime).getMonth() + 1}/${new Date(cur?.datetime).getFullYear()}`
+      : new Date(cur?.datetime).getFullYear()
     const currentBalanceOutflows = isTypeOutflows ? cur.value : 0
     const currentBalanceEntries = isTypeEntries ? cur.value : 0
     const entriesQuantity = isTypeEntries ? 1 : 0
@@ -23,7 +23,7 @@ export const reducedTransactionReportDataByMonthOrYear = (transactions?: Array<a
           reportType: currentDate,
           balanceOutflows: currentBalanceOutflows,
           balanceEntries: currentBalanceEntries,
-          date: new Date(cur?.date),
+          datetime: new Date(cur?.datetime).toISOString(),
           entries: entriesQuantity,
           outflows: outflowsQuantity
         }
@@ -37,7 +37,7 @@ export const reducedTransactionReportDataByMonthOrYear = (transactions?: Array<a
         [key]: currentDate,
         balanceOutflows: acc[indexEqualPrevDate]?.balanceOutflows + currentBalanceOutflows,
         balanceEntries: acc[indexEqualPrevDate]?.balanceEntries + currentBalanceEntries,
-        date: new Date(cur?.date),
+        datetime: new Date(cur?.datetime).toISOString(),
         entries: acc[indexEqualPrevDate]?.entries + entriesQuantity,
         outflows: acc[indexEqualPrevDate]?.outflows + outflowsQuantity
       }
@@ -51,7 +51,7 @@ export const reducedTransactionReportDataByMonthOrYear = (transactions?: Array<a
         [key]: currentDate,
         balanceOutflows: currentBalanceOutflows,
         balanceEntries: currentBalanceEntries,
-        date: new Date(cur?.date),
+        datetime: new Date(cur?.datetime).toISOString(),
         entries: entriesQuantity,
         outflows: outflowsQuantity
       }
@@ -65,16 +65,16 @@ export const getAllTransactionForReport = (
 ) => {
   const transactionsReportFiltered = isByMonth
     ? transactions.filter(item => {
-        if (new Date(item.date).getMonth() === new Date(dateFiltered).getMonth()) return item
+        if (new Date(item.datetime).getMonth() === new Date(dateFiltered).getMonth()) return item
       })
     : transactions.filter(item => {
-        if (new Date(item.date).getFullYear() === new Date(dateFiltered).getFullYear()) return item
+        if (new Date(item.datetime).getFullYear() === new Date(dateFiltered).getFullYear()) return item
       })
 
   const allTransactionReport = transactionsReportFiltered.map(item => ({
     Descrição: item.product,
     Valor: formatCurrency(item.value),
-    'Tipo de pagamento': format(new Date(item.date), 'dd/MM/yyyy', { locale: ptBR }),
+    'Tipo de pagamento': format(new Date(item.datetime), 'dd/MM/yyyy', { locale: ptBR }),
     Data: item.type === 'Entries' ? 'Entrada' : 'Saída'
   }))
 
@@ -84,10 +84,10 @@ export const getAllTransactionForReport = (
 export const sortByDate = (transactions: TransactionProps[], descending?: boolean): TransactionProps[] => {
   if (descending)
     return transactions.sort(
-      (movementA, movementB) => new Date(movementB.date).getTime() - new Date(movementA.date).getTime()
+      (movementA, movementB) => new Date(movementB.datetime).getTime() - new Date(movementA.datetime).getTime()
     )
 
   return transactions.sort(
-    (movementA, movementB) => new Date(movementA?.date).getTime() - new Date(movementB?.date).getTime()
+    (movementA, movementB) => new Date(movementA?.datetime).getTime() - new Date(movementB?.datetime).getTime()
   )
 }

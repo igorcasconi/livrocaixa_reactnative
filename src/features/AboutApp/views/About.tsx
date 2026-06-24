@@ -6,6 +6,8 @@ import Link from '../../../core/components/Link'
 import styles from './styles/styles'
 import { useNavigation } from '@react-navigation/native'
 
+import logoImg from '../../../assets/logo.png'
+
 const About: React.FC = () => {
   const { navigate } = useNavigation()
   return (
@@ -16,7 +18,7 @@ const About: React.FC = () => {
         </View>
 
         <View style={styles.viewImageLogo}>
-          {/* <Image style={styles.imageLogo} source={require('../../assets/logo.png')} /> */}
+          <Image style={styles.imageLogo} source={logoImg} />
         </View>
 
         <View style={styles.viewInfoVersion}>

@@ -14,6 +14,7 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import * as eva from '@eva-design/eva'
 import { ApplicationProvider } from '@ui-kitten/components'
 import { NavigationContainer } from '@react-navigation/native'
+import { GestureHandlerRootView } from 'react-native-gesture-handler'
 
 import { AuthProvider } from './src/context/AuthContext'
 import Routes from './src/core/navigation/Routes'
@@ -21,23 +22,25 @@ import { RealmProvider } from './src/context/RealmContext'
 
 const App: React.FC = () => {
   return (
-    <RealmProvider>
-      <SafeAreaView style={{ flex: 1 }}>
-        <StatusBar
-          barStyle='default'
-          backgroundColor='#4db476' // Android only
-          translucent={false} // Android only
-          hidden={true}
-        />
-        <ApplicationProvider {...eva} theme={eva.light}>
-          <AuthProvider>
-            <NavigationContainer>
-              <Routes />
-            </NavigationContainer>
-          </AuthProvider>
-        </ApplicationProvider>
-      </SafeAreaView>
-    </RealmProvider>
+    <GestureHandlerRootView>
+      <RealmProvider>
+        <SafeAreaView style={{ flex: 1 }}>
+          <StatusBar
+            barStyle='default'
+            backgroundColor='#4db476' // Android only
+            translucent={false} // Android only
+            hidden={true}
+          />
+          <ApplicationProvider {...eva} theme={eva.light}>
+            <AuthProvider>
+              <NavigationContainer>
+                <Routes />
+              </NavigationContainer>
+            </AuthProvider>
+          </ApplicationProvider>
+        </SafeAreaView>
+      </RealmProvider>
+    </GestureHandlerRootView>
   )
 }
 

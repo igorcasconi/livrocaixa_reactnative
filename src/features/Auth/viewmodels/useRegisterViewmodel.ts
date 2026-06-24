@@ -6,20 +6,16 @@ import auth from '@react-native-firebase/auth'
 import { useRealm } from '../../../context/RealmContext'
 
 export const useRegisterViewmodel = () => {
-  const { realm } = useRealm()
+  const { authRepository } = useRealm()
   const [loading, setLoading] = React.useState(false)
   const [isErrorRegister, setErrorRegister] = React.useState(false)
-
-  const createUserFirebase = (uid: string) => {
-    realm?.write(() => realm.create('Users', { userId: uid }))
-  }
 
   const register = async (email: string, password: string) => {
     setLoading(true)
     try {
       setErrorRegister(false)
       await auth().createUserWithEmailAndPassword(email, password)
-      createUserFirebase(auth().currentUser?.uid!)
+      authRepository.createUser(auth().currentUser?.uid!)
       setLoading(false)
     } catch (e) {
       setErrorRegister(true)

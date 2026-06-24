@@ -26,12 +26,12 @@ export const TransactionReportItem = React.memo(
     const balance = item.balanceEntries - item.balanceOutflows
     const itemName =
       type === 'TransactionsByYear'
-        ? format(new Date(item.date), 'yyyy')
-        : format(new Date(item.date), 'MMMM/yyyy', { locale: ptBR })
+        ? format(new Date(item.datetime), 'yyyy')
+        : format(new Date(item.datetime), 'MMMM/yyyy', { locale: ptBR })
     const typeNavigation = type === 'TransactionsByYear' ? 'TransactionDetailYear' : 'TransactionDetailMonth'
 
     return (
-      <Button key={index} onPress={() => navigate(typeNavigation, { transactionDate: item.date, type: type })}>
+      <Button key={index} onPress={() => navigate(typeNavigation, { transactionDate: item.datetime, type: type })}>
         <Row width={1} height={80} p={18} border='0.5px solid #c1c1c1' justifyContent='flex-start' alignItems='center'>
           <Image source={CaixaImage} style={TransactionReportStyles.imageCaixa} />
           <Column width={200} px={16} alignItems='flex-start'>

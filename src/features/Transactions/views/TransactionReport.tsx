@@ -14,11 +14,15 @@ const TransactionReport: React.FC = () => {
   const type = route.name
   const { dataTransactionReport } = useTransactionReportViewmodel(type)
 
+  console.log(dataTransactionReport)
+
   return (
     <Column flex={1}>
       <FlatList
         data={dataTransactionReport}
-        keyExtractor={(item, index) => `${index}-${item.date}`}
+        // @ts-ignore
+        keyExtractor={(item, index) => `${item.uid}`}
+        // @ts-ignore
         renderItem={({ item, index }) => <TransactionReportItem item={item} index={index} type={type} />}
       />
     </Column>

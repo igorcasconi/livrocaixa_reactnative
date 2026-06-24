@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 
 import { Button, Column, Row, Text, Input } from '../../../core/components'
 
-import { SignupSchema } from '../models/schemas/signup'
+import { SignupSchema } from '../models/formSchemas/signup'
 import { useRegisterViewmodel } from '../viewmodels/useRegisterViewmodel'
 import { SignupProps } from '../models/RegisterModel'
 
