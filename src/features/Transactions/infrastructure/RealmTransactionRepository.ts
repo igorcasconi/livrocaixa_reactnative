@@ -1,4 +1,8 @@
-import { reducedTransactionReportDataByMonthOrYear, sortByDate } from '../../../core/utils/date'
+import {
+  getAllTransactionForReport,
+  reducedTransactionReportDataByMonthOrYear,
+  sortByDate
+} from '../../../core/utils/date'
 import { TransactionRepository } from '../models/repositories/TransactionsRepository'
 import { AddTransactionProps, ReportListProps, TransactionProps } from '../models/TransactionModel'
 
@@ -34,5 +38,12 @@ export class RealmTransactionRepository implements TransactionRepository {
     const transactions = this.realm?.objects('Transactions').filtered(`userId = "${userId}"`)
     const data = reducedTransactionReportDataByMonthOrYear(transactions?.toJSON(), isByMonth)
     return data as ReportListProps[]
+  }
+
+  getTransactionReportDetail(userId: string, date: string, isByMonth?: boolean): ReportListProps {
+    const transactions = this.realm?.objects('Transactions').filtered(`userId = "${userId}"`)
+    const data = reducedTransactionReportDataByMonthOrYear(transactions?.toJSON(), isByMonth)
+    const filteredData = (data as ReportListProps[]).find(item => item.reportType.toString() === date)
+    return filteredData as ReportListProps
   }
 }

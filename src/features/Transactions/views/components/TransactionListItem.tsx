@@ -6,8 +6,7 @@ import { Button, Column, Row, Text } from '../../../../core/components'
 import Ionicons from '@react-native-vector-icons/ionicons'
 import { format } from 'date-fns'
 import { formatCurrency } from '../../../../core/utils/formatters'
-import { TransactionComponentStyles } from '../styles/style'
-import { Image } from 'react-native'
+import { ImageReceipt } from '../styles/style'
 
 type TransactionListItemProps = {
   item: TransactionProps
@@ -36,20 +35,20 @@ export const TransactionListItem = React.memo(({ item, isTypeRoute, alertDeleteH
     >
       <Column width={1} maxWidth='90%'>
         <Row width='80%' ml='8px'>
-          <Image source={imageItem} style={TransactionComponentStyles.imageRecibo} />
+          <ImageReceipt source={imageItem} />
           <Column width='100%' height='100%' justifyContent='center'>
-            <Text fontSize={16} color='#21262c' fontWeight='bold'>
+            <Text fontSize={16} color='text' fontWeight='bold'>
               {item?.product}
             </Text>
             <Text fontSize={16} color={colorValue} mr='16px' fontWeight='bold'>
               {formattedValue}
             </Text>
             {!!payMode && (
-              <Text fontSize={14} color='#21262c'>
+              <Text fontSize={14} color='text'>
                 {payMode}
               </Text>
             )}
-            <Text fontSize={14} color='#21262c'>
+            <Text fontSize={14} color='text'>
               {formattedDate}
             </Text>
           </Column>

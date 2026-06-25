@@ -133,7 +133,9 @@ const AddTransaction: React.FC = () => {
             </Column>
 
             <ButtonSubmit onPress={handleSubmit(onSubmit)} disabled={isSubmitting}>
-              <Row>{isSubmitting ? <ActivityIndicator color='#0fd734' /> : <TextButton>Gravar</TextButton>}</Row>
+              <Row>
+                <TextButton>Gravar</TextButton>
+              </Row>
             </ButtonSubmit>
           </Column>
         </TransactionFormCard>

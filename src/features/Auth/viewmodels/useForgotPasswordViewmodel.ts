@@ -18,9 +18,19 @@ export const useForgotPasswordViewmodel = () => {
     }
   }
 
+  const informationDataWithError = (email: string) => {
+    const text = isErrorVerifyEmail
+      ? `Ocorreu um erro ao alterar a senha, possivelmente o e-mail ${email} não está cadastrado!`
+      : `O link de alteração de senha foi enviado para o e-mail ${email}, acesse o link no seu e-mail e realize a alteração da senha.`
+    const icon = isErrorVerifyEmail ? 'alert-circle-outline' : 'checkmark-circle-outline'
+    const color = isErrorVerifyEmail ? 'red' : 'white'
+
+    return { text, icon, color }
+  }
+
   const onSubmit = (values: ForgotPasswordProps) => {
     handleVerifyEmail(values.email)
   }
 
-  return { onSubmit, loading, handleVerifyEmail, isErrorVerifyEmail }
+  return { onSubmit, loading, handleVerifyEmail, isErrorVerifyEmail, informationDataWithError }
 }

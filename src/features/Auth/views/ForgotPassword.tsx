@@ -24,7 +24,7 @@ const ForgotPassword: React.FC = () => {
   })
 
   return (
-    <Column backgroundColor='#4db476' flex={1} p='20px'>
+    <Column backgroundColor='background' flex={1} p='20px'>
       <Column width={1} justifyContent='center' alignItems='center'>
         <Text fontSize={25} fontWeight='bold' mb='20px'>
           Esqueceu a senha?
@@ -56,7 +56,7 @@ const ForgotPassword: React.FC = () => {
               width={1}
               height={40}
               borderRadius={10}
-              backgroundColor='#3b61e6'
+              backgroundColor='secondary'
               justifyContent='center'
               alignItems='center'
               onPress={handleSubmit(onSubmit)}
@@ -77,14 +77,14 @@ const ForgotPassword: React.FC = () => {
               <Row
                 width={1}
                 p='15px'
-                backgroundColor='#eee424'
+                backgroundColor='yellow.n100'
                 justifyContent='center'
                 alignItems='center'
                 borderRadius={10}
                 mt='20px'
               >
-                <Ionicons name='warning-outline' color='black' size={20} />
-                <Text ml='6px' fontSize={16} color='#262626' fontWeight='bold'>
+                <Ionicons name='warning-outline' color='text' size={20} />
+                <Text ml='6px' fontSize={16} color='text' fontWeight='bold'>
                   Necessário inserir informaçãox de e-mail para alterar a senha!
                 </Text>
               </Row>

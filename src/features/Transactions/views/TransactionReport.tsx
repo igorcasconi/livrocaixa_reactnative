@@ -12,18 +12,18 @@ import { useTransactionReportViewmodel } from '../viewmodels/useTransactionRepor
 const TransactionReport: React.FC = () => {
   const route = useRoute<TransactionReportRouteProp>()
   const type = route.name
-  const { dataTransactionReport } = useTransactionReportViewmodel(type)
-
-  console.log(dataTransactionReport)
+  const { dataTransactionReport, typeNavigation } = useTransactionReportViewmodel(type)
 
   return (
     <Column flex={1}>
       <FlatList
         data={dataTransactionReport}
         // @ts-ignore
-        keyExtractor={(item, index) => `${item.uid}`}
+        keyExtractor={item => `${item.uid}`}
         // @ts-ignore
-        renderItem={({ item, index }) => <TransactionReportItem item={item} index={index} type={type} />}
+        renderItem={({ item, index }) => (
+          <TransactionReportItem item={item} type={type} navigationName={typeNavigation} />
+        )}
       />
     </Column>
   )

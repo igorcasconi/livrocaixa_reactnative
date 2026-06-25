@@ -11,7 +11,7 @@ const BalanceCash: React.FC<BalanceCashProps> = ({ balanceCash }) => {
   return (
     <Row minWidth={110} alignItems='center' px='8px' py='4px' backgroundColor='white' borderRadius={14}>
       <Ionicons name='wallet-outline' size={25} />
-      <Text fontSize={16} fontWeight='bold' color='black' ml='6px' mr='6px'>
+      <Text fontSize={16} fontWeight='bold' color='text' ml='6px' mr='6px'>
         {balanceCash()}
       </Text>
     </Row>

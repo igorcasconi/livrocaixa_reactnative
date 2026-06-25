@@ -16,10 +16,10 @@ const Home: React.FC = () => {
   const { date, balanceCash } = useHomeViewmodel()
 
   return (
-    <Column width={1} height='100%' backgroundColor='#4db476'>
-      <Column width={1} height={80} mb={16} py={16} px={12} backgroundColor='#4db476'>
+    <Column width={1} height='100%' backgroundColor='background'>
+      <Column width={1} height={80} mb={16} py={16} px={12} backgroundColor='background'>
         <Row width={1} mb={10} justifyContent='center'>
-          <Text fontSize={16} fontWeight='bold' textAlign='center' color='black'>
+          <Text fontSize={16} fontWeight='bold' textAlign='center' color='text'>
             {/* eslint-disable-next-line */}
             {format(date, "E, d 'de' MMMM 'de' yyyy", { locale: ptBR })}
           </Text>

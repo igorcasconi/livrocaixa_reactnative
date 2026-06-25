@@ -1,45 +1,37 @@
-import { format } from 'date-fns'
 import { ReportListProps } from '../../models/TransactionModel'
 import { Button, Column, Row, Text } from '../../../../core/components'
 import { formatCurrency } from '../../../../core/utils/formatters'
 import React from 'react'
+
 import { useNavigation } from '@react-navigation/native'
 import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 import { ParamsList } from '../../../../core/navigation/type'
-import { Image } from 'react-native'
 import CaixaImage from '../../../../assets/caixa-reg.png'
-import { TransactionReportStyles } from '../styles/style'
-import { ptBR } from 'date-fns/locale'
+import { ImageCashRegister } from '../styles/style'
 
 export const TransactionReportItem = React.memo(
   ({
     item,
-    index,
-    type
+    type,
+    navigationName
   }: {
     item: ReportListProps
-    index: number
     type: 'TransactionsByYear' | 'TransactionsByMonth'
+    navigationName: 'TransactionDetailYear' | 'TransactionDetailMonth'
   }) => {
-    const { navigate } = useNavigation<NativeStackNavigationProp<ParamsList>>()
-
-    const balance = item.balanceEntries - item.balanceOutflows
-    const itemName =
-      type === 'TransactionsByYear'
-        ? format(new Date(item.datetime), 'yyyy')
-        : format(new Date(item.datetime), 'MMMM/yyyy', { locale: ptBR })
-    const typeNavigation = type === 'TransactionsByYear' ? 'TransactionDetailYear' : 'TransactionDetailMonth'
+    const { navigate } =
+      useNavigation<NativeStackNavigationProp<ParamsList, 'TransactionDetailYear' | 'TransactionDetailMonth'>>()
 
     return (
-      <Button key={index} onPress={() => navigate(typeNavigation, { transactionDate: item.datetime, type: type })}>
+      <Button onPress={() => navigate(navigationName, { transactionDate: item.reportType, type: type })}>
         <Row width={1} height={80} p={18} border='0.5px solid #c1c1c1' justifyContent='flex-start' alignItems='center'>
-          <Image source={CaixaImage} style={TransactionReportStyles.imageCaixa} />
+          <ImageCashRegister source={CaixaImage} />
           <Column width={200} px={16} alignItems='flex-start'>
-            <Text fontSize={16} color='#21262c' fontWeight='bold'>
-              {itemName}
+            <Text fontSize={16} color='text' fontWeight='bold'>
+              {item.reportType}
             </Text>
-            <Text fontSize={16} color='#21262c'>
-              {formatCurrency(balance)}
+            <Text fontSize={16} color='text'>
+              {formatCurrency(item.balanceEntries - item.balanceOutflows)}
             </Text>
           </Column>
         </Row>

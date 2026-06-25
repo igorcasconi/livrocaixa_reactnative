@@ -38,7 +38,7 @@ const Login: React.FC = () => {
         </Row>
 
         <Row width='100%' justifyContent='center' alignItems='center' mb={24}>
-          <Text fontSize={24} fontWeight='bold' color='#262626'>
+          <Text fontSize={24} fontWeight='bold' color='text'>
             Bem-vindo ao Livro Caixa
           </Text>
         </Row>
@@ -46,7 +46,7 @@ const Login: React.FC = () => {
         {isError && (
           <Row
             width='100%'
-            backgroundColor='#db3b33'
+            backgroundColor='error'
             p='10px'
             justifyContent='center'
             alignItems='center'
@@ -76,7 +76,7 @@ const Login: React.FC = () => {
           )}
         />
         {errors.user && (
-          <Text color='#f15555' fontWeight='bold' fontSize={13} mt={-15} mb={2} textAlign='center'>
+          <Text color='error' fontWeight='bold' fontSize={13} mt={-15} mb={2} textAlign='center'>
             {errors.user.message}
           </Text>
         )}
@@ -97,7 +97,7 @@ const Login: React.FC = () => {
         />
 
         {errors.password && (
-          <Text color='#f15555' fontWeight='bold' fontSize={13} mt={-15} mb={2} textAlign='center'>
+          <Text color='error' fontWeight='bold' fontSize={13} mt={-15} mb={2} textAlign='center'>
             {errors.password.message}
           </Text>
         )}
@@ -106,7 +106,7 @@ const Login: React.FC = () => {
           <Button
             width={1}
             height={40}
-            backgroundColor='#3b61e6'
+            backgroundColor='secondary'
             borderRadius={8}
             p='10px'
             justifyContent='flex-end'
@@ -128,7 +128,7 @@ const Login: React.FC = () => {
 
         <Column justifyContent='center' alignItems='center' mt='50px' pl='6px'>
           <Button
-            backgroundColor='#3b61e6'
+            backgroundColor='secondary'
             px='10px'
             width='100%'
             height={40}
@@ -144,7 +144,7 @@ const Login: React.FC = () => {
             </Text>
           </Button>
           <Button
-            backgroundColor='#262626'
+            backgroundColor='text'
             px='10px'
             width='100%'
             height={40}
@@ -166,7 +166,7 @@ const Login: React.FC = () => {
 }
 
 export const Container = styled.KeyboardAvoidingView`
-  background-color: #4db476;
+  background-color: ${({ theme }) => theme.colors.primary};
   height: 100%;
   padding: 20px;
   flex: 1;

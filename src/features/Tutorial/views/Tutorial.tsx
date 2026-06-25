@@ -4,16 +4,16 @@ import Ionicons from '@react-native-vector-icons/ionicons'
 import styled from 'styled-components'
 import { Column, Text, Row } from '../../../core/components'
 
-import styles from './styles/style'
-
 const Tutorial: React.FC = () => (
   <ScrollView>
     <Column width={1} height='100%' p={20} flex={1}>
-      <Text fontSize={16} color='#21262c' fontWeight='bold' textAlign='center'>
+      <Text fontSize={16} color='text' fontWeight='bold' textAlign='center'>
         Guia de Uso do Aplicativo
       </Text>
-      <Text style={styles.textTitulo}>Tela Inicial</Text>
-      <StyledCard backgroundColor='#4db476'>
+      <Text fontSize={20} textAlign='center' marginBottom={10}>
+        Tela Inicial
+      </Text>
+      <StyledCard backgroundColor='background'>
         <Row width={1}>
           <Ionicons name='arrow-forward-circle-outline' size={16} />
           <Text fontSize={16} color='white' fontWeight='bold' ml={10}>
@@ -42,7 +42,7 @@ const Tutorial: React.FC = () => (
           </Text>
         </Row>
       </StyledCard>
-      <StyledCard backgroundColor='#2147db'>
+      <StyledCard backgroundColor='secondary'>
         <Row width={1}>
           <Ionicons name='arrow-forward-circle-outline' size={16} />
           <Text fontSize={16} color='white' fontWeight='bold' ml={10}>
@@ -64,7 +64,7 @@ const Tutorial: React.FC = () => (
           </Text>
         </Row>
       </StyledCard>
-      <StyledCard backgroundColor='#8b20d6'>
+      <StyledCard backgroundColor='purple'>
         <Row width={1}>
           <Ionicons name='arrow-forward-circle-outline' size={16} />
           <Text fontSize={16} color='white' fontWeight='bold' ml={10}>

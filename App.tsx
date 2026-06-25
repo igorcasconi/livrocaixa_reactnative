@@ -19,26 +19,30 @@ import { GestureHandlerRootView } from 'react-native-gesture-handler'
 import { AuthProvider } from './src/context/AuthContext'
 import Routes from './src/core/navigation/Routes'
 import { RealmProvider } from './src/context/RealmContext'
+import { ThemeProvider } from 'styled-components/native'
+import theme from './src/core/theme'
 
 const App: React.FC = () => {
   return (
     <GestureHandlerRootView>
       <RealmProvider>
-        <SafeAreaView style={{ flex: 1 }}>
-          <StatusBar
-            barStyle='default'
-            backgroundColor='#4db476' // Android only
-            translucent={false} // Android only
-            hidden={true}
-          />
-          <ApplicationProvider {...eva} theme={eva.light}>
-            <AuthProvider>
-              <NavigationContainer>
-                <Routes />
-              </NavigationContainer>
-            </AuthProvider>
-          </ApplicationProvider>
-        </SafeAreaView>
+        <ThemeProvider theme={theme}>
+          <SafeAreaView style={{ flex: 1 }}>
+            <StatusBar
+              barStyle='default'
+              backgroundColor='#4db476' // Android only
+              translucent={false} // Android only
+              hidden={true}
+            />
+            <ApplicationProvider {...eva} theme={eva.light}>
+              <AuthProvider>
+                <NavigationContainer>
+                  <Routes />
+                </NavigationContainer>
+              </AuthProvider>
+            </ApplicationProvider>
+          </SafeAreaView>
+        </ThemeProvider>
       </RealmProvider>
     </GestureHandlerRootView>
   )

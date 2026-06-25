@@ -3,39 +3,30 @@ import Ionicons from '@react-native-vector-icons/ionicons'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Button, Text, Column } from '../../../core/components'
 
-import { CompletionForgotPassProps } from '../../../core/navigation/type'
+import { CompletionForgotPassRouteProp, ParamsListLogin } from '../../../core/navigation/type'
 import { useForgotPasswordViewmodel } from '../viewmodels/useForgotPasswordViewmodel'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
 
 const CompletionForgotPass: React.FC = () => {
-  const { isErrorVerifyPassword } = useForgotPasswordViewmodel()
-  const { navigate } = useNavigation()
-  const route = useRoute<CompletionForgotPassProps>()
+  const { informationDataWithError } = useForgotPasswordViewmodel()
+  const { navigate } = useNavigation<NativeStackNavigationProp<ParamsListLogin>>()
+  const route = useRoute<CompletionForgotPassRouteProp>()
   const { email } = route.params
 
-  const informationDataWithError = () => {
-    const text = isErrorVerifyPassword
-      ? `Ocorreu um erro ao alterar a senha, possivelmente o e-mail ${email} não está cadastrado!`
-      : `O link de alteração de senha foi enviado para o e-mail ${email}, acesse o link no seu e-mail e realize a alteração da senha.`
-    const icon = isErrorVerifyPassword ? 'alert-circle-outline' : 'checkmark-circle-outline'
-    const color = isErrorVerifyPassword ? 'red' : 'white'
-
-    return { text, icon, color }
-  }
-
   return (
-    <Column flex={1} backgroundColor='#4db476' padding={20} justifyContent='center' alignItems='center'>
+    <Column flex={1} backgroundColor='background' padding={20} justifyContent='center' alignItems='center'>
       <Column justifyContent='center' alignItems='center'>
         <Text fontSize={25} fontWeight='bold' mb='20px'>
           Esqueceu a senha?
         </Text>
-
-        <Ionicons name={informationDataWithError().icon} color={informationDataWithError().color} size={40} />
+        {/* @ts-ignore */}
+        <Ionicons name={informationDataWithError(email).icon} color={informationDataWithError(email).color} size={40} />
         <Text textAlign='center' fontSize={16} marginBottom={20}>
-          {informationDataWithError().text}
+          {informationDataWithError(email).text}
         </Text>
 
         <Button
-          backgroundColor='#3b61e6'
+          backgroundColor='secondary'
           borderRadius={10}
           width={300}
           padding={10}

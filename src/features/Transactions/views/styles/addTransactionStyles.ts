@@ -9,7 +9,7 @@ export const TransactionFormCard = styled(Card)`
   border-radius: 15px;
   padding: 16px;
   margin: 10px;
-  background: #ffebb4;
+  background: ${({ theme }) => theme.colors.yellow.n50};
 `
 export const TransactionImage = styled.Image`
   width: 90px;
@@ -18,7 +18,7 @@ export const TransactionImage = styled.Image`
 
 export const TextInfo = styled(Text)`
   font-size: 16px;
-  color: #262626;
+  color: ${({ theme }) => theme.colors.text};
   flex-wrap: wrap;
 `
 
@@ -37,11 +37,11 @@ export const InputFieldText = styled(Input)`
 
 export const TextError = styled(Text)`
   font-size: 14px;
-  color: #ff4242;
+  color: ${({ theme }) => theme.colors.error};
 `
 
 export const ButtonSubmit = styled(TouchableOpacity)`
-  background-color: #187feb;
+  background-color: ${({ theme }) => theme.colors.secondary};
   justify-content: center;
   align-items: center;
   margin-top: 40px;
@@ -51,6 +51,6 @@ export const ButtonSubmit = styled(TouchableOpacity)`
 `
 
 export const TextButton = styled(Text)`
-  color: #fff;
+  color: ${({ theme }) => theme.colors.white};
   font-weight: bold;
 `

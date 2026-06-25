@@ -26,7 +26,7 @@ const Register: React.FC = () => {
   })
 
   return (
-    <Column flex={1} backgroundColor='#4db476' padding={10}>
+    <Column flex={1} backgroundColor='background' padding={10}>
       <ScrollView>
         <Column width={1} justifyContent='center' alignItems='center'>
           <Text fontSize={25} mb={20} fontWeight='bold'>
@@ -41,7 +41,7 @@ const Register: React.FC = () => {
           <Row
             width={1}
             p={16}
-            backgroundColor='#dec104'
+            backgroundColor='yellow.n100'
             justifyContent='center'
             alignItems='center'
             mt={20}
@@ -58,7 +58,7 @@ const Register: React.FC = () => {
           <Row
             width={1}
             p={10}
-            backgroundColor='#dec104'
+            backgroundColor='yellow.n100'
             justifyContent='center'
             alignItems='center'
             mt={20}
@@ -75,7 +75,7 @@ const Register: React.FC = () => {
           <Row
             width={1}
             p={15}
-            backgroundColor='#db3b33'
+            backgroundColor='error'
             mt={20}
             borderRadius={10}
             justifyContent='center'
@@ -140,7 +140,7 @@ const Register: React.FC = () => {
               width={1}
               justifyContent='center'
               alignItems='center'
-              backgroundColor='#3b61e6'
+              backgroundColor='secondary'
               borderRadius={10}
               p={10}
               mt={20}

@@ -43,12 +43,12 @@ const TransactionComponent: React.FC = () => {
   return (
     <>
       <Column flex={1} width={1}>
-        <Column width={1} minHeight={60} justifyContent='center' px={16} backgroundColor='#4db476'>
+        <Column width={1} minHeight={60} justifyContent='center' px={16} backgroundColor='background'>
           <Row width={1} justifyContent='space-between' alignItems='center'>
             <Button
               width={110}
               height={40}
-              backgroundColor='#3585e7'
+              backgroundColor='secondary'
               borderRadius={8}
               justifyContent='center'
               alignItems='center'
