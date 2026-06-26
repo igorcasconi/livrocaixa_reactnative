@@ -1,97 +1,176 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Livro Caixa React Native
 
-# Getting Started
+## Table of Contents
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+- [English](#english)
+  - [Project Overview](#project-overview)
+  - [Architecture](#architecture)
+  - [Key Technologies](#key-technologies)
+  - [Installation](#installation)
+  - [Important Files](#important-files)
+  - [Notes](#notes)
+- [Português](#português)
+  - [Visão Geral do Projeto](#visão-geral-do-projeto)
+  - [Arquitetura](#arquitetura)
+  - [Tecnologias Principais](#tecnologias-principais)
+  - [Instalação](#instalação)
+  - [Arquivos Importantes](#arquivos-importantes)
+  - [Observações](#observações)
 
-## Step 1: Start Metro
+## English
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+### Project Overview
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+This repository contains a React Native bare app (Community CLI) for a personal cashbook application.
+
+The app helps users manage financial movements by recording income and expense entries with:
+
+- description
+- amount
+- payment type
+- date and time
+
+It also provides monthly and annual reports to review finances over time.
+
+### Architecture
+
+The project follows a feature-based MVVM architecture:
+
+- `src/features/` contains feature modules.
+- `src/core/` contains shared infrastructure, navigation, theme, and utilities.
+- `src/context/` contains global providers such as authentication and Realm.
+
+Each feature typically includes:
+
+- `views/` for screens and presentational UI.
+- `viewmodels/` for state, input handling, validation, and business logic.
+- `models/` for domain entities, schemas, and repository contracts.
+- `infrastructure/` for concrete persistence implementations.
+
+### Key Technologies
+
+- React Native 0.86.0 (bare workflow)
+- TypeScript
+- Realm for local persistence
+- Firebase Authentication for user login state
+- styled-components for styling and theme
+- React Navigation for navigation flow
+
+### Installation
+
+Install dependencies:
 
 ```sh
-# Using npm
+npm install
+```
+
+Start the Metro bundler:
+
+```sh
 npm start
-
-# OR using Yarn
-yarn start
 ```
 
-## Step 2: Build and run your app
-
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
+Run on Android:
 
 ```sh
-# Using npm
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### iOS
-
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+Run on iOS:
 
 ```sh
-bundle install
-```
-
-Then, and every time you update your native dependencies, run:
-
-```sh
-bundle exec pod install
-```
-
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
-
-```sh
-# Using npm
 npm run ios
-
-# OR using Yarn
-yarn ios
 ```
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### Important Files
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+- `App.tsx` - app entry point and provider setup
+- `src/core/navigation/Routes.tsx` - navigation flow based on authentication state
+- `src/context/AuthContext.tsx` - global authentication state
+- `src/context/RealmContext.tsx` - Realm initialization and repositories
+- `CLAUDE.md` - coding guide for AI agents
+- `PRESENTATION_SCRIPT.md` - presentation script in Portuguese
 
-## Step 3: Modify your app
+### Notes
 
-Now that you have successfully run the app, let's make changes!
+This app emphasizes modularity, clear separation of concerns, and maintainable feature-driven structure. When adding new functionality, keep UI, domain, and persistence code isolated.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+---
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+## Português
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+### Visão Geral do Projeto
 
-## Congratulations! :tada:
+Este repositório contém um aplicativo React Native bare workflow para um livro caixa pessoal.
 
-You've successfully run and modified your React Native App. :partying_face:
+O app ajuda o usuário a controlar movimentações financeiras registrando entradas e saídas com:
 
-### Now what?
+- descrição
+- valor
+- tipo de pagamento
+- data e hora
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
+Também fornece relatórios mensais e anuais para revisar as finanças ao longo do tempo.
 
-# Troubleshooting
+### Arquitetura
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+O projeto segue uma arquitetura MVVM baseada em funcionalidades:
 
-# Learn More
+- `src/features/` contém os módulos de feature.
+- `src/core/` contém infraestrutura compartilhada, navegação, tema e utilitários.
+- `src/context/` contém provedores globais como autenticação e Realm.
 
-To learn more about React Native, take a look at the following resources:
+Cada feature geralmente inclui:
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+- `views/` para telas e UI de apresentação.
+- `viewmodels/` para estado, tratamento de entrada, validação e lógica de negócio.
+- `models/` para entidades de domínio, esquemas e contratos de repositório.
+- `infrastructure/` para implementações concretas de persistência.
+
+### Tecnologias Principais
+
+- React Native 0.86.0 (bare workflow)
+- TypeScript
+- Realm para persistência local
+- Firebase Authentication para estado de login
+- styled-components para estilo e tema
+- React Navigation para fluxo de navegação
+
+### Instalação
+
+Instale as dependências:
+
+```sh
+npm install
+```
+
+Inicie o Metro bundler:
+
+```sh
+npm start
+```
+
+Execute no Android:
+
+```sh
+npm run android
+```
+
+Execute no iOS:
+
+```sh
+npm run ios
+```
+
+### Arquivos Importantes
+
+- `App.tsx` - ponto de entrada do app e configuração de provedores
+- `src/core/navigation/Routes.tsx` - fluxo de navegação com base no estado de autenticação
+- `src/context/AuthContext.tsx` - estado global de autenticação
+- `src/context/RealmContext.tsx` - inicialização do Realm e repositórios
+- `CLAUDE.md` - guia de codificação para agentes de IA
+- `PRESENTATION_SCRIPT.md` - roteiro de apresentação em português
+
+### Observações
+
+Este app prioriza modularidade, separação clara de responsabilidades e estrutura baseada em features. Ao adicionar novas funcionalidades, mantenha a interface, o domínio e a persistência separados.
