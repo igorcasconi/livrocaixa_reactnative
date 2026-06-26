@@ -9,7 +9,7 @@ const VerifyInternet: React.FC = () => {
   const netInfo = useNetInfo()
   const [backgroundColor, setBackgroundCollor] = useState<string>('')
   const [messageConnection, setMessageConnection] = useState<string>('')
-  const component = useRef<any>()
+  const component = useRef<any>(null)
 
   useEffect(() => {
     if (!netInfo.isConnected) {
