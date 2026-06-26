@@ -21,7 +21,6 @@ DerivedData
 *.ipa
 *.xcuserstate
 .yarn/*
-android/app/.cxx
 
 # Android/IntelliJ
 #
@@ -30,6 +29,10 @@ build/
 .gradle
 local.properties
 *.iml
+android/app/.cxx
+andorid/app/google-services.json
+android/app/upload_certificate.pem
+android/app/debug.keystore
 
 # Visual Studio Code
 #
