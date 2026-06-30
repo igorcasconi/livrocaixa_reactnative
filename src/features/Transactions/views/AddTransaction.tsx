@@ -27,6 +27,7 @@ import {
 } from './styles/addTransactionStyles'
 import useAddTransactionViewmodel from '../viewmodels/useAddTransactionViewmodel'
 import { transactionFormSchema } from '../models/formSchemas/transactionSchema'
+import { AdsBanner } from '../../../core/components'
 
 const AddTransaction: React.FC = () => {
   const route = useRoute<AddTransactionRouteProp>()
@@ -56,7 +57,7 @@ const AddTransaction: React.FC = () => {
   return (
     <Column>
       <VerifyInternet />
-      <ScrollView>
+      <ScrollView style={{ marginBottom: 60 }}>
         <TransactionFormCard>
           <Row justifyContent='space-between' mb={20}>
             <TransactionImage source={isEntries ? reciboEntradaImg : reciboSaidaImg} />
@@ -139,6 +140,9 @@ const AddTransaction: React.FC = () => {
             </ButtonSubmit>
           </Column>
         </TransactionFormCard>
+        <Row width={1} backgroundColor='white' mb={60}>
+          <AdsBanner />
+        </Row>
       </ScrollView>
     </Column>
   )
