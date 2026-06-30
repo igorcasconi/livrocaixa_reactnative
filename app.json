@@ -1,4 +1,8 @@
 {
   "name": "ReactTSProject",
-  "displayName": "ReactTSProject"
+  "displayName": "ReactTSProject",
+  "react-native-google-mobile-ads": {
+    "android_app_id": "ca-app-pub-1207130538939906~3402932155",
+    "ios_app_id": "ca-app-pub-1207130538939906~3402932155"
+  }
 }

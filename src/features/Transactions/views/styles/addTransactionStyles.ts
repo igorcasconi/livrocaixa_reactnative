@@ -9,6 +9,7 @@ export const TransactionFormCard = styled(Card)`
   border-radius: 15px;
   padding: 16px;
   margin: 10px;
+  margin-bottom: 10px;
   background: ${({ theme }) => theme.colors.yellow.n50};
 `
 export const TransactionImage = styled.Image`

@@ -3,7 +3,7 @@ import { FlatList } from 'react-native'
 import { format } from 'date-fns'
 import { ptBR } from 'date-fns/locale/pt-BR'
 
-import { Row, Column, Text } from '../../../core/components'
+import { Row, Column, Text, AdsBanner } from '../../../core/components'
 
 import BalanceCash from './components/BalanceCash'
 import { useHomeViewmodel } from '../viewmodels/useHomeViewmodel'
@@ -34,6 +34,11 @@ const Home: React.FC = () => {
         numColumns={1}
         keyExtractor={(item: MenuProps) => item.id.toString()}
         renderItem={({ item }) => <HomeListItem item={item} />}
+        ListFooterComponent={() => (
+          <Row backgroundColor='white' mt={24}>
+            <AdsBanner />
+          </Row>
+        )}
       />
     </Column>
   )

@@ -33,6 +33,8 @@ android/app/.cxx
 andorid/app/google-services.json
 android/app/upload_certificate.pem
 android/app/debug.keystore
+android/app/keystore.jks
+android/app/keystore.jks.old
 
 # Visual Studio Code
 #
