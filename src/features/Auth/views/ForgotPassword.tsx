@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { View, ActivityIndicator } from 'react-native'
 import Ionicons from '@react-native-vector-icons/ionicons'
 
@@ -9,12 +9,17 @@ import { ForgotPasswordSchema } from '../models/formSchemas/loginSchema'
 import { Controller, useForm } from 'react-hook-form'
 import { ForgotPasswordProps } from '../models/ForgotPasswordModel'
 import { useForgotPasswordViewmodel } from '../viewmodels/useForgotPasswordViewmodel'
+import { ParamsListLogin } from '../../../core/navigation/type'
+import { NativeStackNavigationProp } from '@react-navigation/native-stack'
+import { useNavigation } from '@react-navigation/native'
 
 const ForgotPassword: React.FC = () => {
-  const { loading, onSubmit } = useForgotPasswordViewmodel()
+  const { loading, onSubmit, isGoToCompletionScreen } = useForgotPasswordViewmodel()
+  const { navigate } = useNavigation<NativeStackNavigationProp<ParamsListLogin>>()
   const {
     control,
     handleSubmit,
+    watch,
     formState: { errors }
   } = useForm<ForgotPasswordProps>({
     defaultValues: { email: '' },
@@ -22,6 +27,14 @@ const ForgotPassword: React.FC = () => {
     mode: 'onBlur',
     reValidateMode: 'onChange'
   })
+
+  const emailValue = watch('email')
+
+  useEffect(() => {
+    if (isGoToCompletionScreen) {
+      navigate('CompletionForgotPass', { email: emailValue })
+    }
+  }, [isGoToCompletionScreen])
 
   return (
     <Column backgroundColor='background' flex={1} p='20px'>
